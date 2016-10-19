@@ -8,7 +8,7 @@ import java.util.List;
 public class main {
 	// read file of detail data
 	private static List<List> ReadFile(String filepath){
-		List<List> Data = new ArrayList<>();
+		List<List> Detail = new ArrayList<>();
 		List<Integer> Workload = new ArrayList<>();
 		List<List> OtherData = new ArrayList<>();
 		List<Float> Gamma = new ArrayList<>();
@@ -31,36 +31,67 @@ public class main {
 					;
 				}
 				else {
-					List<Integer> Detail = new ArrayList<>();  // rewards, penalty, etc
+					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, etc
 					String[] detailData = line.split(",");
 					for(int i = 0; i < detailData.length; i++){
 						if(i > 2) {
-							Detail.add(Integer.parseInt(detailData[i]));
+							DetailData.add(Integer.parseInt(detailData[i]));
 						}
 					}
-					OtherData.add(Detail);
+					OtherData.add(DetailData);
 				}
 	        }
-			Data.add(Workload);
-			Data.add(Gamma);
-			Data.add(OtherData);
+			Detail.add(Workload);
+			Detail.add(Gamma);
+			Detail.add(OtherData);
 			br.close();
 		}
 	    catch(IOException e) {
 	    	System.out.println(e);
 	    }
 		
-		return Data;
+		return Detail;
 	}
-	// read data for distance file
 
+	// read data for distance file
+	private static List<List> ReadDistanceFile(String filepath, int length) {
+		List<List> Distance = new ArrayList<List>();
+
+		try {
+			FileReader fr = new FileReader(filepath);
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			line = br.readLine();
+	        while((line = br.readLine()) != null) {
+	        	List<Integer> SingleDistance = new ArrayList<Integer>();
+				String[] distanceData = line.split(",");
+				for(int i = 0; i < distanceData.length; i++){
+					SingleDistance.add(Integer.parseInt(distanceData[i]));
+				}
+				Distance.add(SingleDistance);
+	        }
+			
+			br.close();
+		}
+	    catch(IOException e) {
+	    	System.out.println(e);
+	    }
+		
+		return Distance;
+	}
 	
 	// other functions, ex: find the largest blah blah blah
 
 	public static void main(String[] args) {
-		String filepath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
-		System.out.print(ReadFile(filepath));
+		// read detail file
+		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
+		System.out.print(ReadFile(detailpath));
 		
+		// read distance file
+		String distancepath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data_distance.txt";
+		int length = 19;
+		System.out.print(ReadDistanceFile(distancepath, length));
+
 		// do something, greedy algorithm
 	}
 } 
