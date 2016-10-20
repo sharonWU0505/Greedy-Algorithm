@@ -161,7 +161,16 @@ public class main {
 					for(int t = 0; t < 7; t++){
 						if(t == j)
 							continue;
-						if(task_details.get(7) < ((Workload.get(t)*Gamma.get(0)) - total_processingT[t])){
+						else if(t < j){
+							if(task_details.get(7) < ((Workload.get(t)*Gamma.get(0)) - total_processingT[t])){
+								int diff = recent_rewards - task_details.get(t);
+								if(diff < inner_min_loss){
+									inner_min_loss = diff;
+									inner_move_to_day = t;
+								}
+							}
+						}
+						else{
 							int diff = recent_rewards - task_details.get(t);
 							if(diff < inner_min_loss){
 								inner_min_loss = diff;
@@ -213,8 +222,8 @@ public class main {
 
 	public static void main(String[] args) {
 		// read detail file
-		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
-//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
+//		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
+		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
 		// task assignment
