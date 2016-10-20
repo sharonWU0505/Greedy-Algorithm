@@ -210,15 +210,13 @@ public class main {
 		return Schedule;
 	}
 
-	
-	// other functions, ex: find the largest blah blah blah
 	public static void main(String[] args) {
 		// read detail file
-		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
+		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
 		// read distance file
-		String distancepath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data_distance.txt";
+		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
 		int length = 19;
 		System.out.print(ReadDistanceFile(distancepath, length));
 		
@@ -226,8 +224,5 @@ public class main {
 		// task assignment
 		List<List> Schedule = TaskAssign(ReadFile(detailpath));
 		System.out.println(Schedule);
-		
-
-		// do something, greedy algorithm
 	}
 } 
