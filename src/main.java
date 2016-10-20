@@ -212,9 +212,10 @@ public class main {
 
 	
 	// other functions, ex: find the largest blah blah blah
-
+	public static void main(String[] args) {
 	// read detail file
-		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
+//		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
+		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
 		// read distance file

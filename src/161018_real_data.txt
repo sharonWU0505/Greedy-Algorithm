@@ -5,7 +5,7 @@ workload4,420,,,,,,,,,,,
 workload5,420,,,,,,,,,,,
 workload6,0,,,,,,,,,,,
 workload7,0,,,,,,,,,,,
-gamma,0.8,,,,,,,,,,,
+gamma,0.9,,,,,,,,,,,
 index,location,type,rewards1,rewards2,rewards3,rewards4,rewards5,rewards6,rewards7,processingT,penalty,splitN
 1,師大男一舍,一般,20,0,0,0,0,-500,-500,90,8,2
 2,師大男三舍,一般,20,0,0,0,0,-500,-500,90,8,2
