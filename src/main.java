@@ -147,7 +147,7 @@ public class main {
 		for(int j = 0; j < 7; j++){
 			List<Integer> recent_tasks = Schedule.get(j);
 			
-			while(total_processingT[j] > (Workload.get(j))){		// 某天的分配超出負荷
+			while(total_processingT[j] > (Workload.get(j)*Gamma.get(0))){		// 某天的分配超出負荷
 				int remove_task = -1, move_to_day = -1;
 				int min_loss = 1000;
 				int time_change = 0;
@@ -158,11 +158,15 @@ public class main {
 					int recent_rewards = task_details.get(j);
 					int inner_min_loss = 1000;
 					int inner_move_to_day = -1;
-					for(int t = j+1; t < 7; t++){
-						int diff = recent_rewards - task_details.get(t);
-						if(diff < inner_min_loss){
-							inner_min_loss = diff;
-							inner_move_to_day = t;
+					for(int t = 0; t < 7; t++){
+						if(t == j)
+							continue;
+						if(task_details.get(7) < ((Workload.get(t)*Gamma.get(0)) - total_processingT[t])){
+							int diff = recent_rewards - task_details.get(t);
+							if(diff < inner_min_loss){
+								inner_min_loss = diff;
+								inner_move_to_day = t;
+							}
 						}
 					}
 					
@@ -173,6 +177,13 @@ public class main {
 						time_change = task_details.get(7);
 					}
 				}
+				
+				if(remove_task == -1){
+					// 找不到可以移去其他日子的任務
+					System.out.println("overload on day " + (j+1));
+					break;
+				}
+				
 				int index = recent_tasks.get(remove_task);
 				List<Integer> temp = Schedule.get(move_to_day);
 				temp.add(index);
@@ -186,6 +197,15 @@ public class main {
 			}
 		}
 		
+		System.out.print("\n" + "total_processinT: ");
+		for(int j = 0; j < 7; j++){
+			System.out.print(total_processingT[j] + " ");
+		}
+//		System.out.print("\n" + "total rewards: ");
+//		for(int j = 0; j < 7; j++){
+//			System.out.print( + " ");
+//		}
+		System.out.print("\n");
 		
 		return Schedule;
 	}
@@ -193,8 +213,7 @@ public class main {
 	
 	// other functions, ex: find the largest blah blah blah
 
-	public static void main(String[] args) {
-		// read detail file
+	// read detail file
 		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
@@ -202,7 +221,7 @@ public class main {
 		String distancepath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data_distance.txt";
 		int length = 19;
 		System.out.print(ReadDistanceFile(distancepath, length));
-
+		
 		
 		// task assignment
 		List<List> Schedule = TaskAssign(ReadFile(detailpath));
