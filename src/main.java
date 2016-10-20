@@ -210,8 +210,6 @@ public class main {
 		return Schedule;
 	}
 
-	
-
 	public static void main(String[] args) {
 		// read detail file
 		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
