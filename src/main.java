@@ -211,9 +211,9 @@ public class main {
 	}
 
 	
-	// other functions, ex: find the largest blah blah blah
 
-	// read detail file
+	public static void main(String[] args) {
+		// read detail file
 		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
@@ -226,8 +226,5 @@ public class main {
 		// task assignment
 		List<List> Schedule = TaskAssign(ReadFile(detailpath));
 		System.out.println(Schedule);
-		
-
-		// do something, greedy algorithm
 	}
 } 
