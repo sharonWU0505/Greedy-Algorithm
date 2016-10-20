@@ -212,11 +212,11 @@ public class main {
 
 	public static void main(String[] args) {
 		// read detail file
-		String detailpath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data.txt";
+		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
 		// read distance file
-		String distancepath = "C:\\Users\\admin\\Desktop\\161018_data\\txt\\161018_real_data_distance.txt";
+		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
 		int length = 19;
 		System.out.print(ReadDistanceFile(distancepath, length));
 		
