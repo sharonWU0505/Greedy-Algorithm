@@ -52,8 +52,8 @@ public class TaskSequence {
 				min_index = i;
 			}
 		}
-		System.out.println(min_distance);
-		System.out.println(Arrays.toString(Permutation[min_index]));
+		System.out.print("min_distance: " + min_distance + "\n");
+		System.out.print("sequence: " + Arrays.toString(Permutation[min_index]) + "\n");
 		return Permutation[min_index];
 	}
 	
@@ -65,7 +65,7 @@ public class TaskSequence {
 	}
 	
 	// read data for distance file
-	private int[][] ReadDistanceFile(String filepath, int locnum) {
+	public int[][] ReadDistanceFile(String filepath, int locnum) {
 		int[][] Distance = new int[locnum][];
 
 		try {
@@ -112,45 +112,45 @@ public class TaskSequence {
 		}
 	}
 
-	public static void main(String[] args) {
-		List<List> test = new ArrayList<>();
-		List<Integer> test1 = new ArrayList<>();
-		List<Integer> test2 = new ArrayList<>();
-		List<Integer> test3 = new ArrayList<>();
-		List<Integer> test4 = new ArrayList<>();
-		List<Integer> test5 = new ArrayList<>();
-		test1.add(17);
-		test1.add(18);
-		test1.add(2);
-		test1.add(3);
-		test.add(test1);
-		test2.add(16);
-		test2.add(14);
-		test2.add(1);
-		test.add(test2);
-		test3.add(19);
-		test3.add(13);
-		test3.add(7);
-		test3.add(8);
-		test.add(test3);
-		test4.add(4);
-		test4.add(15);
-		test4.add(5);
-		test4.add(6);
-		test.add(test4);
-		test5.add(9);
-		test5.add(10);
-		test5.add(11);
-		test5.add(12);
-		test.add(test5);
-		
-		for(int i = 0; i < test.size(); i++){
-			TaskSequence TaskSequence = new TaskSequence(test.get(i));
-			TaskSequence.setUsed();
-
-			String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
-			int length = 19;
-			TaskSequence.Sequence(TaskSequence.ReadDistanceFile(distancepath, length));
-		}
-	}
+//	public static void main(String[] args) {
+//		List<List> test = new ArrayList<>();
+//		List<Integer> test1 = new ArrayList<>();
+//		List<Integer> test2 = new ArrayList<>();
+//		List<Integer> test3 = new ArrayList<>();
+//		List<Integer> test4 = new ArrayList<>();
+//		List<Integer> test5 = new ArrayList<>();
+//		test1.add(17);
+//		test1.add(18);
+//		test1.add(2);
+//		test1.add(3);
+//		test.add(test1);
+//		test2.add(16);
+//		test2.add(14);
+//		test2.add(1);
+//		test.add(test2);
+//		test3.add(19);
+//		test3.add(13);
+//		test3.add(7);
+//		test3.add(8);
+//		test.add(test3);
+//		test4.add(4);
+//		test4.add(15);
+//		test4.add(5);
+//		test4.add(6);
+//		test.add(test4);
+//		test5.add(9);
+//		test5.add(10);
+//		test5.add(11);
+//		test5.add(12);
+//		test.add(test5);
+//		
+//		for(int i = 0; i < test.size(); i++){
+//			TaskSequence TaskSequence = new TaskSequence(test.get(i));
+//			TaskSequence.setUsed();
+//
+//			String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
+//			int length = 19;
+//			TaskSequence.Sequence(TaskSequence.ReadDistanceFile(distancepath, length));
+//		}
+//	}
 }

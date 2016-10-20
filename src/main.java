@@ -215,14 +215,17 @@ public class main {
 		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
-		// read distance file
-		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
-		int length = 19;
-		System.out.print(ReadDistanceFile(distancepath, length));
-		
-		
 		// task assignment
 		List<List> Schedule = TaskAssign(ReadFile(detailpath));
 		System.out.println(Schedule);
+		
+		for(int i = 0; i < Schedule.size(); i++){
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
+			TaskSequence.setUsed();
+
+			String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
+			int length = 19;
+			TaskSequence.Sequence(TaskSequence.ReadDistanceFile(distancepath, length));
+		}
 	}
 } 
