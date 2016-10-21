@@ -99,6 +99,7 @@ public class main {
 		List<Integer> Sunday = new ArrayList<>();
 		//........................................
 		
+		// 無腦排入
 		for(int i = 1; i < OtherData.size()+1; i++){
 			List<Integer> task_details = OtherData.get(i-1);
 			//System.out.println(task_details);
@@ -146,12 +147,15 @@ public class main {
 		
 		for(int j = 0; j < 7; j++){
 			List<Integer> recent_tasks = Schedule.get(j);
-			
-			while(total_processingT[j] > (Workload.get(j)*Gamma.get(0))){		// 某天的分配超出負荷
+			// check if day j is overloading
+			while(total_processingT[j] > (Workload.get(j)*Gamma.get(0))){		
 				int remove_task = -1, move_to_day = -1;
 				int min_loss = 1000;
 				int time_change = 0;
-				for(int k = 0; k < recent_tasks.size(); k++){		// 原排於j天的所有任務k
+				
+				// find the task which has the least "opportunity cost" and assign it to the other day
+				// if it is before day j, check if the capacity is enough
+				for(int k = 0; k < recent_tasks.size(); k++){		
 					int index = recent_tasks.get(k);
 					
 					List<Integer> task_details = OtherData.get(index-1);
@@ -181,14 +185,15 @@ public class main {
 					
 					if(inner_min_loss < min_loss){
 						min_loss = inner_min_loss;
-						remove_task = k;		// 	原該日排入的第k個任務
+						remove_task = k;		// 	k is the list index, not taskId
 						move_to_day = inner_move_to_day;
 						time_change = task_details.get(7);
 					}
 				}
 				
 				if(remove_task == -1){
-					// 找不到可以移去其他日子的任務
+					// no way to solve the overloading on day j 
+					// should only happen on Sunday
 					System.out.println("overload on day " + (j+1));
 					break;
 				}
@@ -206,14 +211,22 @@ public class main {
 			}
 		}
 		
-		System.out.print("\n" + "total_processinT: ");
+		System.out.print("\n" + "total_processingT: ");
 		for(int j = 0; j < 7; j++){
 			System.out.print(total_processingT[j] + " ");
 		}
-//		System.out.print("\n" + "total rewards: ");
-//		for(int j = 0; j < 7; j++){
-//			System.out.print( + " ");
-//		}
+		System.out.print("\n" + "total rewards: ");
+		for(int j = 0; j < 7; j++){
+			int total_rewards=0;
+			int index;
+			List<Integer> recent_tasks = Schedule.get(j);
+			for(int k = 0; k < recent_tasks.size(); k++){
+				index = recent_tasks.get(k);
+				List<Integer> task_detail = OtherData.get(index-1);
+				total_rewards += task_detail.get(j);
+			}
+			System.out.print(total_rewards + " ");
+		}
 		System.out.print("\n");
 		
 		return Schedule;
@@ -222,8 +235,8 @@ public class main {
 
 	public static void main(String[] args) {
 		// read detail file
-//		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
-		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
+		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
+//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
 		System.out.print(ReadFile(detailpath));
 		
 		// task assignment
