@@ -151,7 +151,7 @@ public class TaskSequence {
 		
 		for(int i = 0; i < test.size(); i++){
 			TaskSequence TaskSequence = new TaskSequence(test.get(i));
-//			TaskSequence.setused();
+//			TaskSequence.setUsed();
 
 			String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
 			int length = 19;
