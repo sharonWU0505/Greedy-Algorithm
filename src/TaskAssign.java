@@ -138,6 +138,13 @@ public class TaskAssign{
 				System.out.println(index + " from " + j + " to " + move_to_day);
 			}
 		}
+		
+		// re-assign the unassigned tasks
+		// sequence the tasks in the order of their absolute maximum rewards
+		//
+		//
+		//
+		//	
 				
 		System.out.print("total_processingT: ");
 		for(int j = 0; j < 7; j++){
