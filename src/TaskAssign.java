@@ -7,7 +7,6 @@ public class TaskAssign{
 	private List<List> OtherData;
 	
 	private List<List> Schedule;
-	private List<Integer> Unassigned;
 	private int [] total_processingT = {0, 0, 0, 0, 0, 0, 0};
 	
 	public TaskAssign(List<List> Detail){
@@ -15,7 +14,7 @@ public class TaskAssign{
 		Gamma = Detail.get(1);
 		OtherData = Detail.get(2);
 		Schedule = new ArrayList<>();
-		Unassigned = new ArrayList<>();
+		List<Integer> Unassigned = new ArrayList<>();
 		
 		//..........這應該有比較好的做法吧.............
 		List<Integer> Monday = new ArrayList<>();
@@ -72,6 +71,7 @@ public class TaskAssign{
 		Schedule.add(Friday);
 		Schedule.add(Saturday);
 		Schedule.add(Sunday);
+		Schedule.add(Unassigned);	// day 8 for unassigned tasks!
 				
 		for(int j = 0; j < 7; j++){
 			List<Integer> recent_tasks = Schedule.get(j);
@@ -90,7 +90,7 @@ public class TaskAssign{
 					int recent_rewards = task_details.get(j);
 					int inner_min_loss = 1000;
 					int inner_move_to_day = -1;
-					for(int t = 0; t < 7; t++){
+					for(int t = 0; t < 7+1; t++){
 						if(t == j)
 							continue;
 						else if(t < j){
@@ -164,7 +164,7 @@ public class TaskAssign{
 	}
 	
 	public List<Integer> getUnassignedTasks(){
-		return Unassigned;
+		return Schedule.get(7);
 	}
 	
 	
