@@ -27,7 +27,7 @@ public class main {
 					Gamma.add(Float.parseFloat(gammaData[1]));
 					
 				}
-				else if(line.contains("index")) {
+				else if(line.contains("taskId")) {
 					;
 				}
 				else {
@@ -83,8 +83,8 @@ public class main {
 
 	public static void main(String[] args) {
 		// read detail file
-		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
-//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data.txt";
+//		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data.txt";
+		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1018.txt";
 //		System.out.print(ReadFile(detailpath));
 		
 		// task assignment

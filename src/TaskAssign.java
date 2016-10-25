@@ -7,7 +7,7 @@ public class TaskAssign{
 	private List<List> OtherData;
 	
 	private List<List> Schedule;
-	private int [] total_processingT = {0, 0, 0, 0, 0, 0, 0};
+	private int [] total_processingT = {0, 0, 0, 0, 0, 0, 0, 0};
 	
 	public TaskAssign(List<List> Detail){
 		Workload = Detail.get(0);
