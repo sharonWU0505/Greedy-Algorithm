@@ -78,7 +78,7 @@ public class TaskSequence {
 			}
 		}
 
-		System.out.print("Min distance: " + min_distance + "\n");
+		System.out.print("Min distance: " + min_distance + "; ");
 		System.out.print("Task sequence: " + Arrays.toString(permutation[min_index]) + "\n");
 		return permutation[min_index];
 	}
