@@ -138,13 +138,14 @@ public class TaskAssign{
 //			}
 //			System.out.print("\n");
 		}
+		System.out.print("----------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
 	
 	// Second Stage Assignment: try to assign those unassigned tasks
 	private void SecondStageAssignment(){
-		List<Integer> unassignedTasks = getUnassignedTasks();		// will later be updated and replaced 
-		List<Integer> new_unassignedTasks = new ArrayList<>();
+		List<Integer> unassignedTasks = getUnassignedTasks();	 // will later be updated and replaced 
+		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
 		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
 		List<TaskSplit> splitTasks = new ArrayList<>();
 		
@@ -215,8 +216,8 @@ public class TaskAssign{
 					double percentage;
 					if((processingT * task_left) > capacity_left){
 						percentage = capacity_left / processingT;
-						TotalProcessingT[ideal] += capacity_left;	// the ideal day has no more capacity
-						Available[ideal] = false;
+						TotalProcessingT[ideal] += capacity_left;
+						Available[ideal] = false;	// the ideal day has no more capacity
 					}
 					else{
 						// actually this will never happen
@@ -231,7 +232,7 @@ public class TaskAssign{
 //					List<Integer> temp = Schedule.get(ideal);
 //					temp.add(taskId);
 //					Schedule.set(ideal, temp);
-					System.out.println("split " + taskid + " into day " + ideal + " with percentage = " + percentage + ", left " + task_left);
+					System.out.println("Split Task " + taskid + " into day " + (ideal + 1) + " with percentage = " + percentage + ", left " + task_left);
 
 					// if the task is still left, find new ideal day
 					if(task_left > 0){
@@ -239,20 +240,22 @@ public class TaskAssign{
 						if(split_ctr == task_details.get(9)){
 							break;
 						}
-						int pre_max_rewards = task_details.get(ideal);
-						int new_max = -1000;
-						int temp_choice = -1;
-						for(int j = 0; j < 7; j++){
-							if((Available[j] == true) && (j != ideal) && (task_details.get(j) > new_max) && (task_details.get(j) <= pre_max_rewards)){
-								new_max = task_details.get(j);
-								temp_choice = j;  // the new ideal day
+						else {
+							int pre_max_rewards = task_details.get(ideal);
+							int new_max = -1000;
+							int temp_choice = -1;
+							for(int j = 0; j < 7; j++){
+								if((Available[j] == true) && (j != ideal) && (task_details.get(j) > new_max) && (task_details.get(j) <= pre_max_rewards)){
+									new_max = task_details.get(j);
+									temp_choice = j;  // the new ideal day
+								}
 							}
-						}
-						if(temp_choice != -1){
-							ideal = temp_choice;
-						}
-						else{
-							break;	// unable to complete the task
+							if(temp_choice != -1){
+								ideal = temp_choice;
+							}
+							else{
+								break;	// unable to do the task anymore
+							}
 						}
 					}
 				}
@@ -267,27 +270,32 @@ public class TaskAssign{
 		
 		// updates unassigned tasks
 		Schedule.set(7, new_unassignedTasks);
-		
-		// print results
-		System.out.print("total_processingT: ");
+	}
+	// End Second Stage Assignment
+
+	// Print Results
+	private void PrintResult(){
+		System.out.print("----------------------------------------------------------" + "\n");
+		System.out.print("[Task Assignement Results]" + "\n");
+		System.out.print("Processing Time: ");
 		for(int j = 0; j < weekdays; j++){
 			System.out.print(TotalProcessingT[j] + " ");
 		}
-		System.out.print("\n" + "total rewards: ");
+		System.out.print("\n" + "Rewards: ");
 		for(int j = 0; j < weekdays; j++){
 			int total_rewards=0;
 			int index;
 			List<Integer> recent_tasks = Schedule.get(j);
 			for(int k = 0; k < recent_tasks.size(); k++){
 				index = recent_tasks.get(k);
-				List<Integer> task_detail = OtherData.get(index-1);
+				List<Integer> task_detail = OtherData.get(index - 1);
 				total_rewards += task_detail.get(j);
 			}
 			System.out.print(total_rewards + " ");
 		}
-		System.out.print("\n\n");
-
+		System.out.print("\n");
 	}
+	// End Print Results
 	
 	public List<List> getSchedule(){
 		return Schedule;
@@ -301,6 +309,7 @@ public class TaskAssign{
 		FirstStageAssignment();
 		FirstStageCheck();
 		SecondStageAssignment();
+		PrintResult();
 	}
 }
 		
