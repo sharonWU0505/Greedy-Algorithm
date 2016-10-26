@@ -91,19 +91,22 @@ public class main {
 	public static void main(String[] args) {		
 		// read detail file
 		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\data_1025.txt";
+//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1025.txt";
 //		System.out.print(ReadDetailFile(detailpath));
 		
 		// task assignment
-		TaskAssign Schedule = new TaskAssign(ReadDetailFile(detailpath));
-		List<List> tasklist = Schedule.getSchedule();
-		System.out.println("Schedule:\n" + tasklist);
-		System.out.println("Unassigned tasks:\n" + Schedule.getUnassignedTasks());
+		TaskAssign TaskAssign = new TaskAssign();
+		TaskAssign.assign(ReadDetailFile(detailpath));
+		List<List> Schedule = TaskAssign.getSchedule();
+		System.out.println("Schedule:\n" + Schedule);
+		System.out.println("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
 		
 		// read detail file
 		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
+//		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
 
-		for(int i = 0; i < tasklist.size() - 1; i++){
-			TaskSequence TaskSequence = new TaskSequence(tasklist.get(i));
+		for(int i = 0; i < Schedule.size() - 1; i++){
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 //			TaskSequence.setUsed();
 			TaskSequence.Sequence(ReadDistanceFile(distancepath));
 		}
