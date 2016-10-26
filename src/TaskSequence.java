@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +78,7 @@ public class TaskSequence {
 			}
 		}
 
-		System.out.print("Min distance: " + min_distance + "\n");
+		System.out.print("Min distance: " + min_distance + "; ");
 		System.out.print("Task sequence: " + Arrays.toString(permutation[min_index]) + "\n");
 		return permutation[min_index];
 	}

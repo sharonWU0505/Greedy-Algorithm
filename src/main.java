@@ -65,7 +65,7 @@ public class main {
 					;
 				}
 				else {
-					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, etc
+					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 					String[] detailData = line.split(",");
 					for(int i = 0; i < detailData.length; i++){
 						if(i > 2) {
@@ -91,20 +91,30 @@ public class main {
 	public static void main(String[] args) {		
 		// read detail file
 		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\data_1025.txt";
+//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1025.txt";
 //		System.out.print(ReadDetailFile(detailpath));
 		
 		// task assignment
-		TaskAssign Schedule = new TaskAssign(ReadDetailFile(detailpath));
-		List<List> tasklist = Schedule.getSchedule();
-		System.out.println("Schedule:\n" + tasklist);
-		System.out.println("Unassigned tasks:\n" + Schedule.getUnassignedTasks());
+		TaskAssign TaskAssign = new TaskAssign();
+		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+		TaskAssign.ExecuteTaskAssign();
+		List<List> Schedule = TaskAssign.getSchedule();
+		System.out.print("Schedule:\n");
+		for(int i = 0; i < Schedule.size() - 1; i++){
+			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
+		}
+		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
+		System.out.print("\n" + "----------------------------------------------------------" + "\n");
 		
 		// read detail file
 		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
+//		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
 
-		for(int i = 0; i < tasklist.size() - 1; i++){
-			TaskSequence TaskSequence = new TaskSequence(tasklist.get(i));
+		System.out.print("[Task Sequence Results]" + "\n");
+		for(int i = 0; i < Schedule.size() - 1; i++){
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 //			TaskSequence.setUsed();
+			System.out.print("Day " + (i + 1) + ": \n");
 			TaskSequence.Sequence(ReadDistanceFile(distancepath));
 		}
 	}
