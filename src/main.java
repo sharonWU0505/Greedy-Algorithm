@@ -65,7 +65,7 @@ public class main {
 					;
 				}
 				else {
-					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, etc
+					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 					String[] detailData = line.split(",");
 					for(int i = 0; i < detailData.length; i++){
 						if(i > 2) {
@@ -96,18 +96,25 @@ public class main {
 		
 		// task assignment
 		TaskAssign TaskAssign = new TaskAssign();
-		TaskAssign.assign(ReadDetailFile(detailpath));
+		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
-		System.out.println("Schedule:\n" + Schedule);
-		System.out.println("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
+		System.out.print("Schedule:\n");
+		for(int i = 0; i < Schedule.size() - 1; i++){
+			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
+		}
+		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
+		System.out.print("\n" + "----------------------------------------------------------" + "\n");
 		
 		// read detail file
 		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
 //		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
 
+		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size() - 1; i++){
 			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 //			TaskSequence.setUsed();
+			System.out.print("Day " + (i + 1) + ": \n");
 			TaskSequence.Sequence(ReadDistanceFile(distancepath));
 		}
 	}
