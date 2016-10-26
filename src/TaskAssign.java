@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TaskAssign{
@@ -43,7 +46,7 @@ public class TaskAssign{
 	}
 	
 	// First Stage Assignment: use max rewards of a task to decide the best day it should be assigned to
-	public void FirstStageAssignment(){
+	private void FirstStageAssignment(){
 		for(int id = 1; id < OtherData.size() + 1; id++){
 			List<Integer> task_details = OtherData.get(id - 1);
 			// System.out.println(task_details);
@@ -62,7 +65,7 @@ public class TaskAssign{
 	// End First Stage Assignment
 
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
-	public void FirstStageCheck(){
+	private void FirstStageCheck(){
 		for(int j = 0; j < weekdays; j++){
 			List<Integer> recent_tasks = Schedule.get(j);  	  // maybe current_tasks is better?
 			float workload = Workload.get(j) * Gamma;  // calculate workload
@@ -136,134 +139,155 @@ public class TaskAssign{
 //			System.out.print("\n");
 		}
 	}
+	// End First Stage Check
 	
-	// Second Stage Assignment
-//	public void SecondStageAssignment(){
-//		// re-assign the unassigned tasks
-//		// sequence the tasks in the order of their absolute maximum rewards
-//		//--------------------------------------------------------------------
-//		List<Integer> unassignedTasks = getUnassignedTasks();		// will later be updated and replaced 
-//		List<Integer> new_unassignedTasks = new ArrayList<>();
-//		List<TaskSplit> unassiTaskSequence = new ArrayList<>();
-//		List<TaskSplit> splitTasks = new ArrayList<>();
-//		
-//		for(int i = 0; i < unassignedTasks.size(); i++){
-//			int taskId, max_rewards, ideal_day;
-//			taskId = unassignedTasks.get(i);
-//			List<Integer> task_details = OtherData.get(taskId-1);
-//			int max = 0, day = -1;
-//			for(int j = 0; j < 7; j++){
-//				if(task_details.get(j) > max){
-//					max = task_details.get(j);
-//					day = j;
-//				}
-//			}
-//			max_rewards = max;
-//			ideal_day = day;
-//			TaskSplit aTask = new TaskSplit(taskId, max_rewards, ideal_day);
-////			System.out.println(taskId + ": max_rewards " + max_rewards + " on day " + ideal_day);
-//			// put in order
-//			if(i == 0){
-//				unassiTaskSequence.add(aTask);
-//				continue;
-//			}
-//			else{
-//				for(int t = 0; t < unassiTaskSequence.size(); t++){
-//					TaskSplit ptr = unassiTaskSequence.get(t);
-//					if(max_rewards >= ptr.getMaxRewards()){
-//						unassiTaskSequence.add(t, aTask);
-//						break;
-//					}
-//				}
-//			}
-//		}
-//		// split the unassigned tasks into the day where the max_rewards happens 
-//		// if the day is out of capacity, abandon the taskQQ
+	// Second Stage Assignment: try to assign those unassigned tasks
+	private void SecondStageAssignment(){
+		List<Integer> unassignedTasks = getUnassignedTasks();		// will later be updated and replaced 
+		List<Integer> new_unassignedTasks = new ArrayList<>();
+		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
+		List<TaskSplit> splitTasks = new ArrayList<>();
+		
+		
+		for(int i = 0; i < unassignedTasks.size(); i++){
+			// get the absolute maximum rewards and ideal day of each unassigned task
+			int taskid = unassignedTasks.get(i);
+			List<Integer> task_details = OtherData.get(taskid - 1);
+			int max_rewards = 0;
+			int ideal_day = -1;
+			for(int j = 0; j < weekdays; j++){
+				if(task_details.get(j) > max_rewards){
+					max_rewards = task_details.get(j);
+					ideal_day = j;
+				}
+			}
+			TaskSplit aTask = new TaskSplit(taskid, max_rewards, ideal_day);
+			
+			// set all unassigned tasks in order
+			if(i == 0){
+				unassiTaskSequence.add(aTask);
+				continue;
+			}
+			else{
+				for(int t = 0; t < unassiTaskSequence.size(); t++){
+					TaskSplit current_task = unassiTaskSequence.get(t);
+					// forget to sort by ideal date
+					if(max_rewards >= current_task.getMaxRewards()){
+						unassiTaskSequence.add(t, aTask);
+						break;
+					}
+				}
+			}
+		}
+		
+		// check the correctness of sorting
 //		for(int i = 0; i < unassiTaskSequence.size(); i++){
-//			TaskSplit aTask = unassiTaskSequence.get(i);
-//			int taskId = aTask.getTaskId();
-//			int ideal = aTask.getIdealDay();
-//			
-//			if((Workload.get(ideal)*Gamma.get(0)) > total_processingT[ideal]){
-//				// capacity left
-//				List<Integer> task_details = OtherData.get(taskId-1);
-//				double processingT = task_details.get(7);
-//				double task_left = 1;
-//				int split_ctr = 0;
-//				while(task_left > 0){
-//					split_ctr++;
-//					double capacity_left = Workload.get(ideal)*Gamma.get(0) - total_processingT[ideal];
-//					double percentage;
-//					if((processingT*task_left) > ((Workload.get(ideal)*Gamma.get(0)) - total_processingT[ideal])){
-//						percentage = capacity_left / processingT;
-//						total_processingT[ideal] += capacity_left;
-//					}
-//					else{
-//						percentage = task_left;
-//						total_processingT[ideal] += processingT*task_left;
-//					}
-//					aTask.splitInto(ideal, percentage);
-//					// add to schedule
+//			TaskSplit current_task = unassiTaskSequence.get(i);
+//			System.out.println("Task " + current_task.getTaskId() + ": max_rewards " + current_task.getMaxRewards() + " on day " + (current_task.getIdealDay() + 1));
+//		}
+		
+
+		// split the unassigned tasks into the day where the max_rewards happens 
+		// if the day is out of capacity, abandon the taskQQ
+		boolean[] Available = {true, true, true, true, true, true, true};
+		for(int i = 0; i < weekdays; i++){
+			float workload = Workload.get(i) * Gamma;
+			if(workload <= TotalProcessingT[i]){
+				Available[i] = false;
+			}
+		}
+
+		for(int i = 0; i < unassiTaskSequence.size(); i++){
+			TaskSplit aTask = unassiTaskSequence.get(i);
+			int taskid = aTask.getTaskId();
+			int ideal = aTask.getIdealDay();
+			float workload = Workload.get(ideal) * Gamma;
+			
+			// if there is capacity left on ideal day
+			if(Available[ideal] == true){
+				List<Integer> task_details = OtherData.get(taskid - 1);
+				double processingT = task_details.get(7);
+				double task_left = 1;
+				int split_ctr = 0;
+				while(task_left > 0){
+					split_ctr += 1;
+					double capacity_left = workload - TotalProcessingT[ideal];
+					double percentage;
+					if((processingT * task_left) > capacity_left){
+						percentage = capacity_left / processingT;
+						TotalProcessingT[ideal] += capacity_left;	// the ideal day has no more capacity
+						Available[ideal] = false;
+					}
+					else{
+						// actually this will never happen
+						percentage = task_left;
+						TotalProcessingT[ideal] += processingT * percentage;
+					}
+					task_left -= percentage;
+					aTask.splitInto(ideal, percentage);
+
+					// add to schedule
+					Schedule.get(ideal).add(taskid);
 //					List<Integer> temp = Schedule.get(ideal);
 //					temp.add(taskId);
 //					Schedule.set(ideal, temp);
-//					task_left -= percentage;
-//					System.out.println("split " + taskId + " into day " + ideal + " with percentage = " + percentage + ", left " + task_left);
-//					if(task_left > 0){
-//						if(split_ctr == task_details.get(9)){
-//							break;
-//						}
-//						int pre_max_rewards = task_details.get(ideal);
-//						int new_max = -1000;
-//						int temp_choice = -1;
-//						for(int j = 0; j < 7; j++){
-//							if(total_processingT[j] == (Workload.get(ideal)*Gamma.get(0))){
-//								continue;
-//							}
-//							if((task_details.get(j) > new_max) && (task_details.get(j) <= pre_max_rewards) && (j != ideal)){
-//								new_max = task_details.get(j);
-//								temp_choice = j;
-//							}
-//						}
-//						if(temp_choice != -1){
-//							ideal = temp_choice;
-//						}
-//						else{
-//							break;	// no way to complete the task
-//						}
-//					}
-//				}
-//				splitTasks.add(aTask);
-//			}
-//			else{
-//				new_unassignedTasks.add(taskId);
-//				continue;
-//			}
-//		}
-//		
-//		Schedule.set(7, new_unassignedTasks);
-//		
-//		//---------------------------------------------------------------------	
-//				
-//		System.out.print("total_processingT: ");
-//		for(int j = 0; j < 7; j++){
-//			System.out.print(total_processingT[j] + " ");
-//		}
-//		System.out.print("\n" + "total rewards: ");
-//		for(int j = 0; j < 7; j++){
-//			int total_rewards=0;
-//			int index;
-//			List<Integer> recent_tasks = Schedule.get(j);
-//			for(int k = 0; k < recent_tasks.size(); k++){
-//				index = recent_tasks.get(k);
-//				List<Integer> task_detail = OtherData.get(index-1);
-//				total_rewards += task_detail.get(j);
-//			}
-//			System.out.print(total_rewards + " ");
-//		}
-//		System.out.print("\n\n");
-//
-//	}
+					System.out.println("split " + taskid + " into day " + ideal + " with percentage = " + percentage + ", left " + task_left);
+
+					// if the task is still left, find new ideal day
+					if(task_left > 0){
+						// first check whether it can be split more
+						if(split_ctr == task_details.get(9)){
+							break;
+						}
+						int pre_max_rewards = task_details.get(ideal);
+						int new_max = -1000;
+						int temp_choice = -1;
+						for(int j = 0; j < 7; j++){
+							if((Available[j] == true) && (j != ideal) && (task_details.get(j) > new_max) && (task_details.get(j) <= pre_max_rewards)){
+								new_max = task_details.get(j);
+								temp_choice = j;  // the new ideal day
+							}
+						}
+						if(temp_choice != -1){
+							ideal = temp_choice;
+						}
+						else{
+							break;	// unable to complete the task
+						}
+					}
+				}
+				splitTasks.add(aTask);
+			}
+			// no capacity left on ideal day
+			else{
+				new_unassignedTasks.add(taskid);
+				continue;
+			}
+		}
+		
+		// updates unassigned tasks
+		Schedule.set(7, new_unassignedTasks);
+		
+		// print results
+		System.out.print("total_processingT: ");
+		for(int j = 0; j < weekdays; j++){
+			System.out.print(TotalProcessingT[j] + " ");
+		}
+		System.out.print("\n" + "total rewards: ");
+		for(int j = 0; j < weekdays; j++){
+			int total_rewards=0;
+			int index;
+			List<Integer> recent_tasks = Schedule.get(j);
+			for(int k = 0; k < recent_tasks.size(); k++){
+				index = recent_tasks.get(k);
+				List<Integer> task_detail = OtherData.get(index-1);
+				total_rewards += task_detail.get(j);
+			}
+			System.out.print(total_rewards + " ");
+		}
+		System.out.print("\n\n");
+
+	}
 	
 	public List<List> getSchedule(){
 		return Schedule;
@@ -273,5 +297,10 @@ public class TaskAssign{
 		return Schedule.get(7);
 	}
 	
+	public void ExecuteTaskAssign(){
+		FirstStageAssignment();
+		FirstStageCheck();
+		SecondStageAssignment();
+	}
 }
 		
