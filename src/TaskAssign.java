@@ -188,8 +188,8 @@ public class TaskAssign{
 //		}
 		
 
-		// split the unassigned tasks into the day where the max_rewards happens 
-		// if the day is out of capacity, abandon the taskQQ
+		// Try to split an unassigned task into the day where the max_rewards exists 
+		// But if the ideal day is out of capacity, the task will be abandoned directly QQ
 		boolean[] Available = {true, true, true, true, true, true, true};
 		for(int i = 0; i < weekdays; i++){
 			float workload = Workload.get(i) * Gamma;
@@ -261,7 +261,7 @@ public class TaskAssign{
 				}
 				splitTasks.add(aTask);
 			}
-			// no capacity left on ideal day
+			// no capacity left on ideal day, abandon the task
 			else{
 				new_unassignedTasks.add(taskid);
 				continue;
