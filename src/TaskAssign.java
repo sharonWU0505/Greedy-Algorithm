@@ -148,8 +148,7 @@ public class TaskAssign{
 		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
 		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
 		List<TaskSplit> splitTasks = new ArrayList<>();
-		
-		
+
 		for(int i = 0; i < unassignedTasks.size(); i++){
 			// get the absolute maximum rewards and ideal day of each unassigned task
 			int taskid = unassignedTasks.get(i);
@@ -186,7 +185,6 @@ public class TaskAssign{
 //			TaskSplit current_task = unassiTaskSequence.get(i);
 //			System.out.println("Task " + current_task.getTaskId() + ": max_rewards " + current_task.getMaxRewards() + " on day " + (current_task.getIdealDay() + 1));
 //		}
-		
 
 		// Try to split an unassigned task into the day where the max_rewards exists 
 		// But if the ideal day is out of capacity, the task will be abandoned directly QQ
@@ -220,7 +218,6 @@ public class TaskAssign{
 						Available[ideal] = false;	// the ideal day has no more capacity
 					}
 					else{
-						// actually this will never happen
 						percentage = task_left;
 						TotalProcessingT[ideal] += processingT * percentage;
 					}
