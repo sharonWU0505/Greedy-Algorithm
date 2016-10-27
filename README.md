@@ -4,7 +4,7 @@
 Assign the task to its ideal day.
 Ideal day is the day when the absolute maximum rewards of a task exists.
 
-## First Stage Assignment
+## First Stage Check
 After the fist stage assignment, the workload of some days may be overloading.
 So, we have to do some changes.
 
