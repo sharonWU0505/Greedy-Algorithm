@@ -21,3 +21,4 @@ So, we have to assign more tasks as possible by splitting them.
 
 1. Sort all the unassigned tasks by their absolute maximum rewards.
 2. According to the sorting result, try to assign a task to several days (if it is still under its splitting limit).
+3. ...
