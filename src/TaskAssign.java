@@ -151,7 +151,7 @@ public class TaskAssign{
 //			}
 //			System.out.print("\n");
 		}
-		System.out.print("----------------------------------------------------" + "\n");
+		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
 	
@@ -282,7 +282,7 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
-		System.out.print("----------------------------------------------------------" + "\n");
+		System.out.print("----------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.print("Processing Time: ");
 		for(int j = 0; j < weekdays; j++){
