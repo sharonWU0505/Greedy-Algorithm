@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+
 public class TaskSplit{
-	
 	private int taskId;
 	private int max_rewards;
 	private int ideal_day;
@@ -42,5 +41,4 @@ public class TaskSplit{
 		
 		complete_percentage += percentage;
 	}
-	
 }
