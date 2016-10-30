@@ -1,19 +1,24 @@
 # Greedy-Algorithm
 
 ## First Stage Assignment
-Assign the task to its ideal day.
+Assign each task to its ideal day.
 Ideal day is the day when the absolute maximum rewards of a task exists.
 
 ## First Stage Check
 After the fist stage assignment, the workload of some days may be overloading.
 So, we have to do some changes.
 
-Check from the first workdays.
-If the workload is not overloading, then check the next workday.
-Else,
-  1. Sort all the tasks on that day by "their cost to move to another workday".
-  2. According to the sorting result, try to move the task with the least moving cost.
-  3. ...
+### Sort Tasks
+For each day, sort tasks by "the cost to move that task to another day".
+### Decide Priority Between Days
+We called the least moving cost of a day "min_cost".
+Compare those min_costs, the day with less min_cost has higher priority.
+### Move Tasks
+By the priority between days, check the workload of that day.
+If the workload is not overloading, then check the next day.
+Else, try to move tasks to their ideal day by their sorting results.
+  However, before successfully moving a task, we have to check whether the day we are moving into is available for that task.
+  A task will be viewed as an unassigned task if it has nowhere to go.
 
 ## Second Stage Assignment
 After the fist stage check, there will be some unassigned tasks and some workload of workdays is not satisfied.
