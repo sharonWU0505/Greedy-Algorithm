@@ -100,7 +100,7 @@ public class main {
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
 		System.out.print("Schedule:\n");
-		for(int i = 0; i < Schedule.size() - 1; i++){
+		for(int i = 0; i < Schedule.size(); i++){
 			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
 		}
 		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
@@ -111,7 +111,7 @@ public class main {
 //		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
 
 		System.out.print("[Task Sequence Results]" + "\n");
-		for(int i = 0; i < Schedule.size() - 1; i++){
+		for(int i = 0; i < Schedule.size(); i++){
 			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 //			TaskSequence.setUsed();
 			System.out.print("Day " + (i + 1) + ": \n");
