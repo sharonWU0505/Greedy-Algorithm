@@ -9,44 +9,13 @@ import java.util.List;
 public class main {
 	private static int[][] Distance = null;
 
-	// Read Distance File
-	public static int[][] ReadDistanceFile(String filepath) {
-		try {
-			FileReader fr = new FileReader(filepath);
-			BufferedReader br = new BufferedReader(fr);
-			String line;
-			line = br.readLine();
-			int locnum = Integer.parseInt(line);
-			Distance = new int[locnum][];
-				
-			int locindex = 0;
-			while((line = br.readLine()) != null) {
-			    Distance[locindex] = new int[locnum];
-				String[] distanceData = line.split(",");
-				for(int i = 0; i < locnum; i++){
-					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
-				}
-//				System.out.println(Arrays.toString(Distance[locindex]));
-				locindex += 1;
-			}
-			
-			br.close();
-		}
-
-		catch(IOException e) {
-		    System.out.println(e);
-		}
-		
-		return Distance;
-	}
-
 	// Read Detail Data File
 	private static List<List> ReadDetailFile(String filepath){
 		List<List> Detail = new ArrayList<>();
 		List<Integer> Workload = new ArrayList<>();
 		List<List> OtherData = new ArrayList<>();
 		List<Float> Gamma = new ArrayList<>();
-		
+			
 		try {
 			FileReader fr = new FileReader(filepath);
 			BufferedReader br = new BufferedReader(fr);
@@ -59,7 +28,7 @@ public class main {
 				else if(line.contains("gamma")) {
 					String[] gammaData = line.split(",");
 					Gamma.add(Float.parseFloat(gammaData[1]));
-					
+						
 				}
 				else if(line.contains("taskId")) {
 					;
@@ -74,17 +43,54 @@ public class main {
 					}
 					OtherData.add(DetailData);
 				}
-	        }
+		    }
 			Detail.add(Workload);
 			Detail.add(Gamma);
 			Detail.add(OtherData);
 			br.close();
 		}
-	    catch(IOException e) {
-	    	System.out.println(e);
-	    }
-		
+		catch(IOException e) {
+		    System.out.println(e);
+		}
+			
 		return Detail;
+	}
+
+	// Read Distance File
+	private static void ReadDistanceFile(String filepath) {
+		try {
+			FileReader fr = new FileReader(filepath);
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			line = br.readLine();							// get the first line data
+			String[] firstDistanceData = line.split(",");
+			int locnum = firstDistanceData.length;  		// get number of locations
+			Distance = new int[locnum][locnum];     		// define Distance array
+			for(int i = 0; i < locnum; i++){
+				Distance[0][i] = Integer.parseInt(firstDistanceData[i]);	// put the first line into array
+			}
+
+			int locindex = 1;
+			while((line = br.readLine()) != null) {
+				String[] distanceData = line.split(",");
+				for(int i = 0; i < locnum; i++){
+					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
+				}
+//				System.out.println(Arrays.toString(Distance[locindex]));
+				locindex += 1;
+			}
+			
+			br.close();
+		}
+
+		catch(IOException e) {
+		    System.out.println(e);
+		}
+	}
+
+	// Get Distance Data
+	private static int[][] GetDistance(){
+		return Distance;
 	}
 
 
@@ -111,10 +117,11 @@ public class main {
 
 		// Decide Task Sequence
 		System.out.print("[Task Sequence Results]" + "\n");
+		ReadDistanceFile(distancepath);
 		for(int i = 0; i < Schedule.size(); i++){
 			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 			System.out.print("Day " + (i + 1) + ": \n");
-			TaskSequence.Sequence(ReadDistanceFile(distancepath));
+			TaskSequence.Sequence(GetDistance());
 		}
 	}
 } 

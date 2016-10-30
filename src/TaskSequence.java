@@ -29,7 +29,7 @@ public class TaskSequence {
 	}
 
 	// Produce Permutation
-	public void Permutation(int start, int end) {
+	private void Permutation(int start, int end) {
 		if(start == end) {
 			for(int i = 0; i < end; i++) {
 				permutation[index][i] = tasklist.get(set[i]);
