@@ -11,8 +11,11 @@ So, we have to do some changes.
 ### Sort Tasks
 For each day, sort tasks by "the cost to move that task to another day".
 ### Decide Priority Between Days
-We called the least moving cost of a day "min_cost".
+We called the least moving cost of a task in a day the "min_cost" of that day.
 Compare those min_costs, the day with less min_cost has higher priority.
+Arrange the schedule in the order of the priority.
+	Put a tag at the first element of each tasks-list to identify the day which it belongs to. 
+	Recover the format to the origin one after finishing the First Stage Check.
 ### Move Tasks
 By the priority between days, check the workload of that day.  
 If the workload is not overloading, then check the next day.  
