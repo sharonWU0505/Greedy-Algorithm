@@ -125,6 +125,22 @@ public class TaskAssign{
 	}
 	// End FirstStageTaskSort
 	
+	// Arrange the schedule in the order of the workdays the tasks assigned to, and remove the tag which is at the first element of each list. 
+	private List<List> RecoverScheduleOrder(List<List> currentSchedule){
+		List<List> newSchedule = new ArrayList<>();
+		int [] order = {0, 1, 2, 3, 4, 5, 6};
+		for(int i = 0; i <  weekdays; i++){
+			int day = (int) currentSchedule.get(i).get(0) - 1;
+			order[day] = i;
+		}
+		for(int j = 0; j < weekdays; j++){
+			int index = order[j];
+			newSchedule.add(currentSchedule.get(index));
+			newSchedule.get(j).remove(0);
+		}
+
+		return newSchedule;
+	}	// End RecoverScheduleOrder
 
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
 	private void FirstStageCheck(){
@@ -138,7 +154,7 @@ public class TaskAssign{
 //		for(int v = 0; v < weekdays; v++){
 //			System.out.print(newOrder[v] + " ");
 //		}
-//		====================================================================================================
+
 		for(int j = 0; j < weekdays; j++){
 			List<Integer> current_tasks = Schedule.get(j);  	  
 			int current_day = current_tasks.get(0) - 1;
@@ -195,7 +211,7 @@ public class TaskAssign{
 				if(move_to_day == -1){
 					// If there's no way to move a task to another workday, put the first task into the "Unassigned List" 
 					// The situation will only happen on the task assignment of Sunday 
-					remove_task = 0;
+					remove_task = 1;
 					taskid_move = current_tasks.get(remove_task);
 					Unassigned.add(taskid_move);
 					time_change = (int) OtherData.get(taskid_move-1).get(7);
@@ -224,6 +240,8 @@ public class TaskAssign{
 //			}
 //			System.out.print("\n");
 		}
+		
+		Schedule = RecoverScheduleOrder(Schedule);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
