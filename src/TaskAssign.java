@@ -68,7 +68,8 @@ public class TaskAssign{
 	
 	
 	// For each day, sort tasks by "the cost to move that task to another day".
-	private List<List> FirstStageTaskSort(List<List> originSchedule){
+	private void FirstStageTaskSort(){
+		List<List> originSchedule = Schedule;
 //		System.out.println("originSchedule: " + originSchedule);
 		List<List> newSchedule = new ArrayList<>();
 		List<Integer> minOPcost = new ArrayList<>();	// the minimum opportunity cost of each day
@@ -121,12 +122,13 @@ public class TaskAssign{
 //		System.out.println("minOPcost: " + minOPcost);
 //		System.out.println("newSchedule: " + newSchedule);
 		
-		return newSchedule;
+		Schedule = newSchedule;
 	}
 	// End FirstStageTaskSort
 	
 	// Arrange the schedule in the order of the workdays the tasks assigned to, and remove the tag which is at the first element of each list. 
-	private List<List> RecoverScheduleOrder(List<List> currentSchedule){
+	private void RecoverScheduleOrder(){
+		List<List> currentSchedule = Schedule;
 		List<List> newSchedule = new ArrayList<>();
 		int [] order = {0, 1, 2, 3, 4, 5, 6};
 		for(int i = 0; i <  weekdays; i++){
@@ -139,13 +141,13 @@ public class TaskAssign{
 			newSchedule.get(j).remove(0);
 		}
 
-		return newSchedule;
+		Schedule = newSchedule;
 	}	// End RecoverScheduleOrder
 
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
 	private void FirstStageCheck(){
 		// Sort tasks by "the cost to move that task to another day".
-		Schedule = FirstStageTaskSort(Schedule);
+		FirstStageTaskSort();
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]" element of the Schedule.
 		for(int j = 0; j < weekdays; j++){
 			int day = (int) Schedule.get(j).get(0);
@@ -241,7 +243,7 @@ public class TaskAssign{
 //			System.out.print("\n");
 		}
 		
-		Schedule = RecoverScheduleOrder(Schedule);
+		RecoverScheduleOrder();
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
@@ -250,7 +252,7 @@ public class TaskAssign{
 	private void SecondStageAssignment(){
 		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
 		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
-		List<TaskSplit> splitTasks = new ArrayList<>();
+		List<TaskSplit> splitTasks = new ArrayList<>();	// tasks that are split to put into the schedule
 
 		for(int i = 0; i < Unassigned.size(); i++){
 			// get the absolute maximum rewards and ideal day of each unassigned task
