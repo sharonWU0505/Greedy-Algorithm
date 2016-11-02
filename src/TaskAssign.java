@@ -63,6 +63,8 @@ public class TaskAssign{
 			TotalProcessingT[assign_to_day] += task_details.get(7);  // calculate processing time
 			TotalRewards[assign_to_day] += task_details.get(assign_to_day);	// calculate rewards
 		}
+		System.out.println("FirstStageAssignment:\n" + Schedule);
+		System.out.println("---------------------------------------------------------------------------------");
 	}
 	// End First Stage Assignment
 	
@@ -276,9 +278,12 @@ public class TaskAssign{
 			else{
 				for(int t = 0; t < unassiTaskSequence.size(); t++){
 					TaskSplit current_task = unassiTaskSequence.get(t);
-					// forget to sort by ideal date
 					if(max_rewards >= current_task.getMaxRewards()){
 						unassiTaskSequence.add(t, aTask);
+						break;
+					}
+					else if(t == unassiTaskSequence.size()-1){
+						unassiTaskSequence.add(aTask);
 						break;
 					}
 				}
