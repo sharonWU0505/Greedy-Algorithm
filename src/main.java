@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class main {
@@ -96,8 +97,10 @@ public class main {
 
 	public static void main(String[] args) {		
 		// Read Detail File
-		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\data_1025.txt";
-//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1025.txt";
+		String root = System.getProperty("user.dir");
+		Scanner reader1 = new Scanner(System.in);
+		String detailfile = reader1.next();			// /src/data_1025.txt
+		String detailpath = root + detailfile;
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
@@ -112,8 +115,9 @@ public class main {
 		System.out.print("\n" + "-----------------------------------------------------------" + "\n");
 		
 		// Read Distance File
-		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
-//		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
+		Scanner reader2 = new Scanner(System.in);
+		String distancefile = reader2.next();			// /src/diatance.txt
+		String distancepath = root + distancefile;
 
 		// Decide Task Sequence
 		System.out.print("[Task Sequence Results]" + "\n");
