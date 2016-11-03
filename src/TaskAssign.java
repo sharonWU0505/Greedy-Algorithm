@@ -401,6 +401,12 @@ public class TaskAssign{
 		return Unassigned;
 	}
 	
+	public double[] getTimeUsed(){
+		return TotalProcessingT;
+	}
+
+	
+	
 	public void ExecuteTaskAssign(){
 		FirstStageAssignment();
 		FirstStageCheck();

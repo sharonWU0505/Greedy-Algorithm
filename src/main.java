@@ -182,19 +182,19 @@ public class main {
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 		// Read Test File
-//		Scanner reader = new Scanner(System.in);
-//		String testfile = reader.next();			// /src/general_input.txt
-//		String testpath = root + testfile;
+		Scanner reader = new Scanner(System.in);
+		String testfile = reader.next();			// /src/general_input.txt
+		String testpath = root + testfile;
 		
 		// Read Detail File
-		Scanner reader1 = new Scanner(System.in);
-		String detailfile = reader1.next();			// /src/data_1025.txt
-		String detailpath = root + detailfile;
+//		Scanner reader1 = new Scanner(System.in);
+//		String detailfile = reader1.next();			// /src/data_1025.txt
+//		String detailpath = root + detailfile;
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
-//		TaskAssign.TaskAssign(ReadTestFile(testpath));
-		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+		TaskAssign.TaskAssign(ReadTestFile(testpath));
+//		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
 		System.out.print("Schedule:\n");
