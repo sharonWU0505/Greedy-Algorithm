@@ -4,12 +4,11 @@ import java.util.List;
 
 public class TaskSplit{
 	private int taskId;
-	private int max_rewards;
+	private double max_rewards;
 	private int ideal_day;
 	private List<Integer> split_to_days;
 	private List<Double> split_percentae;
 	private double complete_percentage;
-	
 	
 	public TaskSplit(int id){
 		taskId = id;
@@ -17,7 +16,7 @@ public class TaskSplit{
 		split_percentae = new ArrayList<>();
 	}
 	
-	public TaskSplit(int id, int rewards, int day){
+	public TaskSplit(int id, double rewards, int day){
 		taskId = id;
 		max_rewards = rewards;
 		ideal_day = day;
@@ -25,12 +24,12 @@ public class TaskSplit{
 		split_percentae = new ArrayList<>();
 		complete_percentage = 0;
 	}
-	
+
 	public int getTaskId(){
 		return taskId;
 	}
 	
-	public int getMaxRewards(){
+	public double getMaxRewards(){
 		return max_rewards;
 	}
 	
