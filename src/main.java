@@ -96,8 +96,8 @@ public class main {
 
 	public static void main(String[] args) {		
 		// Read Detail File
-		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\data_1025.txt";
-//		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1025.txt";
+//		String detailpath = "C:\\Users\\admin\\workspace\\greedy\\src\\data_1025.txt";
+		String detailpath = "/Users/linda/Desktop/專題/greedy/src/data_1025.txt";
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
@@ -108,12 +108,14 @@ public class main {
 		for(int i = 0; i < Schedule.size(); i++){
 			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
 		}
-		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
-		System.out.print("\n" + "-----------------------------------------------------------" + "\n");
+		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks() + "\n");
+		System.out.print("TaskPercentages:\n");
+		TaskAssign.printTaskPercentages();
+		System.out.print("-----------------------------------------------------------" + "\n");
 		
 		// Read Distance File
-		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
-//		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
+//		String distancepath = "C:\\Users\\admin\\workspace\\greedy\\src\\161018_real_data_distance.txt";
+		String distancepath = "/Users/linda/Desktop/專題/greedy/src/161018_real_data_distance.txt";
 
 		// Decide Task Sequence
 		System.out.print("[Task Sequence Results]" + "\n");
