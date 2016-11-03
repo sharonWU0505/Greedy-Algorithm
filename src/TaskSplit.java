@@ -19,6 +19,10 @@ public class TaskSplit{
 		complete_percentage = 0;
 	}
 	
+	public TaskSplit(int taskid2, double max_rewards2, int ideal_day2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getTaskId(){
 		return taskId;
 	}

@@ -15,7 +15,7 @@ public class main {
 		List<List> Detail = new ArrayList<>();
 		List<List> OtherData = new ArrayList<>();
 		List<Double> Workload = new ArrayList<>();
-		List<Float> Gamma = new ArrayList<>();
+		List<Double> Gamma = new ArrayList<>();
 		List<Integer> Workdays = new ArrayList<>();
 		int taskNum = 0;
 		int workdays = 0;
@@ -49,7 +49,7 @@ public class main {
 				else if(lines >= 4 && lines < (4 + taskNum)){
 					String[] rewardsData = line.split(" ");
 					for(int i = 0; i < workdays; i++){
-						int rewards = Integer.parseInt(rewardsData[i]);
+						Double rewards = Double.parseDouble(rewardsData[i]);
 //						System.out.print(OtherData.get(lines - 4));
 						OtherData.get(lines - 4).add(i, rewards);
 					}
@@ -57,7 +57,7 @@ public class main {
 				else if(lines == (4 + taskNum)){
 					String[] splitNData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
-						OtherData.get(i).add(Integer.parseInt(splitNData[i]));
+						OtherData.get(i).add(Double.parseDouble(splitNData[i]));
 					}
 				}
 				else if(lines == (5 + taskNum)){
@@ -72,7 +72,7 @@ public class main {
 
 			// no input for gamma...
 			String[] gammaData = {"0.8"};
-			Gamma.add(Float.parseFloat(gammaData[0]));
+			Gamma.add(Double.parseDouble(gammaData[0]));
 
 			Detail.add(Workload);
 			Detail.add(OtherData);
@@ -90,9 +90,9 @@ public class main {
 	// Read Detail Data File
 	private static List<List> ReadDetailFile(String filepath){
 		List<List> Detail = new ArrayList<>();
-		List<Integer> Workload = new ArrayList<>();
 		List<List> OtherData = new ArrayList<>();
-		List<Float> Gamma = new ArrayList<>();
+		List<Double> Workload = new ArrayList<>();
+		List<Double> Gamma = new ArrayList<>();
 		List<Integer> Workdays = new ArrayList<>();
 			
 		try {
@@ -102,22 +102,22 @@ public class main {
 			while((line = br.readLine()) != null) {
 				if(line.contains("workload")) {
 					String[] workloadData = line.split(",");
-					Workload.add(Integer.parseInt(workloadData[1]));
+					Workload.add(Double.parseDouble(workloadData[1]));
 				}
 				else if(line.contains("gamma")) {
 					String[] gammaData = line.split(",");
-					Gamma.add(Float.parseFloat(gammaData[1]));
+					Gamma.add(Double.parseDouble(gammaData[1]));
 						
 				}
 				else if(line.contains("taskId")) {
 					;
 				}
 				else {
-					List<Integer> DetailData = new ArrayList<>();  // rewards, penalty, splitN, processingT
+					List<Double> DetailData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 					String[] detailData = line.split(",");
 					for(int i = 0; i < detailData.length; i++){
 						if(i > 2) {
-							DetailData.add(Integer.parseInt(detailData[i]));
+							DetailData.add(Double.parseDouble(detailData[i]));
 						}
 					}
 					OtherData.add(DetailData);
@@ -182,21 +182,19 @@ public class main {
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 		// Read Test File
-		Scanner reader = new Scanner(System.in);
-		String testfile = reader.next();			// /src/general_input.txt
-		String testpath = root + testfile;
-		System.out.print(ReadTestFile(testpath));
+//		Scanner reader = new Scanner(System.in);
+//		String testfile = reader.next();			// /src/general_input.txt
+//		String testpath = root + testfile;
 		
 		// Read Detail File
-//		Scanner reader1 = new Scanner(System.in);
-//		String detailfile = reader1.next();			// /src/data_1025.txt
-//		String detailpath = root + detailfile;
-//		System.out.print(ReadDetailFile(detailpath));
+		Scanner reader1 = new Scanner(System.in);
+		String detailfile = reader1.next();			// /src/data_1025.txt
+		String detailpath = root + detailfile;
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
-		TaskAssign.TaskAssign(ReadTestFile(testpath));
-//		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+//		TaskAssign.TaskAssign(ReadTestFile(testpath));
+		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
 		System.out.print("Schedule:\n");
