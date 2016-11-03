@@ -195,7 +195,7 @@ public class main {
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
-		TaskAssign.TaskAssign(ReadDetailFile(testpath));
+		TaskAssign.TaskAssign(ReadTestFile(testpath));
 //		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();

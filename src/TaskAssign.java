@@ -8,12 +8,12 @@ public class TaskAssign{
 	// attribute
 	private List<Integer> Workload;
 	private float Gamma;
+	private int weekdays = 0;
 	private List<List> OtherData;
 	private List<List> Schedule;
 	private List<Integer> Unassigned;
-	private int [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
+	private double [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private double [] TotalRewards = {0, 0, 0, 0, 0, 0, 0};
-	private int weekdays = 0;
 	
 	// Constructor
 	public TaskAssign(){
@@ -43,8 +43,7 @@ public class TaskAssign{
 		Workload = Detail.get(0);
 		OtherData = Detail.get(1);
 		Gamma = (float) Detail.get(2).get(0);
-		weekdays = (int) Detail.get(3).get(0);
-		
+		weekdays = (int) Detail.get(3).get(0);		
 	}
 	
 	// First Stage Assignment: use max rewards of a task to decide the best day it should be assigned to
