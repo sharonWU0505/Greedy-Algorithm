@@ -308,13 +308,11 @@ public class TaskAssign{
 		for(int i = 0; i < unassiTaskSequence.size(); i++){
 			TaskSplit aTask = unassiTaskSequence.get(i);
 			int taskid = aTask.getTaskId();
-			System.out.print(taskid);
 			int ideal = aTask.getIdealDay();
 			double workload = Workload.get(ideal) * Gamma;
 			
 			// if there is capacity left on ideal day
 			if(Available[ideal] == true){
-				System.out.print(taskid);
 				List<Double> task_details = OtherData.get(taskid - 1);
 				double processingT = task_details.get(7);
 				double task_left = 1;
@@ -333,7 +331,7 @@ public class TaskAssign{
 						TotalProcessingT[ideal] += processingT * percentage;
 					}
 					task_left -= percentage;
-					TotalRewards[ideal] += ((int)OtherData.get(taskid - 1).get(ideal)) * percentage;
+					TotalRewards[ideal] += ((double)OtherData.get(taskid - 1).get(ideal)) * percentage;
 					aTask.splitInto(ideal, percentage);
 
 					// add to schedule
