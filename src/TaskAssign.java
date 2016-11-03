@@ -13,7 +13,7 @@ public class TaskAssign{
 	private List<Integer> Unassigned;
 	private int [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private double [] TotalRewards = {0, 0, 0, 0, 0, 0, 0};
-	private int weekdays = 7;
+	private int weekdays = 0;
 	
 	// Constructor
 	public TaskAssign(){
@@ -41,8 +41,9 @@ public class TaskAssign{
 	// Constructor
 	public void TaskAssign(List<List> Detail){
 		Workload = Detail.get(0);
-		Gamma = (float) Detail.get(1).get(0);
-		OtherData = Detail.get(2);
+		OtherData = Detail.get(1);
+		Gamma = (float) Detail.get(2).get(0);
+		weekdays = (int) Detail.get(3).get(0);
 		
 	}
 	
