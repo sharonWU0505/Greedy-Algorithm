@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialInput {
-	// attribute
+	// Attribute
 	private static int[][] Distance;
 	private static List<List> Detail;
-	
+	private List<List<Double>> OtherData = new ArrayList<>();
+
 	// Constructor
 	public SpecialInput(){
 		Distance = null;
@@ -17,11 +18,11 @@ public class SpecialInput {
 	
 	// Methods
 	// Read Detail Data File
-	private static void ReadDetailFile(String filepath){
-		List<List> OtherData = new ArrayList<>();
+	private void ReadDetailFile(String filepath){
+		List<List<Double>> OtherData = new ArrayList<>();
 		List<Double> Workload = new ArrayList<>();
 		List<Double> Gamma = new ArrayList<>();
-		List<Integer> Workdays = new ArrayList<>();
+		List<Double> Workdays = new ArrayList<>();
 	
 		try {
 			FileReader fr = new FileReader(filepath);
@@ -53,13 +54,18 @@ public class SpecialInput {
 
 			// Workdays
 			String[] workdaysData = {"7"};
-			Workdays.add(Integer.parseInt(workdaysData[0]));
+			Workdays.add(Double.parseDouble(workdaysData[0]));
 
 			// for final output
+			System.out.print(Workload.get(0));
+			System.out.print(OtherData.get(0));
+			System.out.print(Gamma.get(0));
+			System.out.print(Workdays.get(0));
 			Detail.add(Workload);
 			Detail.add(OtherData);
 			Detail.add(Gamma);
 			Detail.add(Workdays);
+			System.out.print(Detail);
 			br.close();
 		}
 		catch(IOException e) {
@@ -68,7 +74,7 @@ public class SpecialInput {
 	}
 
 	// Read Distance File
-	private static void ReadDistanceFile(String filepath) {
+	private void ReadDistanceFile(String filepath) {
 		try {
 			FileReader fr = new FileReader(filepath);
 			BufferedReader br = new BufferedReader(fr);
