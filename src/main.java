@@ -87,112 +87,26 @@ public class main {
 		return Detail;
 	}
 
-	// Read Detail Data File
-	private static List<List> ReadDetailFile(String filepath){
-		List<List> Detail = new ArrayList<>();
-		List<List> OtherData = new ArrayList<>();
-		List<Double> Workload = new ArrayList<>();
-		List<Double> Gamma = new ArrayList<>();
-		List<Integer> Workdays = new ArrayList<>();
-			
-		try {
-			FileReader fr = new FileReader(filepath);
-			BufferedReader br = new BufferedReader(fr);
-			String line;
-			while((line = br.readLine()) != null) {
-				if(line.contains("workload")) {
-					String[] workloadData = line.split(",");
-					Workload.add(Double.parseDouble(workloadData[1]));
-				}
-				else if(line.contains("gamma")) {
-					String[] gammaData = line.split(",");
-					Gamma.add(Double.parseDouble(gammaData[1]));
-						
-				}
-				else if(line.contains("taskId")) {
-					;
-				}
-				else {
-					List<Double> DetailData = new ArrayList<>();  // rewards, penalty, splitN, processingT
-					String[] detailData = line.split(",");
-					for(int i = 0; i < detailData.length; i++){
-						if(i > 2) {
-							DetailData.add(Double.parseDouble(detailData[i]));
-						}
-					}
-					OtherData.add(DetailData);
-				}
-		    }
-			
-			// workdays
-			String[] workdaysData = {"7"};
-			Workdays.add(Integer.parseInt(workdaysData[0]));
-
-			Detail.add(Workload);
-			Detail.add(OtherData);
-			Detail.add(Gamma);
-			Detail.add(Workdays);
-			br.close();
-		}
-		catch(IOException e) {
-		    System.out.println(e);
-		}
-			
-		return Detail;
-	}
-
-	// Read Distance File
-	private static void ReadDistanceFile(String filepath) {
-		try {
-			FileReader fr = new FileReader(filepath);
-			BufferedReader br = new BufferedReader(fr);
-			String line;
-			line = br.readLine();							// get the first line data
-			String[] firstDistanceData = line.split(",");
-			int locnum = firstDistanceData.length;  		// get number of locations
-			Distance = new int[locnum][locnum];     		// define Distance array
-			for(int i = 0; i < locnum; i++){
-				Distance[0][i] = Integer.parseInt(firstDistanceData[i]);	// put the first line into array
-			}
-
-			int locindex = 1;
-			while((line = br.readLine()) != null) {
-				String[] distanceData = line.split(",");
-				for(int i = 0; i < locnum; i++){
-					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
-				}
-				locindex += 1;
-			}
-			br.close();
-		}
-
-		catch(IOException e) {
-		    System.out.println(e);
-		}
-	}
-
-	// Get Distance Data
-	private static int[][] GetDistance(){
-		return Distance;
-	}
+	
 
 
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
+
 		// Read Test File
 //		Scanner reader = new Scanner(System.in);
 //		String testfile = reader.next();			// /src/general_input.txt
 //		String testpath = root + testfile;
 		
+		SpecialInput SepcialInput = new SpecialInput();
 		// Read Detail File
-//		Scanner reader1 = new Scanner(System.in);
 		String detailfile = "/src/data_1103.txt";
 		String detailpath = root + detailfile;
 
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
 //		TaskAssign.TaskAssign(ReadTestFile(testpath));
-		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+		TaskAssign.TaskAssign(SepcialInput.GetDetail(detailpath));
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
 		System.out.print("Schedule:\n");
@@ -205,17 +119,16 @@ public class main {
 		System.out.print("-----------------------------------------------------------" + "\n");
 		
 		// Read Distance File
-		Scanner reader2 = new Scanner(System.in);
 		String distancefile = "/src/distance_1103.txt";
 		String distancepath = root + distancefile;
+		Distance = SepcialInput.GetDistance(distancepath);
 
 		// Decide Task Sequence
 		System.out.print("[Task Sequence Results]" + "\n");
-		ReadDistanceFile(distancepath);
 		for(int i = 0; i < Schedule.size(); i++){
 			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
 			System.out.print("Day " + (i + 1) + ": \n");
-			TaskSequence.Sequence(GetDistance());
+			TaskSequence.Sequence(Distance);
 		}
 	}
 } 
