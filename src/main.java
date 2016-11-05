@@ -190,6 +190,7 @@ public class main {
 //		Scanner reader1 = new Scanner(System.in);
 //		String detailfile = reader1.next();			// /src/data_1025.txt
 //		String detailpath = root + detailfile;
+
 		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
@@ -201,8 +202,10 @@ public class main {
 		for(int i = 0; i < Schedule.size(); i++){
 			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
 		}
-		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks());
-		System.out.print("\n" + "-----------------------------------------------------------" + "\n");
+		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks() + "\n");
+		System.out.print("TaskPercentages:\n");
+		TaskAssign.printTaskPercentages();
+		System.out.print("-----------------------------------------------------------" + "\n");
 		
 		// Read Distance File
 //		Scanner reader2 = new Scanner(System.in);

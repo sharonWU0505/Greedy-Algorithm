@@ -12,6 +12,7 @@ public class TaskAssign{
 	private List<List> OtherData;
 	private List<List> Schedule;
 	private List<Integer> Unassigned;
+	private List<TaskSplit> TaskPercentages;
 	private double [] TotalProcessingT = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 	private double [] TotalRewards = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 	
@@ -22,6 +23,7 @@ public class TaskAssign{
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 		Schedule = new ArrayList<>();   // schedule for final output
 		Unassigned = new ArrayList<>();	// for unassigned tasks
+		TaskPercentages = new ArrayList<>();
 		List<Integer> Monday = new ArrayList<>();
 		List<Integer> Tuesday = new ArrayList<>();
 		List<Integer> Wednesday = new ArrayList<>();
@@ -245,6 +247,17 @@ public class TaskAssign{
 		}
 		
 		RecoverScheduleOrder();
+		// add tasks with their percentage 1 on their working day to the list "TaskPercentages"
+		for(int s = 0; s < weekdays; s++){
+			List<Integer> daily_schedule = Schedule.get(s);
+			for(int t = 0; t < daily_schedule.size(); t++){
+				int taskid = daily_schedule.get(t);
+				TaskSplit aTask = new TaskSplit(taskid);
+				aTask.splitInto(s, 1.0);	// the percentages are all 1 in the first stage
+				TaskPercentages.add(aTask);
+			}
+		}
+		
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
@@ -253,7 +266,6 @@ public class TaskAssign{
 	private void SecondStageAssignment(){
 		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
 		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
-		List<TaskSplit> splitTasks = new ArrayList<>();	// tasks that are split to put into the schedule
 
 		for(int i = 0; i < Unassigned.size(); i++){
 			// get the absolute maximum rewards and ideal day of each unassigned task
@@ -363,7 +375,7 @@ public class TaskAssign{
 						}
 					}
 				}
-				splitTasks.add(aTask);
+				TaskPercentages.add(aTask);
 			}
 			// no capacity left on ideal day, abandon the task
 			else{
@@ -374,6 +386,12 @@ public class TaskAssign{
 		
 		// updates unassigned tasks
 		Unassigned = new_unassignedTasks;
+		// put unassigned tasks into the list "TaskPercentages" without dealing days & percentages 
+		for(int u = 0; u < Unassigned.size(); u++){
+			int taskid = Unassigned.get(u);
+			TaskSplit aUnassignedTask = new TaskSplit(taskid);
+			TaskPercentages.add(aUnassignedTask);
+		}
 	}
 	// End Second Stage Assignment
 
@@ -395,6 +413,24 @@ public class TaskAssign{
 	
 	public List<List> getSchedule(){
 		return Schedule;
+	}
+	
+	public void printTaskPercentages(){
+		// amount_of_work_scheduled_for_job_i_at_day_j
+		for(int i = 0; i < OtherData.size(); i++){
+			for(int j = 0; j < weekdays; j++){
+				for(int k = 0; k < TaskPercentages.size(); k++){
+					TaskSplit aTask = TaskPercentages.get(k);
+					int taskid = aTask.getTaskId();
+					if(taskid == (i+1)){
+						System.out.print(aTask.getPercentage(j) + " ");
+					}
+					else
+						continue;
+				}
+			}
+			System.out.print("\n");
+		}
 	}
 	
 	public List<Integer> getUnassignedTasks(){
