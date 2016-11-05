@@ -45,7 +45,7 @@ public class TaskAssign{
 		Workload = Detail.get(0);
 		OtherData = Detail.get(1);
 		Gamma = (double) Detail.get(2).get(0);
-		weekdays = (int) Detail.get(3).get(0);		
+		weekdays = (int) Detail.get(3).get(0);
 	}
 	
 	// First Stage Assignment: use max rewards of a task to decide the best day it should be assigned to

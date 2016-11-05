@@ -6,14 +6,13 @@ import java.util.List;
 
 public class SpecialInput {
 	// Attribute
-	private static int[][] Distance;
 	private static List<List> Detail;
-	private List<List<Double>> OtherData = new ArrayList<>();
+	private static int[][] Distance;
 
 	// Constructor
 	public SpecialInput(){
+		Detail = new ArrayList<>();
 		Distance = null;
-		Detail = null;
 	}
 	
 	// Methods
@@ -22,7 +21,7 @@ public class SpecialInput {
 		List<List<Double>> OtherData = new ArrayList<>();
 		List<Double> Workload = new ArrayList<>();
 		List<Double> Gamma = new ArrayList<>();
-		List<Double> Workdays = new ArrayList<>();
+		List<Integer> Workdays = new ArrayList<>();
 	
 		try {
 			FileReader fr = new FileReader(filepath);
@@ -54,18 +53,13 @@ public class SpecialInput {
 
 			// Workdays
 			String[] workdaysData = {"7"};
-			Workdays.add(Double.parseDouble(workdaysData[0]));
+			Workdays.add(Integer.parseInt(workdaysData[0]));
 
 			// for final output
-			System.out.print(Workload.get(0));
-			System.out.print(OtherData.get(0));
-			System.out.print(Gamma.get(0));
-			System.out.print(Workdays.get(0));
 			Detail.add(Workload);
 			Detail.add(OtherData);
 			Detail.add(Gamma);
 			Detail.add(Workdays);
-			System.out.print(Detail);
 			br.close();
 		}
 		catch(IOException e) {
