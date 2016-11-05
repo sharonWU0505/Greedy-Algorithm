@@ -161,10 +161,8 @@ public class main {
 				for(int i = 0; i < locnum; i++){
 					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
 				}
-//				System.out.println(Arrays.toString(Distance[locindex]));
 				locindex += 1;
 			}
-			
 			br.close();
 		}
 
@@ -188,7 +186,7 @@ public class main {
 		
 		// Read Detail File
 //		Scanner reader1 = new Scanner(System.in);
-		String detailfile = "/src/data_1025.txt";
+		String detailfile = "/src/data_1103.txt";
 		String detailpath = root + detailfile;
 
 		// Task Assignment
@@ -208,8 +206,7 @@ public class main {
 		
 		// Read Distance File
 		Scanner reader2 = new Scanner(System.in);
-//		String distancefile = reader2.next();			// /src/diatance.txt
-		String distancefile = "/src/distance.txt";
+		String distancefile = "/src/distance_1103.txt";
 		String distancepath = root + distancefile;
 
 		// Decide Task Sequence

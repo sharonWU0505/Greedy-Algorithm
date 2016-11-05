@@ -67,9 +67,7 @@ public class TaskSequence {
 
 			// add the time to get back to the first location
 			if(length > 0){
-//				System.out.print(permutation[i][length - 1] + "\n");
-//				System.out.print(permutation[i][0] + "\n");
-				temp_distance += distance[permutation[i][length - 1]][permutation[i][0]];
+				temp_distance += distance[permutation[i][length - 1]-1][permutation[i][0]-1];
 			}
 
 			if(i == 0){
