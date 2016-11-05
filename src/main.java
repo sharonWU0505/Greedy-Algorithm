@@ -161,10 +161,8 @@ public class main {
 				for(int i = 0; i < locnum; i++){
 					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
 				}
-//				System.out.println(Arrays.toString(Distance[locindex]));
 				locindex += 1;
 			}
-			
 			br.close();
 		}
 
@@ -182,20 +180,19 @@ public class main {
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 		// Read Test File
-		Scanner reader = new Scanner(System.in);
-		String testfile = reader.next();			// /src/general_input.txt
-		String testpath = root + testfile;
+//		Scanner reader = new Scanner(System.in);
+//		String testfile = reader.next();			// /src/general_input.txt
+//		String testpath = root + testfile;
 		
 		// Read Detail File
 //		Scanner reader1 = new Scanner(System.in);
-//		String detailfile = reader1.next();			// /src/data_1025.txt
-//		String detailpath = root + detailfile;
+		String detailfile = "/src/data_1103.txt";
+		String detailpath = root + detailfile;
 
-		
 		// Task Assignment
 		TaskAssign TaskAssign = new TaskAssign();
-		TaskAssign.TaskAssign(ReadTestFile(testpath));
-//		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
+//		TaskAssign.TaskAssign(ReadTestFile(testpath));
+		TaskAssign.TaskAssign(ReadDetailFile(detailpath));
 		TaskAssign.ExecuteTaskAssign();
 		List<List> Schedule = TaskAssign.getSchedule();
 		System.out.print("Schedule:\n");
@@ -208,17 +205,17 @@ public class main {
 		System.out.print("-----------------------------------------------------------" + "\n");
 		
 		// Read Distance File
-//		Scanner reader2 = new Scanner(System.in);
-//		String distancefile = reader2.next();			// /src/diatance.txt
-//		String distancepath = root + distancefile;
-//
-//		// Decide Task Sequence
-//		System.out.print("[Task Sequence Results]" + "\n");
-//		ReadDistanceFile(distancepath);
-//		for(int i = 0; i < Schedule.size(); i++){
-//			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
-//			System.out.print("Day " + (i + 1) + ": \n");
-//			TaskSequence.Sequence(GetDistance());
-//		}
+		Scanner reader2 = new Scanner(System.in);
+		String distancefile = "/src/distance_1103.txt";
+		String distancepath = root + distancefile;
+
+		// Decide Task Sequence
+		System.out.print("[Task Sequence Results]" + "\n");
+		ReadDistanceFile(distancepath);
+		for(int i = 0; i < Schedule.size(); i++){
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
+			System.out.print("Day " + (i + 1) + ": \n");
+			TaskSequence.Sequence(GetDistance());
+		}
 	}
 } 

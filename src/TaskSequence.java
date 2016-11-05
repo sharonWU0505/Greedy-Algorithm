@@ -12,6 +12,7 @@ public class TaskSequence {
 	private boolean[] used;	// for permutation
 	private int setnum = 1; // for permutation
 	private int[][] permutation;
+	private int[] output;
 
 	// Constructor
 	public TaskSequence(List<Integer> tasklist) {
@@ -26,6 +27,7 @@ public class TaskSequence {
 			setnum *= i;  // get the number of sets
 		}
 		permutation = new int[setnum][length];
+		output = new int[length + 1];
 	}
 
 	// Produce Permutation
@@ -62,6 +64,12 @@ public class TaskSequence {
 				int indexj = permutation[i][j+1]-1;
 				temp_distance += distance[indexi][indexj];
 			}
+
+			// add the time to get back to the first location
+			if(length > 0){
+				temp_distance += distance[permutation[i][length - 1]-1][permutation[i][0]-1];
+			}
+
 			if(i == 0){
 				min_distance = temp_distance;
 			}
@@ -70,9 +78,18 @@ public class TaskSequence {
 				min_index = i;
 			}
 		}
+		
+		// make a new output array with the same start and end point
+		
+		for(int i = 0; i < length; i++){
+			output[i] = permutation[min_index][i];
+		}
+		if(length > 0){
+			output[length] = permutation[min_index][0];
+		}
 
 		System.out.print("Min Traveling Time: " + min_distance + "; ");
-		System.out.print("Task sequence: " + Arrays.toString(permutation[min_index]) + "\n");
+		System.out.print("Task sequence: " + Arrays.toString(output) + "\n");
 		return permutation[min_index];
 	}
 }
