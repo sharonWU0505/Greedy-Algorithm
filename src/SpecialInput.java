@@ -7,7 +7,7 @@ import java.util.List;
 public class SpecialInput {
 	// Attribute
 	private static List<List> Detail;
-	private static int[][] Distance;
+	private static double[][] Distance;
 
 	// Constructor
 	public SpecialInput(){
@@ -76,16 +76,16 @@ public class SpecialInput {
 			line = br.readLine();							// get the first line data
 			String[] firstDistanceData = line.split(",");	// arrange the first line data
 			int locnum = firstDistanceData.length;  		// get number of locations
-			Distance = new int[locnum][locnum];     		// define Distance array
+			Distance = new double[locnum][locnum];     		// define Distance array
 			for(int i = 0; i < locnum; i++){
-				Distance[0][i] = Integer.parseInt(firstDistanceData[i]);	// put the first line into array
+				Distance[0][i] = Double.parseDouble(firstDistanceData[i]);	// put the first line into array
 			}
 
 			int locindex = 1;
 			while((line = br.readLine()) != null) {
 				String[] distanceData = line.split(",");
 				for(int i = 0; i < locnum; i++){
-					Distance[locindex][i] = Integer.parseInt(distanceData[i]);
+					Distance[locindex][i] = Double.parseDouble(distanceData[i]);
 				}
 				locindex += 1;
 			}
@@ -104,7 +104,7 @@ public class SpecialInput {
 	}
 
 	// Get Distance Data
-	public int[][] GetDistance(String filepath){
+	public double[][] GetDistance(String filepath){
 		ReadDistanceFile(filepath);
 		return Distance;
 	}
