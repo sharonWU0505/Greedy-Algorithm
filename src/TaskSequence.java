@@ -36,7 +36,6 @@ public class TaskSequence {
 			for(int i = 0; i < end; i++) {
 				permutation[index][i] = tasklist.get(set[i]);
 			}
-//			System.out.println(Arrays.toString(permutation[index]));
 			index += 1;
 		}
 		else {
@@ -52,7 +51,7 @@ public class TaskSequence {
 	}
 
 	// Decide Task Sequence
-	public int[] Sequence(double[][] distance) {
+	public List<Integer> Sequence(double[][] distance) {
 		Permutation(0, length);
 
 		double min_distance = 0;
@@ -80,16 +79,18 @@ public class TaskSequence {
 		}
 		
 		// make a new output array with the same start and end point
-		
+		List<Integer> daySchedule = new ArrayList<>();
 		for(int i = 0; i < length; i++){
 			output[i] = permutation[min_index][i];
+			daySchedule.add(output[i]);
 		}
 		if(length > 0){
 			output[length] = permutation[min_index][0];
+			daySchedule.add(output[length]);
 		}
 
 		System.out.print("Min Traveling Time: " + min_distance + "; ");
 		System.out.print("Task sequence: " + Arrays.toString(output) + "\n");
-		return permutation[min_index];
+		return daySchedule;
 	}
 }
