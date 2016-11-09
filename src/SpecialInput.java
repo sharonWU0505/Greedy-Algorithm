@@ -7,7 +7,7 @@ import java.util.List;
 public class SpecialInput {
 	// Attribute
 	private static List<List> Detail;
-	private static double[][] Distance;
+	private static float[][] Distance;
 
 	// Constructor
 	public SpecialInput(){
@@ -18,9 +18,9 @@ public class SpecialInput {
 	// Methods
 	// Read Detail Data File
 	private void ReadDetailFile(String filepath){
-		List<List<Double>> OtherData = new ArrayList<>();
-		List<Double> Workload = new ArrayList<>();
-		List<Double> Gamma = new ArrayList<>();
+		List<List<Float>> OtherData = new ArrayList<>();
+		List<Float> Workload = new ArrayList<>();
+		List<Float> Gamma = new ArrayList<>();
 		List<Integer> Workdays = new ArrayList<>();
 	
 		try {
@@ -30,21 +30,21 @@ public class SpecialInput {
 			while((line = br.readLine()) != null) {
 				if(line.contains("workload")) {
 					String[] workloadData = line.split(",");
-					Workload.add(Double.parseDouble(workloadData[1]));
+					Workload.add(Float.parseFloat(workloadData[1]));
 				}
 				else if(line.contains("gamma")) {
 					String[] gammaData = line.split(",");
-					Gamma.add(Double.parseDouble(gammaData[1]));	
+					Gamma.add(Float.parseFloat(gammaData[1]));	
 				}
 				else if(line.contains("taskId")) {
 					;
 				}
 				else {
-					List<Double> LineData = new ArrayList<>();  // rewards, penalty, splitN, processingT
+					List<Float> LineData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 					String[] lineData = line.split(",");
 					for(int i = 0; i < lineData.length; i++){
 						if(i > 2) {
-							LineData.add(Double.parseDouble(lineData[i]));
+							LineData.add(Float.parseFloat(lineData[i]));
 						}
 					}
 					OtherData.add(LineData);
@@ -76,16 +76,16 @@ public class SpecialInput {
 			line = br.readLine();							// get the first line data
 			String[] firstDistanceData = line.split(",");	// arrange the first line data
 			int locnum = firstDistanceData.length;  		// get number of locations
-			Distance = new double[locnum][locnum];     		// define Distance array
+			Distance = new float[locnum][locnum];     		// define Distance array
 			for(int i = 0; i < locnum; i++){
-				Distance[0][i] = Double.parseDouble(firstDistanceData[i]);	// put the first line into array
+				Distance[0][i] = Float.parseFloat(firstDistanceData[i]);	// put the first line into array
 			}
 
 			int locindex = 1;
 			while((line = br.readLine()) != null) {
 				String[] distanceData = line.split(",");
 				for(int i = 0; i < locnum; i++){
-					Distance[locindex][i] = Double.parseDouble(distanceData[i]);
+					Distance[locindex][i] = Float.parseFloat(distanceData[i]);
 				}
 				locindex += 1;
 			}
@@ -104,7 +104,7 @@ public class SpecialInput {
 	}
 
 	// Get Distance Data
-	public double[][] GetDistance(String filepath){
+	public float[][] GetDistance(String filepath){
 		ReadDistanceFile(filepath);
 		return Distance;
 	}

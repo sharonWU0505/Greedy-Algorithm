@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 
 public class main {
-	private static double[][] Distance = null;
+	private static float[][] Distance = null;
 	private static List<List> Detail = new ArrayList<>();
 	private static List<List<Integer>> finalSchedule = new ArrayList<>();
-	private static double[][] finalTaskPercentage = null;
+	private static float[][] finalTaskPercentage = null;
 	
 	private static void Excecute() {
 		// Assign Tasks

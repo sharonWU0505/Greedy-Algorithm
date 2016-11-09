@@ -51,13 +51,13 @@ public class TaskSequence {
 	}
 
 	// Decide Task Sequence
-	public List<Integer> Sequence(double[][] distance) {
+	public List<Integer> Sequence(float[][] distance) {
 		Permutation(0, length);
 
-		double min_distance = 0;
+		float min_distance = 0;
 		int min_index = 0;
 		for(int i = 0; i < setnum; i++) {
-			double temp_distance = 0;
+			float temp_distance = 0;
 			for(int j = 0; j < length - 1; j++){
 				int indexi = permutation[i][j]-1;
 				int indexj = permutation[i][j+1]-1;

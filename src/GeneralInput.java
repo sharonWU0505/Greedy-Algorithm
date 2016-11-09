@@ -7,7 +7,7 @@ import java.util.List;
 public class GeneralInput {
 	// Attribute
 	private static List<List> Detail;
-	private static double[][] Distance;
+	private static float[][] Distance;
 
 	// Constructor
 	public GeneralInput() {
@@ -18,9 +18,9 @@ public class GeneralInput {
 	// Methods
 	// Read Test File
 	public void ReadTestFile(String filepath){
-		List<List<Double>> OtherData = new ArrayList<>();
-		List<Double> Workload = new ArrayList<>();
-		List<Double> Gamma = new ArrayList<>();
+		List<List<Float>> OtherData = new ArrayList<>();
+		List<Float> Workload = new ArrayList<>();
+		List<Float> Gamma = new ArrayList<>();
 		List<Integer> Workdays = new ArrayList<>();
 		int taskNum = 0;
 		int workdays = 0;
@@ -33,7 +33,7 @@ public class GeneralInput {
 			while((line = br.readLine()) != null) {
 				if(lines == 1){
 					String[] number = line.split(" ");
-					Gamma.add(Double.parseDouble(number[2]));
+					Gamma.add(Float.parseFloat(number[2]));
 					Workdays.add(Integer.parseInt(number[1]));
 					workdays = Integer.parseInt(number[1]);
 					taskNum = Integer.parseInt(number[0]);
@@ -41,49 +41,49 @@ public class GeneralInput {
 				else if(lines == 2){
 					String[] processTData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
-						List<Double> DetailData = new ArrayList<>();  // for saving rewards, processingT, penalty, splitN
-						DetailData.add(Double.parseDouble(processTData[i]));
+						List<Float> DetailData = new ArrayList<>();  // for saving rewards, processingT, penalty, splitN
+						DetailData.add(Float.parseFloat(processTData[i]));
 						OtherData.add(DetailData);
 					}
 				}
 				else if(lines == 3){
 					String[] workloadData = line.split(" ");
 					for(int i = 0; i < workdays; i++){
-						Workload.add(Double.parseDouble(workloadData[i]));
+						Workload.add(Float.parseFloat(workloadData[i]));
 					}
 				}
 				else if(lines >= 4 && lines < (4 + taskNum)){
 					String[] rewardsData = line.split(" ");
 					for(int i = 0; i < workdays; i++){
-						Double rewards = Double.parseDouble(rewardsData[i]);
+						Float rewards = Float.parseFloat(rewardsData[i]);
 						OtherData.get(lines - 4).add(i, rewards);
 					}
 				}
 				else if(lines == (4 + taskNum)){
 					String[] splitNData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
-						OtherData.get(i).add(Double.parseDouble(splitNData[i]));
+						OtherData.get(i).add(Float.parseFloat(splitNData[i]));
 					}
 				}
 				else if(lines == (5 + taskNum)){
 					String[] penaltyData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
-						OtherData.get(i).add((workdays + 1), Double.parseDouble(penaltyData[i]));
+						OtherData.get(i).add((workdays + 1), Float.parseFloat(penaltyData[i]));
 					}
 				}
 				else{
 					String[] distanceData = line.split(" ");
-					Distance = new double[taskNum][taskNum];
+					Distance = new float[taskNum][taskNum];
 					int index = 0;
 					for(int i = 0; i < taskNum; i++){
 						for(int j = i + 1; j < taskNum; j++){
-							Distance[i][j] = Double.parseDouble(distanceData[index]);
+							Distance[i][j] = Float.parseFloat(distanceData[index]);
 						}
 					}
 					for(int i = 0; i < taskNum; i++){
 						for(int j = 0; j < i + 1; j++){
 							if(j == i){
-								Distance[i][j] = 0.0;
+								Distance[i][j] = (float) 0.0;
 							}
 							Distance[i][j] = Distance[j][i];
 						}
@@ -110,7 +110,7 @@ public class GeneralInput {
 	}
 
 	// Get Distance Data
-	public double[][] GetDistance(){
+	public float[][] GetDistance(){
 		return Distance;
 	}
 }
