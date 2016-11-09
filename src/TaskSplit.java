@@ -8,12 +8,17 @@ public class TaskSplit{
 	private int ideal_day;
 	private List<Integer> split_to_days;
 	private List<Float> split_percentage;
-	private float complete_percentage;
+	private float left_unfinished_percentage;
+	private int counter;
 	
 	public TaskSplit(int id){
 		taskId = id;
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
+		left_unfinished_percentage = 1;
+		max_rewards = 0;
+		ideal_day = 0;
+		counter = 0;
 	}
 	
 	public TaskSplit(int id, float rewards, int day){
@@ -22,29 +27,39 @@ public class TaskSplit{
 		ideal_day = day;
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
-		complete_percentage = 0;
+		left_unfinished_percentage = 1;
+		counter = 0;
 	}
 
 	public int getTaskId(){
 		return taskId;
 	}
 	
+	public void setMaxRewards(float rewards){
+		max_rewards = rewards;
+	}
+	
 	public float getMaxRewards(){
 		return max_rewards;
+	}
+	
+	public void setIdealDay(int day){
+		ideal_day = day;
 	}
 	
 	public int getIdealDay(){
 		return ideal_day;
 	}
 	
-	public float getCompletePercentage(){
-		return complete_percentage;
+	public float getUnfinishedPercentage(){
+		return left_unfinished_percentage;
 	}
 	
 	public void splitInto(int day, float percentage){
 		split_to_days.add(day);
 		split_percentage.add(percentage);
-		complete_percentage += percentage;
+		left_unfinished_percentage -= percentage;
+		counter++;
 	}
 	
 	public float getPercentage(int day){
@@ -55,5 +70,9 @@ public class TaskSplit{
 			}
 		}
 		return percentage;
+	}
+	
+	public int getCounter(){
+		return counter;
 	}
 }
