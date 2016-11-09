@@ -264,16 +264,23 @@ public class TaskAssign{
 	
 	// Second Stage Assignment: try to assign those unassigned tasks
 	private void SecondStageAssignment(){
-		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
+//		List<Integer> new_unassignedTasks = new ArrayList<>();	 // the final unassigned tasks
 		List<TaskSplit> unassiTaskSequence = new ArrayList<>();  // unassigned tasks with more info
+		
+		double [] capacity_left = {0, 0, 0, 0, 0, 0, 0};
+		for(int j = 0; j < weekdays; j++){
+			double workload = Workload.get(j) * Gamma;
+			capacity_left[j] = workload - TotalProcessingT[j];
+		}
 
 		for(int i = 0; i < Unassigned.size(); i++){
 			// get the absolute maximum rewards and ideal day of each unassigned task
-			// set its maximum value by multiplying the rewards and the proportion that it can be done in the ideal day 
+			// set its maximum value to (max_rewards * the proportion the task may be done) - the split cost 
 			int taskid = Unassigned.get(i);
 			List<Double> task_details = OtherData.get(taskid - 1);
 			double max_rewards = 0;
 			int ideal_day = -1;
+			
 			for(int j = 0; j < weekdays; j++){
 				if(task_details.get(j) > max_rewards){
 					max_rewards = task_details.get(j);
