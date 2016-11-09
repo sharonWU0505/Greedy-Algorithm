@@ -8,12 +8,17 @@ public class TaskSplit{
 	private int ideal_day;
 	private List<Integer> split_to_days;
 	private List<Double> split_percentae;
-	private double complete_percentage;
+	private double left_unfinished_percentage;
+	private double value; // used to calculate and sort the tasks for each stage
 	
 	public TaskSplit(int id){
 		taskId = id;
 		split_to_days = new ArrayList<>();
 		split_percentae = new ArrayList<>();
+		left_unfinished_percentage = 1;
+		max_rewards = 0;
+		ideal_day = 0;
+		value = 0;
 	}
 	
 	public TaskSplit(int id, double rewards, int day){
@@ -22,7 +27,8 @@ public class TaskSplit{
 		ideal_day = day;
 		split_to_days = new ArrayList<>();
 		split_percentae = new ArrayList<>();
-		complete_percentage = 0;
+		left_unfinished_percentage = 1;
+		value = 0;
 	}
 
 	public int getTaskId(){
@@ -37,14 +43,21 @@ public class TaskSplit{
 		return ideal_day;
 	}
 	
-	public double getCompletePercentage(){
-		return complete_percentage;
+	public double getValue(){
+		return value;
+	}
+	public void setValue(double v){
+		value = v;
+	}
+	
+	public double getUnfinishedPercentage(){
+		return left_unfinished_percentage;
 	}
 	
 	public void splitInto(int day, double percentage){
 		split_to_days.add(day);
 		split_percentae.add(percentage);
-		complete_percentage += percentage;
+		left_unfinished_percentage -= percentage;
 	}
 	
 	public double getPercentage(int day){

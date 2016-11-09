@@ -269,6 +269,7 @@ public class TaskAssign{
 
 		for(int i = 0; i < Unassigned.size(); i++){
 			// get the absolute maximum rewards and ideal day of each unassigned task
+			// set its maximum value by multiplying the rewards and the proportion that it can be done in the ideal day 
 			int taskid = Unassigned.get(i);
 			List<Double> task_details = OtherData.get(taskid - 1);
 			double max_rewards = 0;
