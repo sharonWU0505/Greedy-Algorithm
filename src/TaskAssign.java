@@ -11,10 +11,10 @@ public class TaskAssign{
 	private int weekdays = 0;
 	private int taskNum = 0;
 	private List<List> OtherData;
-	private List<List<Integer>> Schedule;   // schedule for final output
-	private List<Integer> UnassignedTasks;
+	private List<List<Integer>> Schedule;   // for final output
+	private List<Integer> UnassignedTasks;	// for final output
 	private List<TaskSplit> TaskPercentages;
-	private float[][] FinalTaskPercentages;
+	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalRewards = {0, 0, 0, 0, 0, 0, 0};
 	
@@ -23,7 +23,7 @@ public class TaskAssign{
 		Workload = new ArrayList<>();
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 		Schedule = new ArrayList<>();
-		UnassignedTasks = new ArrayList<>();	// for unassigned tasks
+		UnassignedTasks = new ArrayList<>();
 		TaskPercentages = new ArrayList<>();
 		List<Integer> Monday = new ArrayList<>();
 		List<Integer> Tuesday = new ArrayList<>();
@@ -497,8 +497,6 @@ public class TaskAssign{
 		return TotalProcessingT;
 	}
 
-	
-	
 	public void ExecuteTaskAssign(){
 		FirstStageAssignment();
 		FirstStageCheck();
