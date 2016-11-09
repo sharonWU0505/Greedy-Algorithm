@@ -48,7 +48,8 @@ public class TaskAssign{
 		taskNum = OtherData.size();
 		FinalTaskPercentages = new float[taskNum][weekdays];
 	}
-	
+
+
 	// First Stage Assignment: use max rewards of a task to decide the best day it should be assigned to
 	private void FirstStageAssignment(){
 		for(int id = 1; id < taskNum + 1; id++){
@@ -69,6 +70,7 @@ public class TaskAssign{
 		System.out.println("---------------------------------------------------------------------------------");
 	}
 	// End First Stage Assignment
+
 
 	// FirstStageCheck: make capacity of each day be reasonable
 	private void FirstStageTaskSort(){
@@ -167,28 +169,39 @@ public class TaskAssign{
 		Schedule = newSchedule;
 	}
 	// End FirstStageTaskSort
-	
+
+
 	// Arrange the schedule in the order of the workdays the tasks assigned to, and remove the tag which is at the first element of each list. 
 	private void RecoverScheduleOrder(){
-		List<List<Integer>> currentSchedule = Schedule;
 		List<List<Integer>> newSchedule = new ArrayList<>();
-		int [] order = {0, 1, 2, 3, 4, 5, 6};
-		for(int i = 0; i <  weekdays; i++){
-			int day = (int) currentSchedule.get(i).get(0) - 1;
-			order[day] = i;
+		for(int i = 0; i < weekdays; i++){
+			if(i == 0){
+				newSchedule.add(Schedule.get(i));
+			}
+			else{
+				boolean insert = false;
+				for(int j = 0; j < newSchedule.size(); j++){
+					if(Schedule.get(i).get(0) < newSchedule.get(j).get(0)){
+						newSchedule.add(Schedule.get(i));
+					}
+					insert = true;
+					break;
+				}
+				if(insert == false){
+					newSchedule.add(Schedule.get(i));
+				}
+			}
 		}
-		for(int j = 0; j < weekdays; j++){
-			int index = order[j];
-			newSchedule.add(currentSchedule.get(index));
-			newSchedule.get(j).remove(0);
-		}
-
 		Schedule = newSchedule;
+		for(int i = 0; i < weekdays; i++){
+			Schedule.get(i).remove(0);
+		}
+		System.out.println("Arrange: " + Schedule);
 	}	// End RecoverScheduleOrder
 
+	
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
 	private void FirstStageCheck(){
-		// Sort tasks by "the cost to move that task to another day".
 		FirstStageTaskSort();
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]" element of the Schedule.
 		for(int j = 0; j < weekdays; j++){
