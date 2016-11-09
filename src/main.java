@@ -7,6 +7,7 @@ public class main {
 	private static double[][] Distance = null;
 	private static List<List> Detail = new ArrayList<>();
 	private static List<List<Integer>> finalSchedule = new ArrayList<>();
+	private static double[][] finalTaskPercentage = null;
 	
 	private static void Excecute() {
 		// Assign Tasks
@@ -20,7 +21,7 @@ public class main {
 		}
 		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks() + "\n");
 		System.out.print("TaskPercentages:\n");
-		TaskAssign.printTaskPercentages();
+		finalTaskPercentage = TaskAssign.getTaskPercentages();
 		System.out.print("-----------------------------------------------------------" + "\n");
 
 		// Sequencing Tasks
