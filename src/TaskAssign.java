@@ -156,9 +156,7 @@ public class TaskAssign{
 			int day = (int) Schedule.get(j).get(0);
 			newOrder[day-1] = j;
 		}
-//		for(int v = 0; v < weekdays; v++){
-//			System.out.print(newOrder[v] + " ");
-//		}
+		
 
 		for(int j = 0; j < weekdays; j++){
 			List<Integer> current_tasks = Schedule.get(j);  	  
@@ -386,6 +384,9 @@ public class TaskAssign{
 				int ideal_day = -1;
 				
 				for(int j = 0; j < weekdays; j++){
+					if(capacity_left[j] == 0)
+						continue;
+					
 					float inner_rewards = 0;
 					if(aTask.getUnfinishedPercentage() < capacity_left[j]){
 						float task_left = aTask.getUnfinishedPercentage();
