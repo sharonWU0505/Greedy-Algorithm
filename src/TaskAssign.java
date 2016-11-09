@@ -416,8 +416,9 @@ public class TaskAssign{
 		return Schedule;
 	}
 	
-	public void printTaskPercentages(){
-		// amount_of_work_scheduled_for_job_i_at_day_j
+	public double[][] getTaskPercentages(){
+		double[][] finalTaskPercentages = new double[OtherData.size()][weekdays];
+
 		for(int i = 0; i < OtherData.size(); i++){
 			for(int j = 0; j < weekdays; j++){
 				for(int k = 0; k < TaskPercentages.size(); k++){
@@ -425,6 +426,7 @@ public class TaskAssign{
 					int taskid = aTask.getTaskId();
 					if(taskid == (i+1)){
 						System.out.print(aTask.getPercentage(j) + " ");
+						finalTaskPercentages[i][j] = aTask.getPercentage(j);
 					}
 					else
 						continue;
@@ -432,6 +434,8 @@ public class TaskAssign{
 			}
 			System.out.print("\n");
 		}
+		
+		return finalTaskPercentages;
 	}
 	
 	public List<Integer> getUnassignedTasks(){
