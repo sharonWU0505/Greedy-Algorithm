@@ -7,22 +7,23 @@ import java.util.List;
 public class TaskAssign{
 	// attribute
 	private List<Float> Workload;
-	private float Gamma;
+	private float Gamma = 0;
 	private int weekdays = 0;
+	private int taskNum = 0;
 	private List<List> OtherData;
-	private List<List> Schedule;
-	private List<Integer> Unassigned;
+	private List<List<Integer>> Schedule;   // schedule for final output
+	private List<Integer> UnassignedTasks;
 	private List<TaskSplit> TaskPercentages;
+	private float[][] FinalTaskPercentages;
 	private float [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalRewards = {0, 0, 0, 0, 0, 0, 0};
 	
 	// Constructor
-	public TaskAssign(){
+	public TaskAssign(List<List> Detail){
 		Workload = new ArrayList<>();
-		Gamma = 0;
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
-		Schedule = new ArrayList<>();   // schedule for final output
-		Unassigned = new ArrayList<>();	// for unassigned tasks
+		Schedule = new ArrayList<>();
+		UnassignedTasks = new ArrayList<>();	// for unassigned tasks
 		TaskPercentages = new ArrayList<>();
 		List<Integer> Monday = new ArrayList<>();
 		List<Integer> Tuesday = new ArrayList<>();
@@ -38,14 +39,12 @@ public class TaskAssign{
 		Schedule.add(Friday);
 		Schedule.add(Saturday);
 		Schedule.add(Sunday);
-	}
-	
-	// Constructor
-	public void TaskAssign(List<List> Detail){
 		Workload = Detail.get(0);
 		OtherData = Detail.get(1);
 		Gamma = (float) Detail.get(2).get(0);
 		weekdays = (int) Detail.get(3).get(0);
+		taskNum = OtherData.size();
+		FinalTaskPercentages = new float[taskNum][weekdays];
 	}
 	
 	// First Stage Assignment: use max rewards of a task to decide the best day it should be assigned to
@@ -72,9 +71,9 @@ public class TaskAssign{
 	
 	// For each day, sort tasks by "the cost to move that task to another day".
 	private void FirstStageTaskSort(){
-		List<List> originSchedule = Schedule;
+		List<List<Integer>> originSchedule = Schedule;
 //		System.out.println("originSchedule: " + originSchedule);
-		List<List> newSchedule = new ArrayList<>();
+		List<List<Integer>> newSchedule = new ArrayList<>();
 		List<Float> minOPcost = new ArrayList<>();	// the minimum opportunity cost of each day
 		
 		// Find the minimum opportunity costs.
@@ -131,8 +130,8 @@ public class TaskAssign{
 	
 	// Arrange the schedule in the order of the workdays the tasks assigned to, and remove the tag which is at the first element of each list. 
 	private void RecoverScheduleOrder(){
-		List<List> currentSchedule = Schedule;
-		List<List> newSchedule = new ArrayList<>();
+		List<List<Integer>> currentSchedule = Schedule;
+		List<List<Integer>> newSchedule = new ArrayList<>();
 		int [] order = {0, 1, 2, 3, 4, 5, 6};
 		for(int i = 0; i <  weekdays; i++){
 			int day = (int) currentSchedule.get(i).get(0) - 1;
@@ -218,7 +217,7 @@ public class TaskAssign{
 					// The situation will only happen on the task assignment of Sunday 
 					remove_task = 1;
 					taskid_move = current_tasks.get(remove_task);
-					Unassigned.add(taskid_move);
+					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move-1).get(7);
 					
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
@@ -273,10 +272,10 @@ public class TaskAssign{
 			capacity_left[j] = workload - TotalProcessingT[j];
 		}
 
-		for(int i = 0; i < Unassigned.size(); i++){
+		for(int i = 0; i < UnassignedTasks.size(); i++){
 			// get the maximum rewards and ideal day of each unassigned task
 			// the maximum rewards = (max_rewards * the proportion the task may be done) - the split cost 
-			int taskid = Unassigned.get(i);
+			int taskid = UnassignedTasks.get(i);
 			List<Float> task_details = OtherData.get(taskid - 1);
 			float cost = (float) task_details.get(8);	// split cost
 			
@@ -434,10 +433,10 @@ public class TaskAssign{
 		}
 		
 		// updates unassigned tasks
-		Unassigned = new_unassignedTasks;
+		UnassignedTasks = new_unassignedTasks;
 		// put unassigned tasks into the list "TaskPercentages" without dealing days & percentages 
-		for(int u = 0; u < Unassigned.size(); u++){
-			int taskid = Unassigned.get(u);
+		for(int u = 0; u < UnassignedTasks.size(); u++){
+			int taskid = UnassignedTasks.get(u);
 			TaskSplit aUnassignedTask = new TaskSplit(taskid);
 			TaskPercentages.add(aUnassignedTask);
 		}
@@ -460,34 +459,38 @@ public class TaskAssign{
 	}
 	// End Print Results
 	
-	public List<List> getSchedule(){
+	public List<List<Integer>> getSchedule(){
 		return Schedule;
 	}
 	
 	public float[][] getTaskPercentages(){
-		float[][] finalTaskPercentages = new float[OtherData.size()][weekdays];
-
 		for(int i = 0; i < OtherData.size(); i++){
 			for(int j = 0; j < weekdays; j++){
 				for(int k = 0; k < TaskPercentages.size(); k++){
 					TaskSplit aTask = TaskPercentages.get(k);
 					int taskid = aTask.getTaskId();
 					if(taskid == (i+1)){
-						System.out.print(aTask.getPercentage(j) + " ");
-						finalTaskPercentages[i][j] = aTask.getPercentage(j);
+						FinalTaskPercentages[i][j] = aTask.getPercentage(j);
 					}
 					else
 						continue;
 				}
 			}
-			System.out.print("\n");
 		}
-		
-		return finalTaskPercentages;
+		return FinalTaskPercentages;
 	}
 	
+	public void printTaskPercentages(){
+		for(int i = 0; i < taskNum; i++){
+			for(int j = 0; j < weekdays; j++){
+				System.out.print(FinalTaskPercentages[i][j] + " ");
+			}
+			System.out.print("\n");
+		}
+	}
+
 	public List<Integer> getUnassignedTasks(){
-		return Unassigned;
+		return UnassignedTasks;
 	}
 	
 	public float[] getTimeUsed(){

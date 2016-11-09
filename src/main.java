@@ -11,17 +11,20 @@ public class main {
 	
 	private static void Excecute() {
 		// Assign Tasks
-		TaskAssign TaskAssign = new TaskAssign();
-		TaskAssign.TaskAssign(Detail);
+		TaskAssign TaskAssign = new TaskAssign(Detail);
 		TaskAssign.ExecuteTaskAssign();
-		List<List> Schedule = TaskAssign.getSchedule();
+		List<List<Integer>> Schedule = TaskAssign.getSchedule();
+		// get and print Schedule
 		System.out.print("Schedule:\n");
 		for(int i = 0; i < Schedule.size(); i++){
 			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
 		}
+		// get and print UassignedTasks
 		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks() + "\n");
-		System.out.print("TaskPercentages:\n");
+		// get and print TaskPercentages
 		finalTaskPercentage = TaskAssign.getTaskPercentages();
+		System.out.print("TaskPercentages:\n");
+		TaskAssign.printTaskPercentages();
 		System.out.print("-----------------------------------------------------------" + "\n");
 
 		// Sequencing Tasks
@@ -37,10 +40,10 @@ public class main {
 		String root = System.getProperty("user.dir");
 
 		// GeneralInput
-		GeneralInput GeneralInput = new GeneralInput();
 		Scanner reader = new Scanner(System.in);
 		String testfile = reader.next();			// /src/general_input.txt
 		String testpath = root + testfile;
+		GeneralInput GeneralInput = new GeneralInput();
 		GeneralInput.ReadTestFile(testpath);
 		Detail = GeneralInput.GetDetail();
 		Distance = GeneralInput.GetDistance();
