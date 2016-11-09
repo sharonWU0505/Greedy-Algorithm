@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class TaskSequence {
-	// attribute
+	// Attribute
 	private List<Integer> tasklist = new ArrayList<Integer>();  // task list for a day	
 	private int length;		// number of tasks in a day
 	private int index = 0;  // for permutation
