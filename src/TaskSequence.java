@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class TaskSequence {
-	// attribute
+	// Attribute
 	private List<Integer> tasklist = new ArrayList<Integer>();  // task list for a day	
 	private int length;		// number of tasks in a day
 	private int index = 0;  // for permutation
@@ -12,7 +12,9 @@ public class TaskSequence {
 	private boolean[] used;	// for permutation
 	private int setnum = 1; // for permutation
 	private int[][] permutation;
-	private int[] output;
+	private int[] output;									// for print
+	private float minDistance = 0;							// for print
+	private List<Integer> daySchedule = new ArrayList<>();  // for output
 
 	// Constructor
 	public TaskSequence(List<Integer> tasklist) {
@@ -54,7 +56,6 @@ public class TaskSequence {
 	public List<Integer> Sequence(float[][] distance) {
 		Permutation(0, length);
 
-		float min_distance = 0;
 		int min_index = 0;
 		for(int i = 0; i < setnum; i++) {
 			float temp_distance = 0;
@@ -70,16 +71,15 @@ public class TaskSequence {
 			}
 
 			if(i == 0){
-				min_distance = temp_distance;
+				minDistance = temp_distance;
 			}
-			else if(min_distance > temp_distance) {
-				min_distance = temp_distance;
+			else if(minDistance > temp_distance) {
+				minDistance = temp_distance;
 				min_index = i;
 			}
 		}
 		
 		// make a new output array with the same start and end point
-		List<Integer> daySchedule = new ArrayList<>();
 		for(int i = 0; i < length; i++){
 			output[i] = permutation[min_index][i];
 			daySchedule.add(output[i]);
@@ -89,8 +89,11 @@ public class TaskSequence {
 			daySchedule.add(output[length]);
 		}
 
-		System.out.print("Min Traveling Time: " + min_distance + "; ");
-		System.out.print("Task sequence: " + Arrays.toString(output) + "\n");
 		return daySchedule;
+	}
+
+	public void printDaySchedule() {
+		System.out.print("Min Traveling Time: " + minDistance + "; ");
+		System.out.print("Task sequence: " + Arrays.toString(output) + "\n");
 	}
 }
