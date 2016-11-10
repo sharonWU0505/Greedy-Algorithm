@@ -338,7 +338,7 @@ public class TaskAssign{
 //			System.out.print(", rewards = " + aTask.getMaxRewards() + "\n");
 			
 			// if the task should not be split again
-			if(aTask.getCounter() >= task_details.get(9)){
+			if(aTask.getCounter() >= task_details.get(9) || ideal == -1){
 				unassiTaskSequence.remove(i);
 				i--;
 				continue;
