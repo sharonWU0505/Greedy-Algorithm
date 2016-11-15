@@ -48,7 +48,7 @@ public class main {
 		GeneralInput.ReadTestFile(testpath);
 		Detail = GeneralInput.GetDetail();
 		Distance = GeneralInput.GetDistance();
-		System.out.print("Finish Input.");
+		System.out.print("Finish Input. \n");
 
 		// SpecialInput
 //		SpecialInput SepcialInput = new SpecialInput();
