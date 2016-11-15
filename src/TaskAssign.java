@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskAssign{
 	// Attribute
@@ -14,6 +16,7 @@ public class TaskAssign{
 	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float travelingT = 0;
 	
 	// Constructor
 	public TaskAssign(List<List> Detail){
@@ -50,7 +53,7 @@ public class TaskAssign{
 		// Find out each task's maximum rewards and ideal day
 		for(int id = 1; id < TaskNum + 1; id++){
 			List<Float> task_details = OtherData.get(id - 1);
-			float max_rewards = 0;		// the maximum rewards of the task
+			float max_rewards = 0;	// the maximum rewards of the task
 			int ideal_day = -1;		// the ideal day for the day
 			for(int j = 0; j < Weekdays; j++){
 				if(task_details.get(j) > max_rewards){
@@ -58,8 +61,8 @@ public class TaskAssign{
 					ideal_day = j;
 				}
 			}
-			Schedule.get(ideal_day).add(id);							// add the taskId to the schedule
-			ProcessingT[ideal_day] += task_details.get(7);  		// calculate the processing time
+			Schedule.get(ideal_day).add(id);					// add the taskId to the schedule
+			ProcessingT[ideal_day] += task_details.get(7);  	// calculate the processing time
 			Rewards[ideal_day] += task_details.get(ideal_day);	// calculate rewards
 		}
 
@@ -76,66 +79,82 @@ public class TaskAssign{
 	// End First Stage Assignment
 
 	
-	// For each day, sort tasks by "the cost to move that task to another day".
-	private void FirstStageTaskSort(){
-		List<List<Integer>> originSchedule = Schedule;
-//		System.out.println("originSchedule: " + originSchedule);
+	// FirstStageTaskSort: sort tasks by their cost to be moved to another day
+	private List<Float> FirstStageTaskSort(){
+		List<List<Integer>> oriSchedule = Schedule;
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		List<Float> minOPcost = new ArrayList<>();	// the minimum opportunity cost of each day
-		
-		// Find the minimum opportunity costs.
+
 		for(int j = 0; j < Weekdays; j++){
-			List<Integer> tasksOnDay = originSchedule.get(j);
-			float min_loss = 5000;
-			for(int i = 0; i < tasksOnDay.size(); i++){
-				int taskid = tasksOnDay.get(i);
+			List<Integer> daySchedule = oriSchedule.get(j);
+			List<Map<Integer, Float>> tempDaySchedule = new ArrayList<>();	// temporary task list for sorting
+			List<Integer> newDaySchedule = new ArrayList<>();
+			for(int i = 0; i < daySchedule.size(); i++){
+				int taskid = daySchedule.get(i);
 				List<Float> task_details = OtherData.get(taskid - 1);
 				float current_rewards = task_details.get(j);
+				float task_min_op = 5000;
+				// Find minimum opportunity cost (task_min_op) of a task
 				for(int k = 0; k < Weekdays; k++){
 					if(k == j)
 						continue;
-					float loss = current_rewards - task_details.get(k);
-					if(loss < min_loss){
-						min_loss = loss;
+					float op = current_rewards - task_details.get(k);
+					if(op < task_min_op){
+						task_min_op = op;
 					}
 				}
-			}
-			tasksOnDay.add(0, j+1);	// tag to identify the weekday of which the tasks belong to
-			
-			// Sort tasks by the minimum opportunity costs.
-			if(j == 0){
-				newSchedule.add(tasksOnDay);
-				minOPcost.add(min_loss);
-				continue;
-			}
-			boolean insert = false;
-			for(int s = 0; s < minOPcost.size(); s++){
-				if(min_loss <= minOPcost.get(s)){
-					insert = true;
-					for(int u = 0; u < newSchedule.size(); u++){
-						int day = (int) newSchedule.get(u).get(0);
-						if(day == s+1){
-							newSchedule.add(u, tasksOnDay);
+				// Sort tasks by the minimum opportunity cost (task_min_op)
+				if(i == 0){
+					Map<Integer, Float> taskwithop = new HashMap<Integer, Float>();
+					taskwithop.put(taskid, task_min_op);
+					tempDaySchedule.add(taskwithop);
+				}
+				else{
+					boolean insert = false;
+					for(int l = 0; l < tempDaySchedule.size(); l++){
+						if(task_min_op < (float)tempDaySchedule.get(l).values().toArray()[0]){
+							Map<Integer, Float> dict = new HashMap<Integer, Float>();
+							dict.put(taskid, task_min_op);
+							tempDaySchedule.add(l, dict);
+							insert = true;
 							break;
 						}
 					}
+					if(insert == false){
+						Map<Integer, Float> dict = new HashMap<Integer, Float>();
+						dict.put(taskid, task_min_op);
+						tempDaySchedule.add(dict);
+						insert = true;
+					}
 				}
-				else if(s == minOPcost.size()-1){
-					newSchedule.add(tasksOnDay);
-				}
-				if(insert)
-					break;
 			}
-			minOPcost.add(min_loss);
+			
+			// Make new day schedule and minOPcost list
+			if(tempDaySchedule.size() > 0){
+				// after sorting tasks in a day, arrange the task list
+				for(int l = 0; l < tempDaySchedule.size(); l++){
+					int id = (int) tempDaySchedule.get(l).keySet().toArray()[0];
+					newDaySchedule.add(id);
+				}
+				float day_min_loss = (float) tempDaySchedule.get(0).values().toArray()[0];
+				minOPcost.add(day_min_loss);
+				newDaySchedule.add(0, j + 1);	// tag for knowing which day it is
+			}
+			else{
+				minOPcost.add((float) 5000);
+				newDaySchedule.add(j + 1);		// tag to identify the weekday
+			}
+			newSchedule.add(newDaySchedule);
 		}
+
 //		System.out.println("minOPcost: " + minOPcost);
 //		System.out.println("newSchedule: " + newSchedule);
-		
 		Schedule = newSchedule;
+		return minOPcost;
 	}
 	// End FirstStageTaskSort
 	
-	// Arrange the schedule in the order of the workdays the tasks assigned to, and remove the tag which is at the first element of each list. 
+	// Arrange the schedule in the order of the weekdays the tasks assigned to, and remove the tag which is at the first element of each list. 
 	private void RecoverScheduleOrder(){
 		List<List<Integer>> currentSchedule = Schedule;
 		List<List<Integer>> newSchedule = new ArrayList<>();
