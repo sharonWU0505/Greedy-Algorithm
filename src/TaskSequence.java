@@ -13,7 +13,7 @@ public class TaskSequence {
 	private int setnum = 1; // for permutation
 	private int[][] permutation;
 	private int[] output;									// for print
-	private float minDistance = 0;							// for print
+	private float minTravelingT = 0;							// for print
 	private List<Integer> daySchedule = new ArrayList<>();  // for output
 
 	// Constructor
@@ -71,10 +71,10 @@ public class TaskSequence {
 			}
 
 			if(i == 0){
-				minDistance = temp_distance;
+				minTravelingT = temp_distance;
 			}
-			else if(minDistance > temp_distance) {
-				minDistance = temp_distance;
+			else if(minTravelingT > temp_distance) {
+				minTravelingT = temp_distance;
 				min_index = i;
 			}
 		}
@@ -93,7 +93,11 @@ public class TaskSequence {
 	}
 
 	public void printDaySchedule() {
-		System.out.print("Min Traveling Time: " + minDistance + "; ");
+		System.out.print("Min Traveling Time: " + minTravelingT + "; ");
 		System.out.print("Task sequence: " + Arrays.toString(output) + "\n");
+	}
+	
+	public float getMinTravelingT() {
+		return minTravelingT;
 	}
 }
