@@ -41,23 +41,24 @@ public class main {
 		String root = System.getProperty("user.dir");
 
 		// GeneralInput
-//		Scanner reader = new Scanner(System.in);
-//		String testfile = reader.next();			// /src/general_input.txt
-//		String testpath = root + testfile;
-//		GeneralInput GeneralInput = new GeneralInput();
-//		GeneralInput.ReadTestFile(testpath);
-//		Detail = GeneralInput.GetDetail();
-//		Distance = GeneralInput.GetDistance();
+		Scanner reader = new Scanner(System.in);
+		String testfile = reader.next();			// /src/general_input.txt
+		String testpath = root + testfile;
+		GeneralInput GeneralInput = new GeneralInput();
+		GeneralInput.ReadTestFile(testpath);
+		Detail = GeneralInput.GetDetail();
+		Distance = GeneralInput.GetDistance();
+		System.out.print("Finish Input.");
 
 		// SpecialInput
-		SpecialInput SepcialInput = new SpecialInput();
-		String detailfile = "/src/data_1103.txt";
-		String detailpath = root + detailfile;
-		Detail = SepcialInput.GetDetail(detailpath);		// read detail file
-
-		String distancefile = "/src/distance_1103.txt";
-		String distancepath = root + distancefile;
-		Distance = SepcialInput.GetDistance(distancepath);	// read distance file
+//		SpecialInput SepcialInput = new SpecialInput();
+//		String detailfile = "/src/data_1103.txt";
+//		String detailpath = root + detailfile;
+//		Detail = SepcialInput.GetDetail(detailpath);		// read detail file
+//
+//		String distancefile = "/src/distance_1103.txt";
+//		String distancepath = root + distancefile;
+//		Distance = SepcialInput.GetDistance(distancepath);	// read distance file
 
 		// Execute and Output
 		Excecute();
