@@ -158,6 +158,7 @@ public class TaskAssign{
 	}
 	// End FirstStageTaskSort
 
+
 	// FirstStageDaySort: decide priority between weekdays by their minimum opportunity cost
 	private void FirstStageDaySort(List<Map<Integer, Float>> minOPcost){
 		List<Map<Integer, Float>> tempDayPriority = new ArrayList<>();
@@ -185,23 +186,24 @@ public class TaskAssign{
 			int dayIndex = (int) minOPcost.get(i).keySet().toArray()[0];
 			newSchedule.add(Schedule.get(dayIndex));
 		}
-		System.out.println("newSchedule: " + newSchedule);
+//		System.out.println("newSchedule: " + newSchedule);
 		Schedule = newSchedule;
 	}
 	// End FirstStageDaySort
-	
-	// Arrange the schedule in the order of the weekdays the tasks assigned to, and remove the tag which is at the first element of each list. 
+
+
+	// RecoverScheduleOrder: Arrange the schedule in the order of weekdays, and remove the day tag
 	private void RecoverScheduleOrder(){
-		List<List<Integer>> currentSchedule = Schedule;
+		List<List<Integer>> oriSchedule = Schedule;
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		int [] order = {0, 1, 2, 3, 4, 5, 6};
 		for(int i = 0; i <  Weekdays; i++){
-			int day = (int) currentSchedule.get(i).get(0) - 1;
+			int day = (int) oriSchedule.get(i).get(0) - 1;
 			order[day] = i;
 		}
 		for(int j = 0; j < Weekdays; j++){
 			int index = order[j];
-			newSchedule.add(currentSchedule.get(index));
+			newSchedule.add(oriSchedule.get(index));
 			newSchedule.get(j).remove(0);
 		}
 
@@ -211,7 +213,7 @@ public class TaskAssign{
 
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
 	private void FirstStageCheck(){
-		// Sort tasks by "the cost to move that task to another day".
+		// sort tasks and weekdays
 		List<Map<Integer, Float>> minOPcost = FirstStageTaskSort();
 		FirstStageDaySort(minOPcost);
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]" element of the Schedule.
@@ -219,7 +221,6 @@ public class TaskAssign{
 			int day = (int) Schedule.get(j).get(0);
 			newOrder[day-1] = j;
 		}
-
 
 		for(int j = 0; j < Weekdays; j++){
 			List<Integer> current_tasks = Schedule.get(j);  	  
