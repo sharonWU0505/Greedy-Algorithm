@@ -80,10 +80,10 @@ public class TaskAssign{
 
 	
 	// FirstStageTaskSort: sort tasks by their cost to be moved to another day
-	private List<Float> FirstStageTaskSort(){
+	private List<Map<Integer, Float>> FirstStageTaskSort(){
 		List<List<Integer>> oriSchedule = Schedule;
 		List<List<Integer>> newSchedule = new ArrayList<>();
-		List<Float> minOPcost = new ArrayList<>();	// the minimum opportunity cost of each day
+		List<Map<Integer, Float>> minOPcost = new ArrayList<>();	// the minimum opportunity cost of each day
 
 		for(int j = 0; j < Weekdays; j++){
 			List<Integer> daySchedule = oriSchedule.get(j);
@@ -113,17 +113,17 @@ public class TaskAssign{
 					boolean insert = false;
 					for(int l = 0; l < tempDaySchedule.size(); l++){
 						if(task_min_op < (float)tempDaySchedule.get(l).values().toArray()[0]){
-							Map<Integer, Float> dict = new HashMap<Integer, Float>();
-							dict.put(taskid, task_min_op);
-							tempDaySchedule.add(l, dict);
+							Map<Integer, Float> taskwithop = new HashMap<Integer, Float>();
+							taskwithop.put(taskid, task_min_op);
+							tempDaySchedule.add(l, taskwithop);
 							insert = true;
 							break;
 						}
 					}
 					if(insert == false){
-						Map<Integer, Float> dict = new HashMap<Integer, Float>();
-						dict.put(taskid, task_min_op);
-						tempDaySchedule.add(dict);
+						Map<Integer, Float> taskwithop = new HashMap<Integer, Float>();
+						taskwithop.put(taskid, task_min_op);
+						tempDaySchedule.add(taskwithop);
 						insert = true;
 					}
 				}
@@ -137,11 +137,15 @@ public class TaskAssign{
 					newDaySchedule.add(id);
 				}
 				float day_min_loss = (float) tempDaySchedule.get(0).values().toArray()[0];
-				minOPcost.add(day_min_loss);
+				Map<Integer, Float> daywithop = new HashMap<Integer, Float>();
+				daywithop.put(j, day_min_loss);
+				minOPcost.add(daywithop);
 				newDaySchedule.add(0, j + 1);	// tag for knowing which day it is
 			}
 			else{
-				minOPcost.add((float) 5000);
+				Map<Integer, Float> daywithop = new HashMap<Integer, Float>();
+				daywithop.put(j, (float) 5000);
+				minOPcost.add(daywithop);
 				newDaySchedule.add(j + 1);		// tag to identify the weekday
 			}
 			newSchedule.add(newDaySchedule);
@@ -153,6 +157,38 @@ public class TaskAssign{
 		return minOPcost;
 	}
 	// End FirstStageTaskSort
+
+	// FirstStageDaySort: decide priority between weekdays by their minimum opportunity cost
+	private void FirstStageDaySort(List<Map<Integer, Float>> minOPcost){
+		List<Map<Integer, Float>> tempDayPriority = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			if(i == 0){
+				tempDayPriority.add(minOPcost.get(0));
+			}
+			else{
+				boolean insert = false;
+				for(int j = 0; j < tempDayPriority.size(); j++){
+					if((float) minOPcost.get(i).values().toArray()[0] < (float) tempDayPriority.get(j).values().toArray()[0]){
+						tempDayPriority.add(j, minOPcost.get(i));
+						insert = true;
+					}
+				}
+				if(insert == false){
+					tempDayPriority.add(minOPcost.get(i));
+					insert = true;
+				}
+			}
+		}
+		// Sort weekdays
+		List<List<Integer>> newSchedule = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			int dayIndex = (int) minOPcost.get(i).keySet().toArray()[0];
+			newSchedule.add(Schedule.get(dayIndex));
+		}
+		System.out.println("newSchedule: " + newSchedule);
+		Schedule = newSchedule;
+	}
+	// End FirstStageDaySort
 	
 	// Arrange the schedule in the order of the weekdays the tasks assigned to, and remove the tag which is at the first element of each list. 
 	private void RecoverScheduleOrder(){
@@ -176,7 +212,8 @@ public class TaskAssign{
 	// First Stage Check: check whether the workload is exceeded after first stage assignment
 	private void FirstStageCheck(){
 		// Sort tasks by "the cost to move that task to another day".
-		FirstStageTaskSort();
+		List<Map<Integer, Float>> minOPcost = FirstStageTaskSort();
+		FirstStageDaySort(minOPcost);
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]" element of the Schedule.
 		for(int j = 0; j < Weekdays; j++){
 			int day = (int) Schedule.get(j).get(0);
