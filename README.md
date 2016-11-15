@@ -27,6 +27,12 @@ Else, try to move tasks to their ideal day by their sorting results.
 After the fist stage check, there will be some unassigned tasks and some workload of workdays is not satisfied.
 So, we have to assign more tasks as possible by splitting them.
 
-1. Sort all the unassigned tasks by their absolute maximum rewards.
-2. According to the sorting result, try to assign a task to several days (if it is still under its splitting limit).
-3. ...
+1. Sort all the unassigned tasks by their "potential net rewards".
+	potential net rewards = (max_rewards * the proportion the task may be done on the ideal day) - split cost 
+2. According to the sorting result, try to assign a task to the day that it can earn the maximum potential net rewards.
+	If the potential net rewards is negative, abandon the task.
+	A task should not be over-split.
+3. If the task is not completely done, calculate its new potential net rewards according to the proportion left unfinished.
+4. If the ideal day for a task is out of capacity, re-calculate its potential net rewards by avoiding assigning it to the busy days.
+5. Go back to 2.
+
