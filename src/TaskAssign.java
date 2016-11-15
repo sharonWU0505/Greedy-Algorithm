@@ -19,6 +19,7 @@ public class TaskAssign{
 	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] TotalProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalRewards = {0, 0, 0, 0, 0, 0, 0};
+	private float travelingT = 0;
 	
 	// Constructor
 	public TaskAssign(List<List> Detail){
@@ -64,6 +65,9 @@ public class TaskAssign{
 			}
 			Schedule.get(assign_to_day).add(id);							// add the taskId to the schedule
 			TotalProcessingT[assign_to_day] += task_details.get(7);  		// calculate processing time
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(assign_to_day));
+			travelingT = TaskSequence.getMinTravelingT();
+			TotalProcessingT[assign_to_day] += travelingT;
 			TotalRewards[assign_to_day] += task_details.get(assign_to_day);	// calculate rewards
 		}
 		System.out.println("FirstStageAssignment:\n" + Schedule);
@@ -235,6 +239,12 @@ public class TaskAssign{
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
 				}
 				current_tasks.remove(remove_task);
+				List<Integer> tasklist = new ArrayList<>();
+				tasklist = current_tasks.subList(1, current_tasks.size());
+				TaskSequence TaskSequence = new TaskSequence(tasklist);
+				float temp_trvelingt = TotalProcessingT[current_day] - travelingT;
+				travelingT = TaskSequence.getMinTravelingT();
+				TotalProcessingT[current_day] = temp_trvelingt + travelingT;
 				TotalProcessingT[current_day] -= time_change;
 				TotalRewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
 			}
