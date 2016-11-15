@@ -164,6 +164,7 @@ public class TaskAssign{
 			newOrder[day-1] = j;
 		}
 
+
 		for(int j = 0; j < weekdays; j++){
 			List<Integer> current_tasks = Schedule.get(j);  	  
 			int current_day = current_tasks.get(0) - 1;
@@ -347,7 +348,7 @@ public class TaskAssign{
 //			System.out.print(", rewards = " + aTask.getMaxRewards() + "\n");
 			
 			// if the task should not be split again
-			if(aTask.getCounter() >= task_details.get(9)){
+			if(aTask.getCounter() >= task_details.get(9) || ideal == -1){
 				unassiTaskSequence.remove(i);
 				i--;
 				continue;
@@ -399,6 +400,7 @@ public class TaskAssign{
 				for(int j = 0; j < weekdays; j++){
 					if(capacity_left[j] == 0)
 						continue;
+
 					float inner_rewards = 0;
 					if(aTask.getUnfinishedPercentage() < capacity_left[j]){
 						float task_left = aTask.getUnfinishedPercentage();
