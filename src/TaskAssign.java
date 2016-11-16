@@ -291,20 +291,20 @@ public class TaskAssign{
 					// move the task to another day and calculate new processing time
 					taskid_move = current_tasks.get(remove_task);  // taskid
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
-					TaskSequence TaskSequence = new TaskSequence(Schedule.get(newOrder[move_to_day]));
-					float newProcessingT = TaskSequence.getMinTravelingT();
-					ProcessingT[move_to_day] -= TravelingT[move_to_day];
-					ProcessingT[move_to_day] += newProcessingT;
+//					TaskSequence TaskSequence = new TaskSequence(Schedule.get(newOrder[move_to_day]));
+//					float newTravelingT = TaskSequence.getMinTravelingT();
+//					ProcessingT[move_to_day] -= TravelingT[move_to_day];
+//					ProcessingT[move_to_day] += newTravelingT;
 					ProcessingT[move_to_day] += time_change;
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move-1).get(move_to_day);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
-					System.out.print(Arrays.toString(ProcessingT) + "\n");
+//					System.out.print(Arrays.toString(ProcessingT) + "\n");
 				}
 				current_tasks.remove(remove_task);
-				TaskSequence TaskSequence = new TaskSequence(current_tasks.subList(1, current_tasks.size()));
-				float newProcessingT = TaskSequence.getMinTravelingT();
-				ProcessingT[current_day] -= TravelingT[current_day];
-				ProcessingT[current_day] += newProcessingT;
+//				TaskSequence TaskSequence = new TaskSequence(current_tasks.subList(1, current_tasks.size()));
+//				float newTravelingT = TaskSequence.getMinTravelingT();
+//				ProcessingT[current_day] -= TravelingT[current_day];
+//				ProcessingT[current_day] += newTravelingT;
 				ProcessingT[current_day] -= time_change;
 				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
 			}
@@ -520,6 +520,7 @@ public class TaskAssign{
 	}
 	// End Second Stage Assignment
 
+	
 	// Print Results
 	private void PrintResult(){
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
@@ -535,9 +536,20 @@ public class TaskAssign{
 		System.out.print("\n");
 	}
 	// End Print Results
-	
+
+	public void ExecuteTaskAssign(){
+		FirstStageAssignment();
+		FirstStageCheck();
+		SecondStageAssignment();
+		PrintResult();
+	}
+
 	public List<List<Integer>> getSchedule(){
 		return Schedule;
+	}
+
+	public List<Integer> getUnassignedTasks(){
+		return UnassignedTasks;
 	}
 	
 	public float[][] getTaskPercentages(){
@@ -564,21 +576,6 @@ public class TaskAssign{
 			}
 			System.out.print("\n");
 		}
-	}
-
-	public List<Integer> getUnassignedTasks(){
-		return UnassignedTasks;
-	}
-	
-	public float[] getTimeUsed(){
-		return ProcessingT;
-	}
-
-	public void ExecuteTaskAssign(){
-		FirstStageAssignment();
-		FirstStageCheck();
-		SecondStageAssignment();
-		PrintResult();
 	}
 }
 		
