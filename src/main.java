@@ -11,7 +11,7 @@ public class main {
 	
 	private static void Excecute() {
 		// Assign Tasks
-		TaskAssign TaskAssign = new TaskAssign(Detail);
+		TaskAssign TaskAssign = new TaskAssign(Detail, Distance);
 		TaskAssign.ExecuteTaskAssign();
 		List<List<Integer>> Schedule = TaskAssign.getSchedule();
 		// get and print Schedule
@@ -30,8 +30,8 @@ public class main {
 		// Sequencing Tasks
 		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size(); i++){
-			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
-			FinalSchedule.add(TaskSequence.Sequence(Distance));
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i), Distance, Distance.length);
+			FinalSchedule.add(TaskSequence.Sequence());
 			System.out.print("Day " + (i + 1) + ": \n");
 			TaskSequence.printDaySchedule();
 		}

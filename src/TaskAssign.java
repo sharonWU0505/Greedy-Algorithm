@@ -18,9 +18,10 @@ public class TaskAssign{
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
+	private float [][] Distance;
 	
 	// Constructor
-	public TaskAssign(List<List> Detail){
+	public TaskAssign(List<List> Detail, float[][] distance){
 		Workload = new ArrayList<>();
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 		Schedule = new ArrayList<>();
@@ -46,6 +47,12 @@ public class TaskAssign{
 		Weekdays = (int) Detail.get(3).get(0);
 		TaskNum = OtherData.size();
 		FinalTaskPercentages = new float[TaskNum][Weekdays];
+		Distance = new float[TaskNum][TaskNum];
+		for(int i = 0; i < TaskNum; i++){
+			for(int j = 0; j < TaskNum; j++){
+				Distance[i][j] = distance[i][j];
+			}
+		}
 	}
 
 
@@ -79,7 +86,7 @@ public class TaskAssign{
 		// Add traveling time to ProcessingT
 		float travelingT = 0;
 		for(int j = 0; j < Weekdays; j++){
-			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j));
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j), Distance, TaskNum);
 			travelingT = TaskSequence.getMinTravelingT();
 			TravelingT[j] = travelingT;
 			ProcessingT[j] += travelingT;
@@ -294,7 +301,7 @@ public class TaskAssign{
 					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move-1).get(7);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
-					System.out.print(Arrays.toString(ProcessingT) + "\n");
+//					System.out.print(Arrays.toString(ProcessingT) + "\n");
 				}
 				else{
 					// move the task to another day and calculate new processing time
