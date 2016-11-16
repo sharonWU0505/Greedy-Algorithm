@@ -62,6 +62,15 @@ public class TaskAssign{
 					ideal_day = j;
 				}
 			}
+			
+			if(ideal_day == -1){
+				System.out.println("here!! id = " + id);
+				// put the task into the "Unassigned List" 
+				UnassignedTasks.add(id);
+				System.out.println("UnassignedTasks = " + UnassignedTasks);
+				continue;
+			}
+			
 			Schedule.get(ideal_day).add(id);					// add the taskId to the schedule
 			ProcessingT[ideal_day] += task_details.get(7);  	// calculate the processing time
 			Rewards[ideal_day] += task_details.get(ideal_day);	// calculate rewards
@@ -359,7 +368,7 @@ public class TaskAssign{
 			for(int j = 0; j < Weekdays; j++){
 				float inner_rewards;
 				inner_rewards = (task_details.get(j) * capacity_left[j]) - cost;
-				if(inner_rewards > max_rewards){
+				if(inner_rewards >= max_rewards){
 					max_rewards = inner_rewards;
 					ideal_day = j;
 				}
