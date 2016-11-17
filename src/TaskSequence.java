@@ -12,7 +12,7 @@ public class TaskSequence {
 	private boolean[] used;			// for permutation
 	private int[] permutationSet;	// for permutation
 	private boolean first = true;
-	private float minTravelingT = 0;
+	private float minTravelingT = 5000;
 	private int[] idealTaskSequence;
 	private List<Integer> finalDaySchedule = new ArrayList<>();  // for output
 
@@ -82,6 +82,12 @@ public class TaskSequence {
 	public List<Integer> Sequence() {
 		if(tasknum == 0){
 			idealTaskSequence = new int[0];
+			minTravelingT = 0;
+		}
+		else if(tasknum == 1){
+			idealTaskSequence = new int[1];
+			idealTaskSequence[0] = TaskList.get(0);
+			minTravelingT = 0;
 		}
 		else{
 			Permutation(0, tasknum);
