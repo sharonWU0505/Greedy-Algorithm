@@ -327,7 +327,6 @@ public class TaskAssign{
 				ProcessingT[current_day] -= time_change;
 				TravelingT[current_day] = newTravelingT;	// update TravelingT;
 				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
-				System.out.print(Arrays.toString(ProcessingT) + "\n");
 			}
 			
 			// check correctness of current result
@@ -440,35 +439,49 @@ public class TaskAssign{
 			
 			// if there is capacity left on the ideal day
 			if(capacity_left[ideal] > 0){
-				float processingT = task_details.get(7);
-				float task_left = aTask.getUnfinishedPercentage();
-				float percentage;
-				if((processingT * task_left) > capacity_left[ideal]){
-					// part of the task left
-					percentage = capacity_left[ideal] / processingT;
-					ProcessingT[ideal] += capacity_left[ideal];
-					capacity_left[ideal] = 0;
-					available_days--;	// the ideal day has no more capacity
-					
-					re_calculate_rewards = true; 
+				List<Integer> temp_tasklist = Schedule.get(ideal);
+				temp_tasklist.add(aTask.getTaskId());
+				TaskSequence TaskSequence = new TaskSequence(temp_tasklist, Distance, Distance.length);
+				TaskSequence.Sequence();
+				float temp_travelingt = TaskSequence.getMinTravelingT();
+				if((temp_travelingt - TravelingT[ideal]) < capacity_left[ideal]){
+					TravelingT[ideal] = temp_travelingt;
+					float processingT = task_details.get(7);
+					float task_left = aTask.getUnfinishedPercentage();
+					float percentage;
+					if((processingT * task_left + temp_travelingt - TravelingT[ideal]) > capacity_left[ideal]){
+						float new_capacity_left = capacity_left[ideal] - (temp_travelingt - TravelingT[ideal]);
+						// part of the task left
+						percentage = new_capacity_left / processingT;
+						ProcessingT[ideal] += capacity_left[ideal];
+						capacity_left[ideal] = 0;
+						available_days--;	// the ideal day has no more capacity
+						
+						re_calculate_rewards = true; 
+					}
+					else{
+						// complete the task
+						percentage = task_left;
+						ProcessingT[ideal] += processingT * percentage;
+						capacity_left[ideal] -= processingT * percentage;
+						capacity_left[ideal] -= TravelingT[ideal];
+						capacity_left[ideal] += temp_travelingt;
+
+						unassiTaskSequence.remove(i);
+						i--;
+					}
+					aTask.splitInto(ideal, percentage);
+					Rewards[ideal] += ((float)OtherData.get(taskid - 1).get(ideal)) * percentage;
+					// add to schedule
+					Schedule.get(ideal).add(taskid);
+					TaskPercentages.add(aTask);
+					System.out.println("Split Task " + taskid + " into day " + (ideal + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage());
 				}
 				else{
-					// complete the task
-					percentage = task_left;
-					ProcessingT[ideal] += processingT * percentage;
-					capacity_left[ideal] -= processingT * percentage;
-					
 					unassiTaskSequence.remove(i);
 					i--;
+					continue;
 				}
-				
-				aTask.splitInto(ideal, percentage);
-				Rewards[ideal] += ((float)OtherData.get(taskid - 1).get(ideal)) * percentage;
-				// add to schedule
-				Schedule.get(ideal).add(taskid);
-				TaskPercentages.add(aTask);
-				System.out.println("Split Task " + taskid + " into day " + (ideal + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage());
-				
 			}
 			else{
 				re_calculate_rewards = true;
@@ -541,16 +554,29 @@ public class TaskAssign{
 	}
 	// End Second Stage Assignment
 
+	public List<Float> getProcessingTimeofTasks(){
+		List<Float> taskstime = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			float totaltime = 0;
+			for(int j = 0; j < Schedule.get(i).size(); j++){
+				int taskindex = Schedule.get(i).get(j) - 1;
+				List<Float> task_details = OtherData.get(taskindex);
+				totaltime += task_details.get(7);
+			}
+			taskstime.add(totaltime);
+		}
+		return taskstime;
+	}
 	
 	// Print Results
 	private void PrintResult(){
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
-		System.out.print("Processing Time: ");
-		for(int j = 0; j < Weekdays; j++){
-			System.out.print(ProcessingT[j] + " ");
-		}
-		System.out.print("\n" + "Rewards: ");
+//		System.out.print("Processing Time: ");
+//		for(int j = 0; j < Weekdays; j++){
+//			System.out.print(ProcessingT[j] + " ");
+//		}
+		System.out.print("Rewards: ");
 		for(int j = 0; j < Weekdays; j++){
 			System.out.print(Rewards[j] + " ");
 		}
@@ -599,4 +625,3 @@ public class TaskAssign{
 		}
 	}
 }
-		
