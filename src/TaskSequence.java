@@ -22,8 +22,8 @@ public class TaskSequence {
 		this.TaskList = TaskList;
 		tasknum = TaskList.size();
 		Distance = new float[totalNum][totalNum];
-		for(int i = 0; i < tasknum; i++){
-			for(int j = 0; j < tasknum; j++){
+		for(int i = 0; i < totalNum; i++){
+			for(int j = 0; j < totalNum; j++){
 				Distance[i][j] = distance[i][j];
 			}
 		}
@@ -99,8 +99,8 @@ public class TaskSequence {
 		return finalDaySchedule;
 	}
 
-	public void printDaySchedule() {
-		System.out.print("Min Traveling Time: " + minTravelingT + "; ");
+	public void printDaySchedule(float tasktime) {
+		System.out.print("Total Time Spent: " + (minTravelingT + tasktime) + "; ");
 		System.out.print("Task sequence: " + finalDaySchedule + "\n");
 	}
 	
