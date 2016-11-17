@@ -583,15 +583,13 @@ public class TaskAssign{
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.println("Schedule: " + Schedule);
-//		System.out.print("Processing Time: ");
-//		for(int j = 0; j < Weekdays; j++){
-//			System.out.print(ProcessingT[j] + " ");
-//		}
 		System.out.print("Rewards: ");
 		for(int j = 0; j < Weekdays; j++){
 			System.out.print(Rewards[j] + " / ");
 		}
 		System.out.print("\n");
+		System.out.println("Unassigned tasks: " + UnassignedTasks);
+		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End Print Results
 
