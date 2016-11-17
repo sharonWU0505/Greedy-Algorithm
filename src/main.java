@@ -11,29 +11,30 @@ public class main {
 	
 	private static void Excecute() {
 		// Assign Tasks
-		TaskAssign TaskAssign = new TaskAssign(Detail);
+		TaskAssign TaskAssign = new TaskAssign(Detail, Distance);
 		TaskAssign.ExecuteTaskAssign();
 		List<List<Integer>> Schedule = TaskAssign.getSchedule();
 		// get and print Schedule
-		System.out.print("Schedule:\n");
-		for(int i = 0; i < Schedule.size(); i++){
-			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
-		}
+//		System.out.print("Schedule:\n");
+//		for(int i = 0; i < Schedule.size(); i++){
+//			System.out.print("Day " + (i + 1) + ": " + Schedule.get(i) + "\n");
+//		}
 		// get and print UassignedTasks
 		System.out.print("Unassigned tasks:\n" + TaskAssign.getUnassignedTasks() + "\n");
 		// get and print TaskPercentages
 		FinalTaskPercentage = TaskAssign.getTaskPercentages();
-		System.out.print("TaskPercentages:\n");
-		TaskAssign.printTaskPercentages();
+//		System.out.print("TaskPercentages:\n");
+//		TaskAssign.printTaskPercentages();
 		System.out.print("-----------------------------------------------------------" + "\n");
 
 		// Sequencing Tasks
 		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size(); i++){
-			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i));
-			FinalSchedule.add(TaskSequence.Sequence(Distance));
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i), Distance, Distance.length);
+			FinalSchedule.add(TaskSequence.Sequence());
 			System.out.print("Day " + (i + 1) + ": \n");
-			TaskSequence.printDaySchedule();
+			List<Float> tasktime = TaskAssign.getProcessingTimeofTasks();
+			TaskSequence.printDaySchedule(tasktime.get(i));
 		}
 	}
 
