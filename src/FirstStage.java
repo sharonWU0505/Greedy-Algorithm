@@ -99,7 +99,7 @@ public class FirstStage{
 			Map<Integer, Float> daywithop = new HashMap<Integer, Float>();
 			daywithop.put(j, day_min_op);
 			minOPcost.add(daywithop);
-			daySchedule.add(0, j + 1);		// tag to identify the weekday
+			daySchedule.add(0, j);		// tag to identify the weekday
 			newSchedule.add(daySchedule);
 		}
 
@@ -109,4 +109,36 @@ public class FirstStage{
 		return minOPcost;
 	}
 
+	// FirstStageDaySort: decide priority between weekdays by their minimum opportunity cost
+	private void FirstStageDaySort(List<Map<Integer, Float>> minOPcost){
+		List<Map<Integer, Float>> tempDayPriority = new ArrayList<>();
+		// Sort weekdays
+		for(int i = 0; i < Weekdays; i++){
+			if(i == 0){
+				tempDayPriority.add(minOPcost.get(0));
+			}
+			else{
+				boolean insert = false;
+				for(int j = 0; j < tempDayPriority.size(); j++){
+					if((float) minOPcost.get(i).values().toArray()[0] < (float) tempDayPriority.get(j).values().toArray()[0]){
+						tempDayPriority.add(j, minOPcost.get(i));
+						insert = true;
+						break;
+					}
+				}
+				if(insert == false){
+					tempDayPriority.add(minOPcost.get(i));
+					insert = true;
+				}
+			}
+		}
+		// Create new schedule with priority
+		List<List<Integer>> newSchedule = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0];
+			newSchedule.add(Schedule.get(dayIndex));
+		}
+		System.out.println("newSchedule: " + newSchedule);
+		Schedule = newSchedule;
+	}
 }
