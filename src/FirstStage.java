@@ -307,4 +307,31 @@ public class FirstStage{
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 
+	public List<List<Integer>> getFirstStageSchedule(){
+		return Schedule;
+	}
+	
+	public List<Integer> getFirstStageUnassignedTasks(){
+		return UnassignedTasks;
+	}
+	
+	public float[] getFirstStageRewards(){
+		return Rewards;
+	}
+	
+	public float[] getFirstStageProcessingT(){
+		return ProcessingT;
+	}
+	
+	public float[] getFirstStageTravelingT(){
+		return TravelingT;
+	}
+	
+	public float[] getFirstStageTotalT(){
+		return TotalT;
+	}
+	
+	public List<TaskSplit> getFirstStageTaskPercentages(){
+		return TaskPercentages;
+	}
 }
