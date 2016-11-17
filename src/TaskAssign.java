@@ -64,17 +64,15 @@ public class TaskAssign{
 			float max_rewards = 0;	// the maximum rewards of the task
 			int ideal_day = -1;		// the ideal day for the day
 			for(int j = 0; j < Weekdays; j++){
-				if(task_details.get(j) > max_rewards){
+				if(task_details.get(j) >= max_rewards){
 					max_rewards = task_details.get(j);
 					ideal_day = j;
 				}
 			}
 			
 			if(ideal_day == -1){
-				System.out.println("here!! id = " + id);
 				// put the task into the "Unassigned List" 
 				UnassignedTasks.add(id);
-				System.out.println("UnassignedTasks = " + UnassignedTasks);
 				continue;
 			}
 			
@@ -92,7 +90,7 @@ public class TaskAssign{
 			TravelingT[j] = travelingT;
 			ProcessingT[j] += travelingT;
 		}
-		System.out.println("FirstStageAssignment:\n" + Schedule);
+		System.out.println("\n" + "FirstStageAssignment:\n" + Schedule);
 		System.out.println("---------------------------------------------------------------------------------");
 	}
 	// End First Stage Assignment
@@ -308,20 +306,30 @@ public class TaskAssign{
 					// move the task to another day and calculate new processing time
 					taskid_move = current_tasks.get(remove_task);  // taskid
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
-					TaskSequence TaskSequence = new TaskSequence(Schedule.get(newOrder[move_to_day]), Distance, TaskNum);
+					
+					int to_index = Schedule.get(newOrder[move_to_day]).size();
+					List<Integer> subTaskSequence = Schedule.get(newOrder[move_to_day]).subList(1, to_index);
+					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 					TaskSequence.Sequence();
 					float newTravelingT = TaskSequence.getMinTravelingT();
+				
 					ProcessingT[move_to_day] -= TravelingT[move_to_day];
 					ProcessingT[move_to_day] += newTravelingT;
 					ProcessingT[move_to_day] += time_change;
 					TravelingT[move_to_day] = newTravelingT;	// update TravelingT;
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move-1).get(move_to_day);
+					
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
+//					System.out.print(Arrays.toString(ProcessingT) + "\n");
 				}
 				current_tasks.remove(remove_task);
-				TaskSequence TaskSequence = new TaskSequence(current_tasks, Distance, TaskNum);
+				
+				int to_index = current_tasks.size();
+				List<Integer> subTaskSequence = current_tasks.subList(1, to_index);
+				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 				TaskSequence.Sequence();
 				float newTravelingT = TaskSequence.getMinTravelingT();
+				
 				ProcessingT[current_day] -= TravelingT[current_day];
 				ProcessingT[current_day] += newTravelingT;
 				ProcessingT[current_day] -= time_change;
@@ -350,6 +358,8 @@ public class TaskAssign{
 			}
 		}
 		
+		System.out.println("\n" + "FirstStageCheck:\n" + Schedule);
+		System.out.println("UnassignedTasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End First Stage Check
@@ -572,13 +582,14 @@ public class TaskAssign{
 	private void PrintResult(){
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
+		System.out.println("Schedule: " + Schedule);
 //		System.out.print("Processing Time: ");
 //		for(int j = 0; j < Weekdays; j++){
 //			System.out.print(ProcessingT[j] + " ");
 //		}
 		System.out.print("Rewards: ");
 		for(int j = 0; j < Weekdays; j++){
-			System.out.print(Rewards[j] + " ");
+			System.out.print(Rewards[j] + " / ");
 		}
 		System.out.print("\n");
 	}
@@ -625,3 +636,4 @@ public class TaskAssign{
 		}
 	}
 }
+		
