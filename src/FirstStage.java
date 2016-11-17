@@ -99,7 +99,7 @@ public class FirstStage{
 			Map<Integer, Float> daywithop = new HashMap<Integer, Float>();
 			daywithop.put(j, day_min_op);
 			minOPcost.add(daywithop);
-			daySchedule.add(0, j);		// tag to identify the weekday
+			daySchedule.add(0, j + 1);		// tag to identify the weekday
 			newSchedule.add(daySchedule);
 		}
 
@@ -135,10 +135,28 @@ public class FirstStage{
 		// Create new schedule with priority
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		for(int i = 0; i < Weekdays; i++){
-			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0];
+			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0] - 1;
 			newSchedule.add(Schedule.get(dayIndex));
 		}
 		System.out.println("newSchedule: " + newSchedule);
+		Schedule = newSchedule;
+	}
+
+	// RecoverScheduleOrder: Arrange the schedule in the order of weekdays, and remove the day tag
+	private void RecoverScheduleOrder(){
+		List<List<Integer>> oriSchedule = Schedule;
+		List<List<Integer>> newSchedule = new ArrayList<>();
+		int [] order = {0, 1, 2, 3, 4, 5, 6};
+		for(int i = 0; i <  Weekdays; i++){
+			int day = (int) oriSchedule.get(i).get(0) - 1;
+			order[day] = i;
+		}
+		for(int j = 0; j < Weekdays; j++){
+			int index = order[j];
+			newSchedule.add(oriSchedule.get(index));
+			newSchedule.get(j).remove(0);	// remove tag
+		}
+
 		Schedule = newSchedule;
 	}
 }
