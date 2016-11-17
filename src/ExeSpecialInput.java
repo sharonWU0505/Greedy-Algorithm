@@ -27,11 +27,11 @@ public class ExeSpecialInput{
 
 		// SpecialInput
 		SpecialInput SepcialInput = new SpecialInput();
-		String detailfile = "/src/data_1025.txt";
+		String detailfile = "/src/specialinput/data_1025.txt";
 		String detailpath = root + detailfile;
 		Detail = SepcialInput.GetDetail(detailpath);		// read detail file
 
-		String distancefile = "/src/distance_1025.txt";
+		String distancefile = "/src/specialinput/distance_1025.txt";
 		String distancepath = root + distancefile;
 		Distance = SepcialInput.GetDistance(distancepath);	// read distance file
 
