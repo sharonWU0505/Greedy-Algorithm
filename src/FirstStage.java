@@ -21,7 +21,7 @@ public class FirstStage{
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();;
 	
 	// Constructor
-	public FirstStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, float [][] Distance, List<TaskSplit> TaskPercentages){
+	public FirstStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, float [][] distance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -31,7 +31,7 @@ public class FirstStage{
 		Distance = new float[TaskNum][TaskNum];
 		for(int i = 0; i < TaskNum; i++){
 			for(int j = 0; j < TaskNum; j++){
-				this.Distance[i][j] = Distance[i][j];
+				this.Distance[i][j] = distance[i][j];
 			}
 		}
 	}
@@ -67,8 +67,7 @@ public class FirstStage{
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
 		}
 
-		System.out.println("\n" + "FirstStageAssignment:\n" + "Schedule: " + Schedule);
-		System.out.println("---------------------------------------------------------------------------------");
+		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
 	}
 
 	// FindMinCost: find out the minimum opportunity cost of a day
@@ -106,8 +105,7 @@ public class FirstStage{
 			newSchedule.add(daySchedule);
 		}
 
-//		System.out.println("minOPcost: " + minOPcost);
-//		System.out.println("newSchedule: " + newSchedule);
+		System.out.println("minOPcost: " + minOPcost);
 		Schedule = newSchedule;
 		return minOPcost;
 	}
@@ -137,15 +135,12 @@ public class FirstStage{
 		}
 		// Create new schedule with priority
 		List<List<Integer>> newSchedule = new ArrayList<>();
-		float [] newRewards = {0, 0, 0, 0, 0, 0, 0};
-		float [] newProcessingT = {0, 0, 0, 0, 0, 0, 0};
-		float [] newTravelingT = {0, 0, 0, 0, 0, 0, 0};
-		float [] newTotalT = {0, 0, 0, 0, 0, 0, 0};
 		for(int i = 0; i < Weekdays; i++){
 			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0];
 			newSchedule.add(Schedule.get(dayIndex));
 		}
-		System.out.println("newSchedule: " + newSchedule);
+		System.out.println("Sorted Schedule: " + newSchedule);
+		System.out.println("---------------------------------------------------------------------------------");
 		Schedule = newSchedule;
 	}
 
@@ -248,7 +243,7 @@ public class FirstStage{
 					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move-1).get(7);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
-					System.out.print(Arrays.toString(ProcessingT) + "\n");
+					System.out.print(Arrays.toString(TotalT) + "\n");
 				}
 				else{
 					// move the task to another day and calculate new processing time
@@ -265,7 +260,7 @@ public class FirstStage{
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
 					
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
-					System.out.print(Arrays.toString(ProcessingT) + "\n");
+					System.out.print(Arrays.toString(TotalT) + "\n");
 				}
 				
 				// remove task from current day
@@ -277,7 +272,7 @@ public class FirstStage{
 				TaskSequence.Sequence();
 				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
 				ProcessingT[current_day] -= time_change;
-				TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
+				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
 				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
 			}
 			

@@ -1,8 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TaskAssign{
 	// Attribute
@@ -11,13 +8,14 @@ public class TaskAssign{
 	private int Weekdays = 0;
 	private int TaskNum = 0;
 	private List<List> OtherData;
-	private List<List<Integer>> Schedule;   // for final output
-	private List<Integer> UnassignedTasks;	// for final output
+	private List<List<Integer>> Schedule;
+	private List<Integer> UnassignedTasks;
 	private List<TaskSplit> TaskPercentages;
 	private float[][] FinalTaskPercentages;	// for final output 
-	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
+	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
 	private float [][] Distance;
 	
 	// Constructor
@@ -284,10 +282,18 @@ public class TaskAssign{
 	// End Print Results
 
 	public void ExecuteTaskAssign(){
-		FirstStageAssignment();
-		FirstStageCheck();
-		SecondStageAssignment();
-		PrintResult();
+		FirstStage FirstStage = new FirstStage(Workload, OtherData, Gamma, Weekdays, Schedule, Distance, TaskPercentages);
+		FirstStage.FirstStageCheck();
+		Schedule = FirstStage.getFirstStageSchedule();
+		UnassignedTasks = FirstStage.getFirstStageUnassignedTasks();
+		TaskPercentages = FirstStage.getFirstStageTaskPercentages();
+		Rewards = FirstStage.getFirstStageRewards();
+		ProcessingT = FirstStage.getFirstStageProcessingT();
+		TravelingT = FirstStage.getFirstStageTravelingT();
+		TotalT = FirstStage.getFirstStageTotalT();
+		
+//		SecondStageAssignment();
+//		PrintResult();
 	}
 
 	public List<List<Integer>> getSchedule(){
