@@ -87,6 +87,7 @@ public class TaskAssign{
 		float travelingT = 0;
 		for(int j = 0; j < Weekdays; j++){
 			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j), Distance, TaskNum);
+			TaskSequence.Sequence();
 			travelingT = TaskSequence.getMinTravelingT();
 			TravelingT[j] = travelingT;
 			ProcessingT[j] += travelingT;
@@ -307,22 +308,26 @@ public class TaskAssign{
 					// move the task to another day and calculate new processing time
 					taskid_move = current_tasks.get(remove_task);  // taskid
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
-//					TaskSequence TaskSequence = new TaskSequence(Schedule.get(newOrder[move_to_day]));
-//					float newTravelingT = TaskSequence.getMinTravelingT();
-//					ProcessingT[move_to_day] -= TravelingT[move_to_day];
-//					ProcessingT[move_to_day] += newTravelingT;
+					TaskSequence TaskSequence = new TaskSequence(Schedule.get(newOrder[move_to_day]), Distance, TaskNum);
+					TaskSequence.Sequence();
+					float newTravelingT = TaskSequence.getMinTravelingT();
+					ProcessingT[move_to_day] -= TravelingT[move_to_day];
+					ProcessingT[move_to_day] += newTravelingT;
 					ProcessingT[move_to_day] += time_change;
+					TravelingT[move_to_day] = newTravelingT;	// update TravelingT;
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move-1).get(move_to_day);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
-//					System.out.print(Arrays.toString(ProcessingT) + "\n");
 				}
 				current_tasks.remove(remove_task);
-//				TaskSequence TaskSequence = new TaskSequence(current_tasks.subList(1, current_tasks.size()));
-//				float newTravelingT = TaskSequence.getMinTravelingT();
-//				ProcessingT[current_day] -= TravelingT[current_day];
-//				ProcessingT[current_day] += newTravelingT;
+				TaskSequence TaskSequence = new TaskSequence(current_tasks, Distance, TaskNum);
+				TaskSequence.Sequence();
+				float newTravelingT = TaskSequence.getMinTravelingT();
+				ProcessingT[current_day] -= TravelingT[current_day];
+				ProcessingT[current_day] += newTravelingT;
 				ProcessingT[current_day] -= time_change;
+				TravelingT[current_day] = newTravelingT;	// update TravelingT;
 				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
+				System.out.print(Arrays.toString(ProcessingT) + "\n");
 			}
 			
 			// check correctness of current result
