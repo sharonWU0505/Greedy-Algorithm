@@ -152,13 +152,17 @@ public class FirstStage{
 	}
 
 	// RecoverScheduleOrder: Arrange the schedule in the order of weekdays, and remove the day tag
-	private void RecoverScheduleOrder(){
-		List<List<Integer>> oriSchedule = Schedule;
+	private void RecoverScheduleOrder(List<List<Integer>> checkedSchedule){
+		List<List<Integer>> oriSchedule = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			oriSchedule.add(Schedule.get(i));
+			System.out.print(checkedSchedule.get(i));
+		}
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		int [] order = {0, 1, 2, 3, 4, 5, 6};
 		for(int i = 0; i <  Weekdays; i++){
-			int dayIndex = (int) oriSchedule.get(i).get(0);
-			order[dayIndex] = i;
+			int day = (int) oriSchedule.get(i).get(0);
+			order[day] = i;
 		}
 		for(int j = 0; j < Weekdays; j++){
 			int index = order[j];
@@ -175,6 +179,7 @@ public class FirstStage{
 		List<Map<Integer, Float>> minOPcost = FindMinCost();
 		FirstStageDaySort(minOPcost);				// sort weekdays
 		
+		List<List<Integer>> checkedSchedule = new ArrayList<>();
 		System.out.println("FirstStageCheck-moving:");
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]th" element of the Schedule.
 		for(int j = 0; j < Weekdays; j++){
@@ -282,9 +287,13 @@ public class FirstStage{
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
 				Rewards[current_day] -= (float) OtherData.get(taskid_move - 1).get(current_day);
-				System.out.print(Arrays.toString(TotalT) + "\n");
+//				System.out.print(Arrays.toString(TotalT) + "\n");
 			}
 			
+//			System.out.print(current_tasks + "\n");
+//			System.out.print(Schedule.get(j) + "\n");
+			checkedSchedule.add(current_tasks);
+			System.out.print("here" + checkedSchedule+ "\n");
 			// check correctness of current result
 //			System.out.print("Day " + (j + 1) + "\n");
 //			for(int d = 0; d < current_tasks.size(); d++){
@@ -292,8 +301,8 @@ public class FirstStage{
 //			}
 //			System.out.print("\n");
 		}
-		
-		RecoverScheduleOrder();
+
+		RecoverScheduleOrder(checkedSchedule);
 
 		// add tasks with their percentage 1 on their working day to the list "TaskPercentages"
 		for(int s = 0; s < Weekdays; s++){
