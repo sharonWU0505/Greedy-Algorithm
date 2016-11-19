@@ -61,13 +61,20 @@ public class FirstStage{
 
 		// Calculate traveling time
 		for(int j = 0; j < Weekdays; j++){
-			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j), Distance, TaskNum);
-			TaskSequence.Sequence();
-			TravelingT[j] = TaskSequence.getMinTravelingT();
+//			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j), Distance, TaskNum);
+//			TaskSequence.Sequence();
+//			TravelingT[j] = TaskSequence.getMinTravelingT();
+//			TotalT[j] = ProcessingT[j] + TravelingT[j];
+			Greedy Greedy = new Greedy(Schedule.get(j), Distance, TaskNum);
+			TravelingT[j] = Greedy.doGreedy();
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
 		}
 
 		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
+		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+		System.out.println("---------------------------------------------------------------------------------");
 	}
 
 	// FindMinCost: find out the minimum opportunity cost of a day
@@ -105,7 +112,7 @@ public class FirstStage{
 			newSchedule.add(daySchedule);
 		}
 
-		System.out.println("minOPcost: " + minOPcost);
+		System.out.println("FirstStageDaySort:\n" + "minOPcost: " + minOPcost);
 		Schedule = newSchedule;
 		return minOPcost;
 	}
@@ -201,9 +208,11 @@ public class FirstStage{
 							List<Integer> newTaskList = new ArrayList<>();
 							newTaskList = Schedule.get(some_other_day);	// the day a task will be moved to
 							newTaskList.add(taskid);
-							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
-							TaskSequence.Sequence();
-							float newTravelingT = TaskSequence.getMinTravelingT();
+//							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
+//							TaskSequence.Sequence();
+//							float newTravelingT = TaskSequence.getMinTravelingT();
+							Greedy Greedy = new Greedy(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
+							float newTravelingT = Greedy.doGreedy();
 							float newTotalT = TotalT[some_other_day] + task_details.get(7) - TravelingT[some_other_day] + newTravelingT;
 
 							float workload_t = Workload.get(some_other_day) * Gamma;
@@ -252,9 +261,11 @@ public class FirstStage{
 					
 					// calculate new traveling time and update total time
 					List<Integer> subTaskSequence = Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size());
-					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
-					TaskSequence.Sequence();
-					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
+//					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
+//					TaskSequence.Sequence();
+//					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
+					Greedy Greedy = new Greedy(subTaskSequence, Distance, TaskNum);
+					TravelingT[move_to_day] = Greedy.doGreedy();
 					ProcessingT[move_to_day] += time_change;
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
@@ -268,9 +279,11 @@ public class FirstStage{
 				
 				// calculate new traveling time and update total time
 				List<Integer> subTaskSequence = current_tasks.subList(1, current_tasks.size());
-				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
-				TaskSequence.Sequence();
-				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
+//				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
+//				TaskSequence.Sequence();
+//				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
+				Greedy Greedy = new Greedy(subTaskSequence, Distance, TaskNum);
+				TravelingT[current_day] = Greedy.doGreedy();
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
 				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
