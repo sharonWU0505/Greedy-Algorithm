@@ -174,14 +174,16 @@ public class FirstStage{
 		FirstStageAssignment();
 		List<Map<Integer, Float>> minOPcost = FindMinCost();
 		FirstStageDaySort(minOPcost);				// sort weekdays
-		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]" element of the Schedule.
+		
+		System.out.println("FirstStageCheck-moving:");
+		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]th" element of the Schedule.
 		for(int j = 0; j < Weekdays; j++){
-			int dayIndex = (int) Schedule.get(j).get(0);
-			newOrder[dayIndex] = j;
+			int day = (int) Schedule.get(j).get(0);
+			newOrder[day] = j;
 		}
 
 		for(int j = 0; j < Weekdays; j++){
-			List<Integer> current_tasks = Schedule.get(j);  	  
+			List<Integer> current_tasks = Schedule.get(j);
 			int current_day = current_tasks.get(0);
 			float workload = Workload.get(current_day) * Gamma;	// available workload
 
@@ -199,14 +201,14 @@ public class FirstStage{
 					float inner_min_loss = 5000;
 					int inner_move_to_day = -1;
 					for(int t = 0; t < Weekdays; t++){
-						int some_other_day = (int) Schedule.get(t).get(0);
+						int some_other_day = (int) Schedule.get(t).get(0);	// the day a task will be moved to
 						if(t == j)
 							continue;
 						// case1: if t is before day j, check if the capacity is enough
 						else if(t < j){							
 							// calculate new traveling time if the task is added
 							List<Integer> newTaskList = new ArrayList<>();
-							newTaskList = Schedule.get(some_other_day);	// the day a task will be moved to
+							newTaskList = Schedule.get(newOrder[some_other_day]);
 							newTaskList.add(taskid);
 //							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
 //							TaskSequence.Sequence();
@@ -216,19 +218,19 @@ public class FirstStage{
 							float newTotalT = TotalT[some_other_day] + task_details.get(7) - TravelingT[some_other_day] + newTravelingT;
 
 							float workload_t = Workload.get(some_other_day) * Gamma;
-							if(newTotalT < (workload_t - TotalT[some_other_day])){
-								float diff = current_rewards - task_details.get(some_other_day);
-								if(diff < inner_min_loss){
-									inner_min_loss = diff;
+							if(newTotalT < workload_t){
+								float rewards_diff = current_rewards - task_details.get(some_other_day);
+								if(rewards_diff < inner_min_loss){
+									inner_min_loss = rewards_diff;
 									inner_move_to_day = some_other_day;
 								}
 							}
 						}
 						// case2: if t is after day j, suppose that it could be moved to day t
 						else{
-							float diff = current_rewards - task_details.get(some_other_day);
-							if(diff < inner_min_loss){
-								inner_min_loss = diff;
+							float rewards_diff = current_rewards - task_details.get(some_other_day);
+							if(rewards_diff < inner_min_loss){
+								inner_min_loss = rewards_diff;
 								inner_move_to_day = some_other_day;
 							}
 						}
@@ -237,56 +239,50 @@ public class FirstStage{
 					// get the min_loss and the task to be removed
 					if(inner_min_loss < min_loss){
 						min_loss = inner_min_loss;
-						remove_task = k;	// k is the list index, not taskId
+						remove_task = k;					// k is the list index, not taskId
 						move_to_day = inner_move_to_day;
-						time_change = task_details.get(7);
+						time_change = task_details.get(7);	// processing time
 					}
 				}
 				
 				int taskid_move;
 				if(move_to_day == -1){
 					// If there's no way to move a task to another weekday, put the task into the "Unassigned List" 
-					// The situation will only happen on the task assignment of Sunday 
-					remove_task = 1;
-					taskid_move = current_tasks.get(remove_task);
+					// The situation will only happen on the task assignment of the last day
+					remove_task = 1;	// k is the list index, not taskId
+					taskid_move = current_tasks.get(remove_task);	// taskId
 					UnassignedTasks.add(taskid_move);
-					time_change = (float) OtherData.get(taskid_move-1).get(7);
+					time_change = (float) OtherData.get(taskid_move - 1).get(7);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
-					System.out.print(Arrays.toString(TotalT) + "\n");
 				}
 				else{
 					// move the task to another day and calculate new processing time
-					taskid_move = current_tasks.get(remove_task);  // taskid
+					taskid_move = current_tasks.get(remove_task);  // taskId
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
-					
-					// calculate new traveling time and update total time
-					List<Integer> subTaskSequence = Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size());
+					// calculate new traveling time and update total time after a task is added
 //					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //					TaskSequence.Sequence();
 //					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
-					Greedy Greedy = new Greedy(subTaskSequence, Distance, TaskNum);
-					TravelingT[move_to_day] = Greedy.doGreedy();
+					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, TaskNum);
+					TravelingT[move_to_day] = Greedy.doGreedy();					
 					ProcessingT[move_to_day] += time_change;
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
-					
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
-					System.out.print(Arrays.toString(TotalT) + "\n");
 				}
 				
 				// remove task from current day
-				current_tasks.remove(remove_task);
-				
-				// calculate new traveling time and update total time
-				List<Integer> subTaskSequence = current_tasks.subList(1, current_tasks.size());
+				current_tasks.remove(remove_task);	// current_tasks and Schedule.get(j) are saved at the same place =o=
+				// calculate new traveling time and update total time after a task is removed
 //				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //				TaskSequence.Sequence();
 //				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
-				Greedy Greedy = new Greedy(subTaskSequence, Distance, TaskNum);
+				Greedy Greedy = new Greedy(current_tasks.subList(1, current_tasks.size()), Distance, TaskNum);
 				TravelingT[current_day] = Greedy.doGreedy();
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
-				Rewards[current_day] -= (float) OtherData.get(taskid_move-1).get(current_day);
+				Rewards[current_day] -= (float) OtherData.get(taskid_move - 1).get(current_day);
+				System.out.print(Arrays.toString(TotalT) + "\n");
 			}
 			
 			// check correctness of current result
@@ -310,7 +306,7 @@ public class FirstStage{
 			}
 		}
 		
-		System.out.println("\n" + "FirstStageCheck:\n" + Schedule);
+		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
 		System.out.println("UnassignedTasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
