@@ -66,7 +66,7 @@ public class TaskAssign{
 
 		for(int i = 0; i < UnassignedTasks.size(); i++){
 			// get the maximum rewards and ideal day of each unassigned task
-			// the maximum rewards = (max_rewards * the proportion the task may be done) - the split cost 
+			// the maximum rewards = (max_rewards * the proportion the task could be done) - the split cost 
 			int taskid = UnassignedTasks.get(i);
 			List<Float> task_details = OtherData.get(taskid - 1);
 			float cost = (float) task_details.get(8);	// split cost

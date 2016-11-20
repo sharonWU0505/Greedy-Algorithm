@@ -24,7 +24,7 @@ public class main {
 		}
 	}
 
-	public main(String[] args) {
+	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 
 		// GeneralInput

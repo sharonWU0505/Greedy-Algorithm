@@ -156,7 +156,6 @@ public class FirstStage{
 		List<List<Integer>> oriSchedule = new ArrayList<>();
 		for(int i = 0; i < Weekdays; i++){
 			oriSchedule.add(Schedule.get(i));
-			System.out.print(checkedSchedule.get(i));
 		}
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		int [] order = {0, 1, 2, 3, 4, 5, 6};
@@ -192,7 +191,7 @@ public class FirstStage{
 			int current_day = current_tasks.get(0);
 			float workload = Workload.get(current_day) * Gamma;	// available workload
 
-			while(TotalT[current_day] > workload){		
+			while(TotalT[current_day] > workload){	
 				float min_loss = 5000;
 				int remove_task = -1;
 				int move_to_day = -1;
@@ -213,15 +212,17 @@ public class FirstStage{
 						else if(t < j){							
 							// calculate new traveling time if the task is added
 							List<Integer> newTaskList = new ArrayList<>();
-							newTaskList = Schedule.get(newOrder[some_other_day]);
+							for(int x = 0; x < Schedule.get(newOrder[some_other_day]).size(); x++){
+								newTaskList.add(Schedule.get(newOrder[some_other_day]).get(x));
+							}
 							newTaskList.add(taskid);
+							
 //							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
 //							TaskSequence.Sequence();
 //							float newTravelingT = TaskSequence.getMinTravelingT();
 							Greedy Greedy = new Greedy(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
 							float newTravelingT = Greedy.doGreedy();
 							float newTotalT = TotalT[some_other_day] + task_details.get(7) - TravelingT[some_other_day] + newTravelingT;
-
 							float workload_t = Workload.get(some_other_day) * Gamma;
 							if(newTotalT < workload_t){
 								float rewards_diff = current_rewards - task_details.get(some_other_day);
@@ -265,10 +266,11 @@ public class FirstStage{
 					taskid_move = current_tasks.get(remove_task);  // taskId
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
 					// calculate new traveling time and update total time after a task is added
+
 //					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //					TaskSequence.Sequence();
 //					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
-					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, TaskNum);
+					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, TaskNum);	
 					TravelingT[move_to_day] = Greedy.doGreedy();					
 					ProcessingT[move_to_day] += time_change;
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
@@ -279,10 +281,12 @@ public class FirstStage{
 				// remove task from current day
 				current_tasks.remove(remove_task);	// current_tasks and Schedule.get(j) are saved at the same place =o=
 				// calculate new traveling time and update total time after a task is removed
+	
 //				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //				TaskSequence.Sequence();
 //				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
 				Greedy Greedy = new Greedy(current_tasks.subList(1, current_tasks.size()), Distance, TaskNum);
+				
 				TravelingT[current_day] = Greedy.doGreedy();
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
@@ -290,10 +294,9 @@ public class FirstStage{
 //				System.out.print(Arrays.toString(TotalT) + "\n");
 			}
 			
-//			System.out.print(current_tasks + "\n");
 //			System.out.print(Schedule.get(j) + "\n");
 			checkedSchedule.add(current_tasks);
-			System.out.print("here" + checkedSchedule+ "\n");
+			System.out.print("here" + checkedSchedule+ "\n\n");
 			// check correctness of current result
 //			System.out.print("Day " + (j + 1) + "\n");
 //			for(int d = 0; d < current_tasks.size(); d++){
