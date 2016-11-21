@@ -4,10 +4,10 @@ import java.util.List;
 public class TaskAssign{
 	// Attribute
 	private List<Float> Workload;
+	private List<List> OtherData;
 	private float Gamma = 0;
 	private int Weekdays = 0;
 	private int TaskNum = 0;
-	private List<List> OtherData;
 	private List<List<Integer>> Schedule;
 	private List<Integer> UnassignedTasks;
 	private List<TaskSplit> TaskPercentages;
