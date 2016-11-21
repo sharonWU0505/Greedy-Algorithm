@@ -110,7 +110,7 @@ public class SecondStage{
 		return new_unassignedTasks;
 	}
 
-	private void SecondStageAssignment(){
+	public void SecondStageAssignment(){
 		List<TaskSplit> new_unassignedTasks = SecondStageTaskSort();
 		List<Integer> final_unassignedTasks = new ArrayList<>();	// the final unassigned tasks
 		// check each weekday's capacity left
@@ -131,45 +131,60 @@ public class SecondStage{
 			// if the task should not be split again
 			// or doing a task makes no more rewards
 			if(aTask.getCounter() >= task_details.get(9) || ideal_day == -1){
+				final_unassignedTasks.add(taskid);
 				new_unassignedTasks.remove(i);
 				i--;
-				continue;
-			}
-			
-			boolean re_calculate_rewards = false;
-			if(LeftT[ideal_day] > 0){
-				// complete the task
-				float percentage = 0;
-				if(Workload.get(ideal_day) * Gamma > aTask.getTotalt()){
-					percentage = aTask.getPossiPercentage();
-					float pricessingT = task_details.get(7) * percentage;
-					TotalT[ideal_day] = aTask.getTotalt();
-					ProcessingT[ideal_day] += pricessingT;
-					TravelingT[ideal_day] = TotalT[ideal_day] - ProcessingT[ideal_day];
-					LeftT[ideal_day] = Workload.get(ideal_day) * Gamma - aTask.getTotalt();
-					Rewards[ideal_day] += aTask.getMaxRewards();
-					new_unassignedTasks.remove(i);
-					i--;
-				}
-				// cannot complete, split the task and add a new task to the UassignedTasks
-				else{
-					float new_travelingT = aTask.getTotalt() - TotalT[ideal_day] - task_details.get(7) * aTask.getPossiPercentage();
-					float new_leftT = LeftT[ideal_day] - new_travelingT;
-					percentage = new_leftT / task_details.get(7);
-					float left_percentage = aTask.getPossiPercentage() - percentage;
-					LeftT[ideal_day] = 0;
-					re_calculate_rewards = true;
-				}
-				
-				// update Schedule
-				aTask.splitInto(ideal_day, percentage);
-				Schedule.get(ideal_day).add(taskid);
-				TaskPercentages.add(aTask);
-				System.out.println("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage());
 			}
 			else{
-				re_calculate_rewards = true;
+				boolean re_calculate_rewards = false;
+				if(LeftT[ideal_day] > 0){
+					// complete the task
+					float percentage = 0;
+					if(Workload.get(ideal_day) * Gamma > aTask.getTotalt()){
+						percentage = aTask.getPossiPercentage();
+						float pricessingT = task_details.get(7) * percentage;
+						TotalT[ideal_day] = aTask.getTotalt();
+						ProcessingT[ideal_day] += pricessingT;
+						TravelingT[ideal_day] = TotalT[ideal_day] - ProcessingT[ideal_day];
+						LeftT[ideal_day] = Workload.get(ideal_day) * Gamma - aTask.getTotalt();
+						Rewards[ideal_day] += aTask.getMaxRewards();
+						new_unassignedTasks.remove(i);
+						i--;
+					}
+					// cannot complete, split the task and add a new task to the UassignedTasks
+					else{
+						float new_travelingT = aTask.getTotalt() - TotalT[ideal_day] - task_details.get(7) * aTask.getPossiPercentage();
+						float new_leftT = LeftT[ideal_day] - new_travelingT;
+						percentage = new_leftT / task_details.get(7);
+						float left_percentage = aTask.getPossiPercentage() - percentage;
+						LeftT[ideal_day] = 0;
+						re_calculate_rewards = true;
+						// make a new task
+					}
+					
+					// update Schedule
+					aTask.splitInto(ideal_day, percentage);
+					Schedule.get(ideal_day).add(taskid);
+					TaskPercentages.add(aTask);
+					System.out.println("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage());
+				}
+				else{
+					re_calculate_rewards = true;
+					// make a new task
+				}
 			}
 		}
+
+		// updates unassigned tasks
+		UnassignedTasks = final_unassignedTasks;
+
+		// put unassigned tasks into the list "TaskPercentages" without dealing days & percentages 
+		for(int u = 0; u < UnassignedTasks.size(); u++){
+			int taskid = UnassignedTasks.get(u);
+			TaskSplit aUnassignedTask = new TaskSplit(taskid);
+			TaskPercentages.add(aUnassignedTask);
+		}
 	}
+	
+	
 }
