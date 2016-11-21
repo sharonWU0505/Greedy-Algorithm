@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-
-public class main {
+public class ExeSpecialInput{
 	private static float[][] Distance = null;
 	private static List<List> Detail = new ArrayList<>();
 	
@@ -27,17 +25,17 @@ public class main {
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 
-		// GeneralInput
-		Scanner reader = new Scanner(System.in);
-		String testfile = reader.next();	// /src/general_input.txt
-		String testpath = root + testfile;
-		GeneralInput GeneralInput = new GeneralInput();
-		GeneralInput.ReadTestFile(testpath);
-		Detail = GeneralInput.GetDetail();
-		Distance = GeneralInput.GetDistance();
-		System.out.print("Finish Input. \n");
+		// SpecialInput
+		SpecialInput SepcialInput = new SpecialInput();
+		String detailfile = "/src/specialinput/data_1025.txt";
+		String detailpath = root + detailfile;
+		Detail = SepcialInput.GetDetail(detailpath);		// read detail file
+
+		String distancefile = "/src/specialinput/distance_1025.txt";
+		String distancepath = root + distancefile;
+		Distance = SepcialInput.GetDistance(distancepath);	// read distance file
 
 		// Execute and Output
 		Excecute();
 	}
-} 
+}

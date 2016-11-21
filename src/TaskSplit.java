@@ -64,10 +64,8 @@ public class TaskSplit{
 	
 	public float getPercentage(int day){
 		float percentage = 0;
-		for(int i = 0; i< split_to_days.size(); i++){
-			if(split_to_days.get(i) == day){
-				percentage = split_percentage.get(i);
-			}
+		if(split_to_days.contains(day)){
+			percentage = split_percentage.get(split_to_days.indexOf(day));
 		}
 		return percentage;
 	}
