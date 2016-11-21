@@ -20,7 +20,6 @@ public class SecondStage{
 	private float [] LeftT = {0, 0, 0, 0, 0, 0, 0};
 	private float [][] Distance;
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();
-	private float[][] FinalTaskPercentages;	// for final output
 	
 	// Constructor
 	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, List<TaskSplit> TaskPercentages){
@@ -156,9 +155,14 @@ public class SecondStage{
 						float new_travelingT = aTask.getTotalt() - TotalT[ideal_day] - task_details.get(7) * aTask.getPossiPercentage();
 						float new_leftT = LeftT[ideal_day] - new_travelingT;
 						percentage = new_leftT / task_details.get(7);
-						float left_percentage = aTask.getPossiPercentage() - percentage;
+						float pricessingT = task_details.get(7) * percentage;
+						ProcessingT[ideal_day] += pricessingT;
+						TravelingT[ideal_day] = new_travelingT;
+						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
 						LeftT[ideal_day] = 0;
+						float left_percentage = aTask.getPossiPercentage() - percentage;
 						re_calculate_rewards = true;
+						// remove current task?
 						// make a new task
 					}
 					
@@ -186,20 +190,6 @@ public class SecondStage{
 		}
 	}
 	
-	public List<Float> getProcessingTimeofTasks(){
-		List<Float> taskstime = new ArrayList<>();
-		for(int i = 0; i < Weekdays; i++){
-			float totaltime = 0;
-			for(int j = 0; j < Schedule.get(i).size(); j++){
-				int taskindex = Schedule.get(i).get(j) - 1;
-				List<Float> task_details = OtherData.get(taskindex);
-				totaltime += task_details.get(7);
-			}
-			taskstime.add(totaltime);
-		}
-		return taskstime;
-	}
-	
 	public List<List<Integer>> getSchedule(){
 		return Schedule;
 	}
@@ -222,5 +212,9 @@ public class SecondStage{
 	
 	public float[] getTotalT(){
 		return TotalT;
+	}
+	
+	public List<TaskSplit> getTaskPercentages(){
+		return TaskPercentages;
 	}
 }
