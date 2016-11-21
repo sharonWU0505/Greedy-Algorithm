@@ -47,7 +47,7 @@ public class SecondStage{
 	}
 	
 	// SecondStageSort: sort unassigned tasks by their maximum possible rewards
-	private List<TaskSplit> SecondStageSort(){
+	private List<TaskSplit> SecondStageTaskSort(){
 		List<TaskSplit> new_unassignedTasks = new ArrayList<>();  // unassigned tasks with more details
 		for(int i = 0; i < UnassignedTasks.size(); i++){
 			// get the maximum rewards and ideal day of each unassigned task
@@ -89,7 +89,7 @@ public class SecondStage{
 	}
 
 	private void SecondStageAssignment(){
-		List<TaskSplit> new_unassignedTasks = SecondStageSort();
+		List<TaskSplit> new_unassignedTasks = SecondStageTaskSort();
 		List<Integer> final_unassignedTasks = new ArrayList<>();	// the final unassigned tasks
 		
 		
