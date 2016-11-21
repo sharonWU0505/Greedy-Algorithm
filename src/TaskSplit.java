@@ -4,6 +4,7 @@ import java.util.List;
 
 public class TaskSplit{
 	private int taskId;
+	private float travelingt;
 	private float max_rewards;
 	private int ideal_day;
 	private List<Integer> split_to_days;
@@ -16,19 +17,25 @@ public class TaskSplit{
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
 		left_unfinished_percentage = 1;
+		travelingt = 0;
 		max_rewards = 0;
 		ideal_day = 0;
 		counter = 0;
 	}
 	
-	public TaskSplit(int id, float rewards, int day){
+	public TaskSplit(int id, float new_travelingt, float rewards, int day){
 		taskId = id;
+		travelingt = new_travelingt;
 		max_rewards = rewards;
 		ideal_day = day;
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
 		left_unfinished_percentage = 1;
 		counter = 0;
+	}
+
+	public float getTravelingt(){
+		return travelingt;
 	}
 
 	public int getTaskId(){
