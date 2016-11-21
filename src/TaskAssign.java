@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TaskAssign{
@@ -104,17 +105,15 @@ public class TaskAssign{
 //				i--;
 //			}
 
-
 	// Print Results
 	private void PrintResult(){
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.println("Schedule: " + Schedule);
-		System.out.print("Rewards: ");
-		for(int j = 0; j < Weekdays; j++){
-			System.out.print(Rewards[j] + " / ");
-		}
-		System.out.print("\n");
+		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
