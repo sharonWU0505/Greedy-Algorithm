@@ -140,7 +140,7 @@ public class FirstStage{
 				}
 			}
 		}
-		// Create new schedule with priority
+		// Create new schedule with priority between weekdays
 		List<List<Integer>> newSchedule = new ArrayList<>();
 		for(int i = 0; i < Weekdays; i++){
 			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0];
@@ -152,7 +152,7 @@ public class FirstStage{
 	}
 
 	// RecoverScheduleOrder: Arrange the schedule in the order of weekdays, and remove the day tag
-	private void RecoverScheduleOrder(List<List<Integer>> checkedSchedule){
+	private void RecoverScheduleOrder(){
 		List<List<Integer>> oriSchedule = new ArrayList<>();
 		for(int i = 0; i < Weekdays; i++){
 			oriSchedule.add(Schedule.get(i));
@@ -177,8 +177,7 @@ public class FirstStage{
 		FirstStageAssignment();
 		List<Map<Integer, Float>> minOPcost = FindMinCost();
 		FirstStageDaySort(minOPcost);				// sort weekdays
-		
-		List<List<Integer>> checkedSchedule = new ArrayList<>();
+
 		System.out.println("FirstStageCheck-moving:");
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]th" element of the Schedule.
 		for(int j = 0; j < Weekdays; j++){
@@ -212,11 +211,13 @@ public class FirstStage{
 						else if(t < j){							
 							// calculate new traveling time if the task is added
 							List<Integer> newTaskList = new ArrayList<>();
+							// add original tasks one by one
 							for(int x = 0; x < Schedule.get(newOrder[some_other_day]).size(); x++){
 								newTaskList.add(Schedule.get(newOrder[some_other_day]).get(x));
 							}
 							newTaskList.add(taskid);
-							
+
+							// calculate new traveling time for checking
 //							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
 //							TaskSequence.Sequence();
 //							float newTravelingT = TaskSequence.getMinTravelingT();
@@ -262,17 +263,17 @@ public class FirstStage{
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
 				}
 				else{
-					// move the task to another day and calculate new processing time
+					// move the task to another day
 					taskid_move = current_tasks.get(remove_task);  // taskId
 					Schedule.get(newOrder[move_to_day]).add(taskid_move);
-					// calculate new traveling time and update total time after a task is added
 
+					// calculate new traveling time
 //					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //					TaskSequence.Sequence();
 //					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
 					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, TaskNum);	
 					TravelingT[move_to_day] = Greedy.doGreedy();					
-					ProcessingT[move_to_day] += time_change;
+					ProcessingT[move_to_day] += time_change;	// calculate new processing time
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
 					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
@@ -280,8 +281,8 @@ public class FirstStage{
 				
 				// remove task from current day
 				current_tasks.remove(remove_task);	// current_tasks and Schedule.get(j) are saved at the same place =o=
+
 				// calculate new traveling time and update total time after a task is removed
-	
 //				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //				TaskSequence.Sequence();
 //				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
@@ -293,31 +294,23 @@ public class FirstStage{
 				Rewards[current_day] -= (float) OtherData.get(taskid_move - 1).get(current_day);
 //				System.out.print(Arrays.toString(TotalT) + "\n");
 			}
-			
-//			System.out.print(Schedule.get(j) + "\n");
-			checkedSchedule.add(current_tasks);
-			System.out.print("here" + checkedSchedule+ "\n\n");
-			// check correctness of current result
-//			System.out.print("Day " + (j + 1) + "\n");
-//			for(int d = 0; d < current_tasks.size(); d++){
-//				System.out.print(current_tasks.get(d) + ",");
-//			}
-//			System.out.print("\n");
+//			System.out.print(Schedule.get(j) + "\n");	// check correctness of current result
 		}
 
-		RecoverScheduleOrder(checkedSchedule);
+		// recover priority between weekdays
+		RecoverScheduleOrder();
 
-		// add tasks with their percentage 1 on their working day to the list "TaskPercentages"
-		for(int s = 0; s < Weekdays; s++){
-			List<Integer> daily_schedule = Schedule.get(s);
-			for(int t = 0; t < daily_schedule.size(); t++){
-				int taskid = daily_schedule.get(t);
+		// add tasks with percentage 1 on their working day to the list "TaskPercentages"
+		for(int j = 0; j < Weekdays; j++){
+			List<Integer> daily_schedule = Schedule.get(j);
+			for(int k = 0; k < daily_schedule.size(); k++){
+				int taskid = daily_schedule.get(k);
 				TaskSplit aTask = new TaskSplit(taskid);
-				aTask.splitInto(s, 1);	// the percentages are all 1 in the first stage
+				aTask.splitInto(j, 1);	// the percentages are all 1 in the first stage
 				TaskPercentages.add(aTask);
 			}
 		}
-		
+
 		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
 		System.out.println("UnassignedTasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
