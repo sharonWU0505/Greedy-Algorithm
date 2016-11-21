@@ -56,7 +56,7 @@ public class SecondStage{
 			int taskid = UnassignedTasks.get(i);
 			List<Float> task_details = OtherData.get(taskid - 1);
 			float split_cost = (float) task_details.get(8);	// split cost
-			float new_travelingt = 0;
+			float new_totalt = 0;
 			float max_rewards = 0;
 			int ideal_day = -1;
 			for(int j = 0; j < Weekdays; j++){
@@ -76,13 +76,13 @@ public class SecondStage{
 					float possi_percentage = newLeftT / task_details.get(7);
 					float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
 					if(inner_rewards >= max_rewards){
-						new_travelingt = newTravelingT;
+						new_totalt = newTotalT;
 						max_rewards = inner_rewards;
 						ideal_day = j;
 					}
 				}
 			}
-			TaskSplit aTask = new TaskSplit(taskid, new_travelingt, max_rewards, ideal_day);
+			TaskSplit aTask = new TaskSplit(taskid, new_totalt, max_rewards, ideal_day);
 			
 			// set all unassigned tasks in order by their maximum possible rewards
 			if(i == 0){
@@ -144,16 +144,8 @@ public class SecondStage{
 				for(int x = 0; x < Schedule.get(ideal_day).size(); x++){
 					temp_tasklist.add(Schedule.get(ideal_day).get(x));
 				}
-				temp_tasklist.add(taskid);
-//				temp_tasklist.add(aTask.getTaskId());
-//				TaskSequence TaskSequence = new TaskSequence(temp_tasklist, Distance, Distance.length);
-//				TaskSequence.Sequence();
-//				float temp_travelingt = TaskSequence.getMinTravelingT();
-				// calculate new traveling time for checking
-				Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
-				float newTravelingT = Greedy.doGreedy();
-				float newTotalT = TotalT[ideal_day] + task_details.get(7) - TravelingT[ideal_day] + newTravelingT;
-				float workload_t = Workload.get(some_other_day) * Gamma;
+
+				float 
 				if((temp_travelingt - TravelingT[ideal]) < capacity_left[ideal]){
 					TravelingT[ideal] = temp_travelingt;
 					float processingT = task_details.get(7);
