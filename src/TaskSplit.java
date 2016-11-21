@@ -4,8 +4,10 @@ import java.util.List;
 
 public class TaskSplit{
 	private int taskId;
+	private float totalt;
 	private float max_rewards;
 	private int ideal_day;
+	private float possi_percentage;
 	private List<Integer> split_to_days;
 	private List<Float> split_percentage;
 	private float left_unfinished_percentage;
@@ -16,19 +18,27 @@ public class TaskSplit{
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
 		left_unfinished_percentage = 1;
+		totalt = 0;
 		max_rewards = 0;
 		ideal_day = 0;
+		possi_percentage = 0;
 		counter = 0;
 	}
 	
-	public TaskSplit(int id, float rewards, int day){
+	public TaskSplit(int id, float new_totalt, float rewards, int day, float possi_percentage){
 		taskId = id;
+		totalt = new_totalt;
 		max_rewards = rewards;
 		ideal_day = day;
+		this.possi_percentage = possi_percentage;
 		split_to_days = new ArrayList<>();
 		split_percentage = new ArrayList<>();
 		left_unfinished_percentage = 1;
 		counter = 0;
+	}
+
+	public float getTotalt(){
+		return totalt;
 	}
 
 	public int getTaskId(){
@@ -51,6 +61,10 @@ public class TaskSplit{
 		return ideal_day;
 	}
 	
+	public float getPossiPercentage(){
+		return possi_percentage;
+	}
+
 	public float getUnfinishedPercentage(){
 		return left_unfinished_percentage;
 	}

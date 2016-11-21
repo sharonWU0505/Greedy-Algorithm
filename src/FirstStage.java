@@ -74,6 +74,7 @@ public class FirstStage{
 		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
 		System.out.println("---------------------------------------------------------------------------------");
 	}
 
@@ -311,8 +312,10 @@ public class FirstStage{
 			}
 		}
 
+		System.out.println("---------------------------------------------------------------------------------");
 		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
 		System.out.println("UnassignedTasks: " + UnassignedTasks);
+		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 

@@ -50,7 +50,7 @@ public class Greedy{
 				minTravelingT += timeadded;
 				count++;
 			}
-			passedTasks.add(passedTasks.get(passedTasks.size() - 1));	// make it be circle
+			passedTasks.add(0, passedTasks.get(passedTasks.size() - 1));	// make it be circle
 			finalDaySchedule = passedTasks;
 			minTravelingT += Distance[passedTasks.get(passedTasks.size() - 1) - 1][passedTasks.get(0) - 1];
 		}
