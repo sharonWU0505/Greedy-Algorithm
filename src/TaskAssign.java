@@ -282,6 +282,7 @@ public class TaskAssign{
 	// End Print Results
 
 	public void ExecuteTaskAssign(){
+		// First Stage
 		FirstStage FirstStage = new FirstStage(Workload, OtherData, Gamma, Weekdays, Schedule, Distance, TaskPercentages);
 		FirstStage.FirstStageCheck();
 		Schedule = FirstStage.getFirstStageSchedule();
