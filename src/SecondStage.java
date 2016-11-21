@@ -186,5 +186,41 @@ public class SecondStage{
 		}
 	}
 	
+	public List<Float> getProcessingTimeofTasks(){
+		List<Float> taskstime = new ArrayList<>();
+		for(int i = 0; i < Weekdays; i++){
+			float totaltime = 0;
+			for(int j = 0; j < Schedule.get(i).size(); j++){
+				int taskindex = Schedule.get(i).get(j) - 1;
+				List<Float> task_details = OtherData.get(taskindex);
+				totaltime += task_details.get(7);
+			}
+			taskstime.add(totaltime);
+		}
+		return taskstime;
+	}
 	
+	public List<List<Integer>> getSchedule(){
+		return Schedule;
+	}
+	
+	public List<Integer> getUnassignedTasks(){
+		return UnassignedTasks;
+	}
+	
+	public float[] getRewards(){
+		return Rewards;
+	}
+	
+	public float[] getProcessingT(){
+		return ProcessingT;
+	}
+	
+	public float[] getTravelingT(){
+		return TravelingT;
+	}
+	
+	public float[] getTotalT(){
+		return TotalT;
+	}
 }
