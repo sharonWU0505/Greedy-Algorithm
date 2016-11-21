@@ -160,6 +160,7 @@ public class SecondStage{
 						TravelingT[ideal_day] = new_travelingT;
 						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
 						LeftT[ideal_day] = 0;
+						Rewards[ideal_day] += task_details.get(ideal_day) * percentage;
 						float left_percentage = aTask.getPossiPercentage() - percentage;
 						re_calculate_rewards = true;
 						// remove current task?
