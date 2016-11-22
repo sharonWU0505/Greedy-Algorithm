@@ -48,7 +48,8 @@ public class SecondStage{
 	// SecondStageSort: sort unassigned tasks by their maximum possible rewards
 	private List<TaskSplit> SecondStageTaskSort(){
 		System.out.println("SecondStageTaskSort:");
-		
+//		System.out.println("Left Time: " + Arrays.toString(LeftT));
+
 		List<TaskSplit> new_unassignedTasks = new ArrayList<>();  // unassigned tasks with more details
 		for(int i = 0; i < UnassignedTasks.size(); i++){
 			// get the maximum rewards and ideal day of each unassigned task
@@ -62,28 +63,34 @@ public class SecondStage{
 			int ideal_day = -1;
 			float possi_percentage = 0;
 			for(int j = 0; j < Weekdays; j++){
-				// calculate new traveling time for checking
-				List<Integer> temp_tasklist = new ArrayList<>();
-				// add original tasks one by one
-				for(int x = 0; x < Schedule.get(j).size(); x++){
-					temp_tasklist.add(Schedule.get(j).get(x));
-				}
-				temp_tasklist.add(taskid);
-				// calculate new traveling time for checking
-				Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
-				float newTravelingT = Greedy.doGreedy();
-				float newTotalT = TotalT[j] - TravelingT[j] + newTravelingT;
-				float newLeftT = Workload.get(j) * Gamma - newTotalT;
-				System.out.print(temp_tasklist + " >> ");
-				System.out.println("LeftT[" + j + "] = " + LeftT[j] + " ,newLeftT = " + newLeftT);
-				if(newLeftT > 0){
-					possi_percentage = newLeftT / task_details.get(7);
-					float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
-					if(inner_rewards >= max_rewards){
-						new_totalt = newTotalT - task_details.get(7) * possi_percentage;
-						max_rewards = inner_rewards;
-						ideal_day = j;
+				if(LeftT[j] > 0){
+					// calculate new traveling time for checking
+					List<Integer> temp_tasklist = new ArrayList<>();
+					// add original tasks one by one
+					for(int x = 0; x < Schedule.get(j).size(); x++){
+						temp_tasklist.add(Schedule.get(j).get(x));
 					}
+					temp_tasklist.add(taskid);
+					// calculate new traveling time for checking
+					Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
+					float newTravelingT = Greedy.doGreedy();
+					float newTotalT = TotalT[j] - TravelingT[j] + newTravelingT;	// new total time used except partial processing time
+					float newLeftT = Workload.get(j) * Gamma - newTotalT;			// time left for doing more tasks
+//					System.out.print(temp_tasklist + " >> ");
+//					System.out.println("LeftT[" + j + "] = " + LeftT[j] + " ,newLeftT = " + newLeftT);
+					
+					if(newLeftT > 0){
+						possi_percentage = newLeftT / task_details.get(7);
+						float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
+						if(inner_rewards >= max_rewards){
+							new_totalt = newTotalT - task_details.get(7) * possi_percentage;	// new total time left minus partial processing time
+							max_rewards = inner_rewards;
+							ideal_day = j;
+						}
+					}
+				}
+				else{
+					continue;
 				}
 			}
 			TaskSplit aTask = new TaskSplit(taskid, new_totalt, max_rewards, ideal_day, possi_percentage);
@@ -114,19 +121,22 @@ public class SecondStage{
 	}
 
 	public void SecondStageAssignment(){
+		System.out.println("\n SecondStageTaskSort:");
 		List<TaskSplit> new_unassignedTasks = SecondStageTaskSort();
 		List<Integer> final_unassignedTasks = new ArrayList<>();	// the final unassigned tasks
 
 		// Try to split an unassigned task into the day where the max_rewards exists 
-		// if the ideal day is out of capacity, re-calculate its max_rewards
+		// if the ideal day is out of capacity or a task can't reach its maximum possible rewards
+		// re-calculate its max_rewards
 		for(int i = 0; i < new_unassignedTasks.size(); i++){
 			TaskSplit aTask = new_unassignedTasks.get(i);
 			int taskid = aTask.getTaskId();
 			int ideal_day = aTask.getIdealDay();
 			List<Float> task_details = OtherData.get(taskid - 1);
 			
-			// if the task should not be split again
-			// or doing a task makes no more rewards
+			// if the task could not be split again
+			// or doing a task makes will do harm to rewards
+			// never try to assign this task
 			if(aTask.getCounter() >= task_details.get(9) || ideal_day == -1){
 				final_unassignedTasks.add(taskid);
 				new_unassignedTasks.remove(i);
