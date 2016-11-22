@@ -54,57 +54,6 @@ public class TaskAssign{
 		}
 	}
 
-//			if(re_calculate_rewards){
-//				float cost = (float) task_details.get(8);	// split cost
-//				float max_rewards = 0;
-//				int ideal_day = -1;
-//				
-//				for(int j = 0; j < Weekdays; j++){
-//					if(capacity_left[j] == 0)
-//						continue;
-//
-//					float inner_rewards = 0;
-//					if(aTask.getUnfinishedPercentage() < capacity_left[j]){
-//						float task_left = aTask.getUnfinishedPercentage();
-//						inner_rewards = (task_details.get(j) * task_left) - cost;
-//					}
-//					else{
-//						inner_rewards = (task_details.get(j) * capacity_left[j]) - cost;
-//					}
-//					
-//					if(inner_rewards > max_rewards){
-//						max_rewards = inner_rewards;
-//						ideal_day = j;
-//					}
-////					System.out.println("inner = " + inner_rewards);
-//				}
-//				if(ideal_day == -1){
-//					// no way to get positive rewards
-//					if(aTask.getUnfinishedPercentage() == 1)
-//						new_unassignedTasks.add(taskid);
-//					unassiTaskSequence.remove(i);
-//					i--;
-//					continue;
-//				}
-//				
-//				aTask.setMaxRewards(max_rewards);
-//				aTask.setIdealDay(ideal_day);
-//				// put it back to the sequence
-//				for(int t = 0; t < unassiTaskSequence.size(); t++){
-//					TaskSplit ptr = unassiTaskSequence.get(t);
-//					if(max_rewards >= ptr.getMaxRewards()){
-//						unassiTaskSequence.add(t, aTask);
-//						break;
-//					}
-//					else if(t == unassiTaskSequence.size()-1){
-//						unassiTaskSequence.add(aTask);
-//						break;
-//					}
-//				}
-//				unassiTaskSequence.remove(i);
-//				i--;
-//			}
-
 	// Print Results
 	private void PrintResult(){
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
