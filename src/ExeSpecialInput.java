@@ -22,7 +22,7 @@ public class ExeSpecialInput{
 			Greedy Greedy = new Greedy(Schedule.get(i), Distance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
 			float totalT = Greedy.doGreedy() + processingT[i];
-			System.out.print("TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+			System.out.print("Day" + i + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
 		}
 	}
 
