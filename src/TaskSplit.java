@@ -37,6 +37,13 @@ public class TaskSplit{
 		counter = 0;
 	}
 
+	public void setDetails(float new_totalt, float rewards, int day, float possi_percentage){
+		totalt = new_totalt;
+		max_rewards = rewards;
+		ideal_day = day;
+		this.possi_percentage = possi_percentage;
+	}
+	
 	public float getTotalt(){
 		return totalt;
 	}

@@ -47,6 +47,8 @@ public class SecondStage{
 	
 	// SecondStageSort: sort unassigned tasks by their maximum possible rewards
 	private List<TaskSplit> SecondStageTaskSort(){
+		System.out.println("SecondStageTaskSort:");
+		
 		List<TaskSplit> new_unassignedTasks = new ArrayList<>();  // unassigned tasks with more details
 		for(int i = 0; i < UnassignedTasks.size(); i++){
 			// get the maximum rewards and ideal day of each unassigned task
@@ -72,6 +74,8 @@ public class SecondStage{
 				float newTravelingT = Greedy.doGreedy();
 				float newTotalT = TotalT[j] - TravelingT[j] + newTravelingT;
 				float newLeftT = Workload.get(j) * Gamma - newTotalT;
+				System.out.print(temp_tasklist + " >> ");
+				System.out.println("LeftT[" + j + "] = " + LeftT[j] + " ,newLeftT = " + newLeftT);
 				if(newLeftT > 0){
 					possi_percentage = newLeftT / task_details.get(7);
 					float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
@@ -83,7 +87,7 @@ public class SecondStage{
 				}
 			}
 			TaskSplit aTask = new TaskSplit(taskid, new_totalt, max_rewards, ideal_day, possi_percentage);
-			
+			 
 			// set all unassigned tasks in order by their maximum possible rewards
 			if(i == 0){
 				new_unassignedTasks.add(aTask);
@@ -112,12 +116,6 @@ public class SecondStage{
 	public void SecondStageAssignment(){
 		List<TaskSplit> new_unassignedTasks = SecondStageTaskSort();
 		List<Integer> final_unassignedTasks = new ArrayList<>();	// the final unassigned tasks
-		// check each weekday's capacity left
-//		int available_days = 0;
-//		for(int j = 0; j < Weekdays; j++){
-//			if(LeftT[j] > 0)
-//				available_days++;
-//		}
 
 		// Try to split an unassigned task into the day where the max_rewards exists 
 		// if the ideal day is out of capacity, re-calculate its max_rewards
@@ -141,14 +139,12 @@ public class SecondStage{
 					float percentage = 0;
 					if(Workload.get(ideal_day) * Gamma > aTask.getTotalt()){
 						percentage = aTask.getPossiPercentage();
-						float pricessingT = task_details.get(7) * percentage;
+						float processingT = task_details.get(7) * percentage;
 						TotalT[ideal_day] = aTask.getTotalt();
-						ProcessingT[ideal_day] += pricessingT;
+						ProcessingT[ideal_day] += processingT;
 						TravelingT[ideal_day] = TotalT[ideal_day] - ProcessingT[ideal_day];
 						LeftT[ideal_day] = Workload.get(ideal_day) * Gamma - aTask.getTotalt();
 						Rewards[ideal_day] += aTask.getMaxRewards();
-						new_unassignedTasks.remove(i);
-						i--;
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
@@ -162,11 +158,9 @@ public class SecondStage{
 						LeftT[ideal_day] = 0;
 						Rewards[ideal_day] += task_details.get(ideal_day) * percentage;
 						float left_percentage = aTask.getPossiPercentage() - percentage;
+						
 						re_calculate_rewards = true;
-						// remove current task?
-						// make a new task
 					}
-					
 					// update Schedule
 					aTask.splitInto(ideal_day, percentage);
 					Schedule.get(ideal_day).add(taskid);
@@ -175,7 +169,34 @@ public class SecondStage{
 				}
 				else{
 					re_calculate_rewards = true;
+				}
+				
+				new_unassignedTasks.remove(i);
+				i--;
+				
+				if(re_calculate_rewards){
 					// make a new task
+					reCalculateRewards(aTask);
+					
+					if(aTask.getIdealDay() == -1){
+						// no way to get positive rewards
+						if(aTask.getUnfinishedPercentage() == 1){
+							final_unassignedTasks.add(taskid);
+						}
+					}
+					else{
+						// put it back to the sequence
+						for(int t = 0; t < new_unassignedTasks.size(); t++){
+							TaskSplit ptr = new_unassignedTasks.get(t);
+							if(aTask.getMaxRewards() >= ptr.getMaxRewards()){
+								new_unassignedTasks.add(t, aTask);
+								break;
+							}
+							else if(t == new_unassignedTasks.size()-1){
+								new_unassignedTasks.add(aTask);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -190,6 +211,48 @@ public class SecondStage{
 			TaskPercentages.add(aUnassignedTask);
 		}
 	}
+	
+	private void reCalculateRewards(TaskSplit aTask){
+		int taskid = aTask.getTaskId();
+		List<Float> task_details = OtherData.get(taskid - 1);
+		float split_cost = (float) task_details.get(8);	// split cost
+		float new_totalt = 0;
+		float max_rewards = 0;
+		int ideal_day = -1;
+		float possi_percentage = 0;
+		
+		for(int j = 0; j < Weekdays; j++){
+			if(LeftT[j] == 0){
+				continue;
+			}
+			// calculate new traveling time for checking
+			List<Integer> temp_tasklist = new ArrayList<>();
+			// add original tasks one by one
+			for(int x = 0; x < Schedule.get(j).size(); x++){
+				temp_tasklist.add(Schedule.get(j).get(x));
+			}
+			temp_tasklist.add(taskid);
+			// calculate new traveling time for checking
+			Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
+			float newTravelingT = Greedy.doGreedy();
+			float newTotalT = TotalT[j] - TravelingT[j] + newTravelingT;
+			float newLeftT = Workload.get(j) * Gamma - newTotalT;
+			if(newLeftT > 0){
+				possi_percentage = newLeftT / task_details.get(7);
+				if(aTask.getUnfinishedPercentage() < possi_percentage){
+					possi_percentage = aTask.getUnfinishedPercentage();
+				}
+				float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
+				if(inner_rewards >= max_rewards){
+					new_totalt = newTotalT - task_details.get(7) * possi_percentage;
+					max_rewards = inner_rewards;
+					ideal_day = j;
+				}
+			}
+		}
+		aTask.setDetails(new_totalt, max_rewards, ideal_day, possi_percentage);
+	}
+	
 	
 	public List<List<Integer>> getSchedule(){
 		return Schedule;
