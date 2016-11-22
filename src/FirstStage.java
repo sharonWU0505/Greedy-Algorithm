@@ -68,6 +68,7 @@ public class FirstStage{
 			Greedy Greedy = new Greedy(Schedule.get(j), Distance, TaskNum);
 			TravelingT[j] = Greedy.doGreedy();
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
+//			System.out.println("TravelingT: " + TravelingT[j] + "; Day Schedule: " + Greedy.getFinalDaySchedule());
 		}
 
 		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
@@ -288,7 +289,6 @@ public class FirstStage{
 //				TaskSequence.Sequence();
 //				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
 				Greedy Greedy = new Greedy(current_tasks.subList(1, current_tasks.size()), Distance, TaskNum);
-				
 				TravelingT[current_day] = Greedy.doGreedy();
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
@@ -315,6 +315,9 @@ public class FirstStage{
 		System.out.println("---------------------------------------------------------------------------------");
 		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
 		System.out.println("UnassignedTasks: " + UnassignedTasks);
+		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
