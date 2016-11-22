@@ -11,6 +11,7 @@ public class TaskAssign{
 	private int TaskNum = 0;
 	private List<List<Integer>> Schedule;
 	private List<Integer> UnassignedTasks;
+	private List<Integer> UnfinishedTasks;
 	private List<TaskSplit> TaskPercentages;
 	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
@@ -25,6 +26,7 @@ public class TaskAssign{
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 		Schedule = new ArrayList<>();
 		UnassignedTasks = new ArrayList<>();
+		UnfinishedTasks = new ArrayList<>();
 		TaskPercentages = new ArrayList<>();
 		List<Integer> Monday = new ArrayList<>();
 		List<Integer> Tuesday = new ArrayList<>();
@@ -56,13 +58,14 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
+		System.out.print("\n---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.println("Schedule: " + Schedule);
 		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
@@ -85,6 +88,7 @@ public class TaskAssign{
 		SecondStage.SecondStageAssignment();
 		Schedule = SecondStage.getSchedule();
 		UnassignedTasks = SecondStage.getUnassignedTasks();
+		UnfinishedTasks = SecondStage.getUnfinishedTasks();
 		TaskPercentages = SecondStage.getTaskPercentages();
 		Rewards = SecondStage.getRewards();
 		ProcessingT = SecondStage.getProcessingT();
