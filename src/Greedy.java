@@ -23,7 +23,7 @@ public class Greedy{
 	}
 	
 	public float doGreedy(){
-		if(tasknum > 0){
+		if(tasknum > 1){
 			List<Integer> passedTasks = new ArrayList<>();
 			List<Integer> leftTasks = new ArrayList<>();
 			for(int i = 0; i < tasknum; i++){
@@ -52,7 +52,11 @@ public class Greedy{
 			}
 			passedTasks.add(0, passedTasks.get(passedTasks.size() - 1));	// make it be circle
 			finalDaySchedule = passedTasks;
-			minTravelingT += Distance[passedTasks.get(passedTasks.size() - 1) - 1][passedTasks.get(0) - 1];
+			minTravelingT += Distance[passedTasks.get(0) - 1][passedTasks.get(1) - 1];
+		}
+		else if(tasknum == 1){
+			minTravelingT = 0;
+			finalDaySchedule.add(TaskList.get(0));
 		}
 
 		return minTravelingT;
