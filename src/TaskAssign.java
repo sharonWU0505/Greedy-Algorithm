@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TaskAssign{
@@ -95,6 +96,9 @@ public class TaskAssign{
 		TravelingT = SecondStage.getTravelingT();
 		TotalT = SecondStage.getTotalT();
 		
+		// arrange lists into ascending order
+		sortLists();	
+		
 		// Print Results
 		PrintResult();
 	}
@@ -135,6 +139,11 @@ public class TaskAssign{
 			}
 			System.out.print("\n");
 		}
+	}
+	
+	private void sortLists(){
+		Collections.sort(UnfinishedTasks);
+		Collections.sort(UnassignedTasks);
 	}
 }
 		
