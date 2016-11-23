@@ -36,8 +36,8 @@ public class Greedy{
 				float timeadded = 5000;
 				int nexttask = -1;
 				int remove_index = 0;
+				int pre_task = passedTasks.get(passedTasks.size() - 1);
 				for(int i = 0; i < leftTasks.size(); i++){
-					int pre_task = passedTasks.get(passedTasks.size() - 1);
 					if(Distance[pre_task - 1][leftTasks.get(i) - 1] < timeadded){
 						timeadded = Distance[pre_task - 1][leftTasks.get(i) - 1];
 						nexttask = leftTasks.get(i);
@@ -58,7 +58,7 @@ public class Greedy{
 			minTravelingT = 0;
 			finalDaySchedule.add(TaskList.get(0));
 		}
-
+		
 		return minTravelingT;
 	}
 	
