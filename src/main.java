@@ -26,6 +26,9 @@ public class main {
 			float totalT = Greedy.doGreedy() + processingT[i];
 			System.out.print("Day" + i + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
 		}
+		
+		System.out.println("---------------------------------------------------------------------------------");
+		TaskAssign.printTaskPercentages();
 	}
 
 	public static void main(String[] args) {

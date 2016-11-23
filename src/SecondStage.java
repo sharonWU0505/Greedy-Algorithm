@@ -44,6 +44,7 @@ public class SecondStage{
 				this.Distance[i][j] = distance[i][j];
 			}
 		}
+		this.TaskPercentages = TaskPercentages;
 	}
 	
 	// SecondStageSort: sort unassigned tasks by their maximum possible rewards
@@ -78,8 +79,9 @@ public class SecondStage{
 					new_travelingt = Greedy.doGreedy();
 					new_totalt = TotalT[j] - TravelingT[j] + new_travelingt;	// new total time used except partial processing time
 					float newLeftT = Workload.get(j) * Gamma - new_totalt;			// time left for doing more tasks
-//					System.out.print(temp_tasklist + " >> ");
-//					System.out.print("LeftT[" + j + "] = " + LeftT[j] + " ,newLeftT = " + newLeftT);
+					
+//					System.out.print(temp_tasklist + ": ");
+//					System.out.println("new_travelingt = " + new_travelingt + " ,newLeftT = " + newLeftT);
 					
 					if(newLeftT > 0){
 						possi_percentage = newLeftT / task_details.get(7);
@@ -99,7 +101,6 @@ public class SecondStage{
 			 
 			// set all unassigned tasks in order by their maximum possible rewards
 			if(i == 0){
-				System.out.print(aTask.getTaskId());
 				new_unassignedTasks.add(aTask);
 			}
 			else{
@@ -287,7 +288,6 @@ public class SecondStage{
 		}
 		aTask.setDetails(max_rewards, ideal_day, possi_percentage);
 	}
-	
 	
 	public List<List<Integer>> getSchedule(){
 		return Schedule;

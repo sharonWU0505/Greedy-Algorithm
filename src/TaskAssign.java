@@ -59,7 +59,7 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
-		System.out.print("\n---------------------------------------------------------------------------------" + "\n");
+		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.println("Schedule: " + Schedule);
 		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
@@ -96,8 +96,9 @@ public class TaskAssign{
 		TravelingT = SecondStage.getTravelingT();
 		TotalT = SecondStage.getTotalT();
 		
-		// arrange lists into ascending order
-		sortLists();	
+		// arrangements
+		sortLists();
+		getTaskPercentages();
 		
 		// Print Results
 		PrintResult();
@@ -115,7 +116,7 @@ public class TaskAssign{
 		return ProcessingT;
 	}
 	
-	public float[][] getTaskPercentages(){
+	public void getTaskPercentages(){
 		for(int i = 0; i < OtherData.size(); i++){
 			for(int j = 0; j < Weekdays; j++){
 				for(int k = 0; k < TaskPercentages.size(); k++){
@@ -129,7 +130,6 @@ public class TaskAssign{
 				}
 			}
 		}
-		return FinalTaskPercentages;
 	}
 	
 	public void printTaskPercentages(){
