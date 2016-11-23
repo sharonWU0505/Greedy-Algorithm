@@ -24,7 +24,7 @@ public class main {
 			Greedy Greedy = new Greedy(Schedule.get(i), Distance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
 			float totalT = Greedy.doGreedy() + processingT[i];
-			System.out.print("Day" + i + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
 		}
 		
 		System.out.println("---------------------------------------------------------------------------------");

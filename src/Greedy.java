@@ -33,7 +33,7 @@ public class Greedy{
 			passedTasks.add(leftTasks.get(0));	// put the first task
 			leftTasks.remove(0);				// remove task
 			while(count < tasknum){
-				float timeadded = 5000;
+				float timeadded = 10000;
 				int nexttask = -1;
 				int remove_index = 0;
 				int pre_task = passedTasks.get(passedTasks.size() - 1);
