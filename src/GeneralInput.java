@@ -78,6 +78,7 @@ public class GeneralInput {
 					for(int i = 0; i < taskNum; i++){
 						for(int j = i + 1; j < taskNum; j++){
 							Distance[i][j] = Float.parseFloat(distanceData[index]);
+							index++;
 						}
 					}
 					for(int i = 0; i < taskNum; i++){
@@ -102,6 +103,15 @@ public class GeneralInput {
 		catch(IOException e) {
 			System.out.println(e);
 		}
+		
+//		System.out.println("Distance: ");
+//		for(int i = 0; i < taskNum; i++){
+//			for(int j = 0; j < taskNum; j++){
+//				System.out.print(Distance[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+		
 	}
 
 	// Get Detail Data
