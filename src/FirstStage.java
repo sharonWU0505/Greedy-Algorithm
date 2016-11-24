@@ -75,7 +75,7 @@ public class FirstStage{
 		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-//		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
 		System.out.println("---------------------------------------------------------------------------------");
 	}
 
@@ -309,11 +309,6 @@ public class FirstStage{
 				TaskSplit aTask = new TaskSplit(taskid);
 				aTask.splitInto(j, 1);	// the percentages are all 1 in the first stage
 				TaskPercentages.add(aTask);
-								
-				// calculate penalties and update Rewards
-				List<Float> task_details = OtherData.get(taskid - 1);
-//				System.out.println("penalty of task " + taskid + " = " +  task_details.get(8));
-				Rewards[j] -=  task_details.get(8);
 			}
 		}
 
