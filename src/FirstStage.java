@@ -18,10 +18,11 @@ public class FirstStage{
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
 	private float [][] Distance;
+	private float [] ComDistance;
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();;
 	
 	// Constructor
-	public FirstStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, float [][] distance, List<TaskSplit> TaskPercentages){
+	public FirstStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -33,6 +34,10 @@ public class FirstStage{
 			for(int j = 0; j < TaskNum; j++){
 				this.Distance[i][j] = distance[i][j];
 			}
+		}
+		ComDistance = new float[TaskNum];
+		for(int i = 0; i < TaskNum; i++){
+			this.ComDistance[i] = comdistance[i];
 		}
 	}
 	
@@ -65,7 +70,7 @@ public class FirstStage{
 //			TaskSequence.Sequence();
 //			TravelingT[j] = TaskSequence.getMinTravelingT();
 //			TotalT[j] = ProcessingT[j] + TravelingT[j];
-			Greedy Greedy = new Greedy(Schedule.get(j), Distance, TaskNum);
+			Greedy Greedy = new Greedy(Schedule.get(j), Distance, ComDistance, TaskNum);
 			TravelingT[j] = Greedy.doGreedy();
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
 //			System.out.println("TravelingT: " + TravelingT[j] + "; Day Schedule: " + Greedy.getFinalDaySchedule());
@@ -223,7 +228,7 @@ public class FirstStage{
 //							TaskSequence TaskSequence = new TaskSequence(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
 //							TaskSequence.Sequence();
 //							float newTravelingT = TaskSequence.getMinTravelingT();
-							Greedy Greedy = new Greedy(newTaskList.subList(1, newTaskList.size()), Distance, TaskNum);
+							Greedy Greedy = new Greedy(newTaskList.subList(1, newTaskList.size()), Distance, ComDistance, TaskNum);
 							float newTravelingT = Greedy.doGreedy();
 							float newTotalT = TotalT[some_other_day] + task_details.get(7) - TravelingT[some_other_day] + newTravelingT;
 							float workload_t = Workload.get(some_other_day) * Gamma;
@@ -273,7 +278,7 @@ public class FirstStage{
 //					TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //					TaskSequence.Sequence();
 //					TravelingT[move_to_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
-					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, TaskNum);	
+					Greedy Greedy = new Greedy(Schedule.get(newOrder[move_to_day]).subList(1, Schedule.get(newOrder[move_to_day]).size()), Distance, ComDistance, TaskNum);	
 					TravelingT[move_to_day] = Greedy.doGreedy();					
 					ProcessingT[move_to_day] += time_change;	// calculate new processing time
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
@@ -288,7 +293,7 @@ public class FirstStage{
 //				TaskSequence TaskSequence = new TaskSequence(subTaskSequence, Distance, TaskNum);
 //				TaskSequence.Sequence();
 //				TravelingT[current_day] = TaskSequence.getMinTravelingT();	// update TravelingT;
-				Greedy Greedy = new Greedy(current_tasks.subList(1, current_tasks.size()), Distance, TaskNum);
+				Greedy Greedy = new Greedy(current_tasks.subList(1, current_tasks.size()), Distance, ComDistance, TaskNum);
 				TravelingT[current_day] = Greedy.doGreedy();
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];

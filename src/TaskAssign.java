@@ -20,7 +20,8 @@ public class TaskAssign{
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
 	private float [][] Distance;
-	
+	private float [] ComDistance;
+
 	// Constructor
 	public TaskAssign(List<List> Detail, float[][] distance, float[] comdistance){
 		Workload = new ArrayList<>();
@@ -55,6 +56,10 @@ public class TaskAssign{
 				Distance[i][j] = distance[i][j];
 			}
 		}
+		ComDistance = new float[TaskNum];
+		for(int i = 0; i < TaskNum; i++){
+			this.ComDistance[i] = comdistance[i];
+		}
 	}
 
 	// Print Results
@@ -74,7 +79,7 @@ public class TaskAssign{
 
 	public void ExecuteTaskAssign(){
 		// First Stage
-		FirstStage FirstStage = new FirstStage(Workload, OtherData, Gamma, Weekdays, Schedule, Distance, TaskPercentages);
+		FirstStage FirstStage = new FirstStage(Workload, OtherData, Gamma, Weekdays, Schedule, Distance, ComDistance, TaskPercentages);
 		FirstStage.FirstStageCheck();
 		Schedule = FirstStage.getFirstStageSchedule();
 		UnassignedTasks = FirstStage.getFirstStageUnassignedTasks();
@@ -85,7 +90,7 @@ public class TaskAssign{
 		TotalT = FirstStage.getFirstStageTotalT();
 		
 		//	Second Stage
-		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, ProcessingT, TravelingT, TotalT, Distance, TaskPercentages);
+		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, ProcessingT, TravelingT, TotalT, Distance, ComDistance, TaskPercentages);
 		SecondStage.SecondStageAssignment();
 		Schedule = SecondStage.getSchedule();
 		UnassignedTasks = SecondStage.getUnassignedTasks();
