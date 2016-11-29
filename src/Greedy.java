@@ -6,7 +6,8 @@ public class Greedy{
 	// Attribute
 	private List<Integer> TaskList = new ArrayList<Integer>();  // task list for a day
 	private float[][] Distance;
-	private int tasknum;	// number of tasks in a day
+	private float[] ComDistance;	// distance between each task and the company
+	private int tasknum;			// number of tasks in a day
 	private float minTravelingT = 0;
 	private List<Integer> finalDaySchedule = new ArrayList<>();  // for output
 	
@@ -19,6 +20,10 @@ public class Greedy{
 			for(int j = 0; j < totalNum; j++){
 				Distance[i][j] = distance[i][j];
 			}
+		}
+		ComDistance = new float[totalNum];
+		for(int i = 0; i < totalNum; i++){
+			ComDistance[i] = comdistance[i];
 		}
 	}
 	
@@ -50,13 +55,20 @@ public class Greedy{
 				minTravelingT += timeadded;
 				count++;
 			}
-			passedTasks.add(0, passedTasks.get(passedTasks.size() - 1));	// make it be circle
+			// add the company to be the starting point and the ending point
+			// number 0 as the company site
+			passedTasks.add(0, 0);	// company as the starting point
+			int last_site = passedTasks.get(passedTasks.size() - 1);
+			passedTasks.add(0);		// company as the ending point
 			finalDaySchedule = passedTasks;
-			minTravelingT += Distance[passedTasks.get(0) - 1][passedTasks.get(1) - 1];
+			minTravelingT += ComDistance[passedTasks.get(1) - 1];
+			minTravelingT += ComDistance[last_site - 1];
 		}
 		else if(tasknum == 1){
-			minTravelingT = 0;
+			minTravelingT += 2 * ComDistance[TaskList.get(0) - 1];
 			finalDaySchedule.add(TaskList.get(0));
+			finalDaySchedule.add(0, 0);
+			finalDaySchedule.add(0);
 		}
 		
 		return minTravelingT;
