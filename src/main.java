@@ -5,11 +5,12 @@ import java.util.Scanner;
 
 public class main {
 	private static float[][] Distance = null;
+	private static float[] ComDistance = null;
 	private static List<List> Detail = new ArrayList<>();
 	
 	private static void Excecute() {
 		// Assign Tasks
-		TaskAssign TaskAssign = new TaskAssign(Detail, Distance);
+		TaskAssign TaskAssign = new TaskAssign(Detail, Distance, ComDistance);
 		TaskAssign.ExecuteTaskAssign();
 		List<List<Integer>> Schedule = TaskAssign.getSchedule();
 
@@ -21,7 +22,7 @@ public class main {
 //			System.out.print("Day " + (i + 1) + ": ");
 //			float[] processingT = TaskAssign.getProcessingT();
 //			TaskSequence.printDaySchedule(processingT[i]);
-			Greedy Greedy = new Greedy(Schedule.get(i), Distance, Distance.length);
+			Greedy Greedy = new Greedy(Schedule.get(i), Distance, ComDistance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
 			float totalT = Greedy.doGreedy() + processingT[i];
 			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
@@ -42,6 +43,7 @@ public class main {
 		GeneralInput.ReadTestFile(testpath);
 		Detail = GeneralInput.GetDetail();
 		Distance = GeneralInput.GetDistance();
+		ComDistance = GeneralInput.GetComDistance();
 		System.out.print("Finish Input. \n");
 
 		// Execute and Output

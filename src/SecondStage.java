@@ -20,10 +20,11 @@ public class SecondStage{
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] LeftT = {0, 0, 0, 0, 0, 0, 0};
 	private float [][] Distance;
+	private float [] ComDistance;
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();
 	
 	// Constructor
-	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, List<TaskSplit> TaskPercentages){
+	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -43,6 +44,10 @@ public class SecondStage{
 			for(int j = 0; j < TaskNum; j++){
 				this.Distance[i][j] = distance[i][j];
 			}
+		}
+		ComDistance = new float[TaskNum];
+		for(int i = 0; i < TaskNum; i++){
+			this.ComDistance[i] = comdistance[i];
 		}
 		this.TaskPercentages = TaskPercentages;
 	}
@@ -75,7 +80,7 @@ public class SecondStage{
 					}
 					temp_tasklist.add(taskid);
 					// calculate new traveling time for checking
-					Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
+					Greedy Greedy = new Greedy(temp_tasklist, Distance, ComDistance, TaskNum);
 					new_travelingt = Greedy.doGreedy();
 					new_totalt = TotalT[j] - TravelingT[j] + new_travelingt;	// new total time used except partial processing time
 					float newLeftT = Workload.get(j) * Gamma - new_totalt;			// time left for doing more tasks
@@ -160,7 +165,7 @@ public class SecondStage{
 				}
 				temp_tasklist.add(taskid);
 				// calculate new traveling time for checking
-				Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
+				Greedy Greedy = new Greedy(temp_tasklist, Distance, ComDistance, TaskNum);
 				float new_travelingt = Greedy.doGreedy();
 				float temp_leftT = LeftT[ideal_day] + TravelingT[ideal_day] - new_travelingt;
 				// if time left for at least adding traveling time
@@ -269,7 +274,7 @@ public class SecondStage{
 			}
 			temp_tasklist.add(taskid);
 			// calculate new traveling time for checking
-			Greedy Greedy = new Greedy(temp_tasklist, Distance, TaskNum);
+			Greedy Greedy = new Greedy(temp_tasklist, Distance, ComDistance, TaskNum);
 			new_travelingt = Greedy.doGreedy();
 			new_totalt = TotalT[j] - TravelingT[j] + new_travelingt;
 			float newLeftT = Workload.get(j) * Gamma - new_totalt;

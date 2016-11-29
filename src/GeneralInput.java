@@ -8,11 +8,13 @@ public class GeneralInput {
 	// Attribute
 	private static List<List> Detail;
 	private static float[][] Distance;
+	private static float[] ComDistance;
 
 	// Constructor
 	public GeneralInput() {
 		Detail = new ArrayList<>();
 		Distance = null;
+		ComDistance = null;
 	}
 	
 	// Methods
@@ -71,7 +73,7 @@ public class GeneralInput {
 						OtherData.get(i).add((workdays + 1), Float.parseFloat(penaltyData[i]));
 					}
 				}
-				else{
+				else if(lines == (6 + taskNum)){
 					String[] distanceData = line.split(" ");
 					Distance = new float[taskNum][taskNum];
 					int index = 0;
@@ -88,6 +90,15 @@ public class GeneralInput {
 							}
 							Distance[i][j] = Distance[j][i];
 						}
+					}
+				}
+				else{
+					String[] comdistanceData = line.split(" ");
+					ComDistance = new float[taskNum];
+					int index = 0;
+					for(int i = 0; i < taskNum; i++){
+						ComDistance[i] = Float.parseFloat(comdistanceData[index]);
+						index++;
 					}
 				}
 
@@ -112,6 +123,11 @@ public class GeneralInput {
 //			System.out.println();
 //		}
 		
+//		System.out.println("Company Distance: ");
+//		for(int i = 0; i < taskNum; i++){
+//			System.out.print(ComDistance[i] + " ");
+//		}
+//		System.out.println();
 	}
 
 	// Get Detail Data
@@ -122,5 +138,10 @@ public class GeneralInput {
 	// Get Distance Data
 	public float[][] GetDistance(){
 		return Distance;
+	}
+	
+	// Get Company Distance Data
+	public float[] GetComDistance(){
+		return ComDistance;
 	}
 }

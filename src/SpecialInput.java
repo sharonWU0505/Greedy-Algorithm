@@ -8,11 +8,13 @@ public class SpecialInput {
 	// Attribute
 	private static List<List> Detail;
 	private static float[][] Distance;
+	private static float[] ComDistance;
 
 	// Constructor
 	public SpecialInput(){
 		Detail = new ArrayList<>();
 		Distance = null;
+		ComDistance = null;
 	}
 	
 	// Methods
@@ -89,6 +91,9 @@ public class SpecialInput {
 				}
 				locindex += 1;
 			}
+
+			ComDistance = new float[locnum];
+			
 			br.close();
 		}
 
@@ -107,5 +112,10 @@ public class SpecialInput {
 	public float[][] GetDistance(String filepath){
 		ReadDistanceFile(filepath);
 		return Distance;
+	}
+	
+	// Get Company Distance Data
+	public float[] GetComDistance(){
+		return ComDistance;
 	}
 }
