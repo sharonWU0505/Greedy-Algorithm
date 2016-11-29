@@ -11,7 +11,7 @@ public class Greedy{
 	private List<Integer> finalDaySchedule = new ArrayList<>();  // for output
 	
 	// Constructor
-	public Greedy(List<Integer> TaskList, float[][] distance, int totalNum){
+	public Greedy(List<Integer> TaskList, float[][] distance, float[] comdistance, int totalNum){
 		this.TaskList = TaskList;
 		tasknum = TaskList.size();
 		Distance = new float[totalNum][totalNum];

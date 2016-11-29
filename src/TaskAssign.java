@@ -22,7 +22,7 @@ public class TaskAssign{
 	private float [][] Distance;
 	
 	// Constructor
-	public TaskAssign(List<List> Detail, float[][] distance){
+	public TaskAssign(List<List> Detail, float[][] distance, float[] comdistance){
 		Workload = new ArrayList<>();
 		OtherData = new ArrayList<>();  // rewards, penalty, splitN, processingT
 		Schedule = new ArrayList<>();
