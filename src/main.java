@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -48,5 +51,32 @@ public class main {
 
 		// Execute and Output
 		Excecute();
+		
+		
+		// testdata
+//		String testdata = root + "/src/testdata.txt";
+//		try {
+//			FileReader fr = new FileReader(testdata);
+//			BufferedReader br = new BufferedReader(fr);
+//			String line;
+//			while((line = br.readLine()) != null) {
+//				String testfile = line;
+//				String testpath = root + "/src/" + testfile;
+////				System.out.println(testpath);
+//				
+//				GeneralInput GeneralInput = new GeneralInput();
+//				GeneralInput.ReadTestFile(testpath);
+//				Detail = GeneralInput.GetDetail();
+//				Distance = GeneralInput.GetDistance();
+//				ComDistance = GeneralInput.GetComDistance();
+//				System.out.print("Finish Input. \n");
+//
+//				// Execute and Output
+//				Excecute();
+//			}
+//		}
+//		catch(IOException e) {
+//			System.out.println(e);
+//		}
 	}
 } 
