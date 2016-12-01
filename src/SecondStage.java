@@ -91,6 +91,9 @@ public class SecondStage{
 					
 					if(newLeftT > 0){
 						possi_percentage = newLeftT / task_details.get(7);
+						if(possi_percentage >= 1){
+							possi_percentage = 1;
+						}
 						float inner_rewards = (task_details.get(j) * possi_percentage) - split_cost;
 						if(inner_rewards >= max_rewards){
 							new_totalt += task_details.get(7) * possi_percentage;	// new total time left plus partial processing time
@@ -188,8 +191,7 @@ public class SecondStage{
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
-//						percentage = temp_leftT / task_details.get(7);
-						percentage = temp_leftT / time_needed;
+						percentage = temp_leftT / task_details.get(7);
 						ProcessingT[ideal_day] += task_details.get(7) * percentage;
 						TravelingT[ideal_day] = new_travelingt;
 						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
