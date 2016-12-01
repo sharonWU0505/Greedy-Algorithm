@@ -69,11 +69,9 @@ public class FirstStage{
 //			TaskSequence TaskSequence = new TaskSequence(Schedule.get(j), Distance, TaskNum);
 //			TaskSequence.Sequence();
 //			TravelingT[j] = TaskSequence.getMinTravelingT();
-//			TotalT[j] = ProcessingT[j] + TravelingT[j];
 			Greedy Greedy = new Greedy(Schedule.get(j), Distance, ComDistance, TaskNum);
 			TravelingT[j] = Greedy.doGreedy();
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
-//			System.out.println("TravelingT: " + TravelingT[j] + "; Day Schedule: " + Greedy.getFinalDaySchedule());
 		}
 
 		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
@@ -260,14 +258,14 @@ public class FirstStage{
 				}
 				
 				int taskid_move;
-				if(move_to_day == -1){
+				if(remove_task == -1){
 					// If there's no way to move a task to another weekday, put the task into the "Unassigned List" 
 					// The situation will only happen on the task assignment of the last day
 					remove_task = 1;	// k is the list index, not taskId
 					taskid_move = current_tasks.get(remove_task);	// taskId
 					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move - 1).get(7);
-					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List\n");
+					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List, with time_change = " + time_change);
 				}
 				else{
 					// move the task to another day
@@ -283,7 +281,7 @@ public class FirstStage{
 					ProcessingT[move_to_day] += time_change;	// calculate new processing time
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
-					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + "\n");
+					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + ", with time_change = " + time_change);
 				}
 				
 				// remove task from current day
@@ -298,9 +296,8 @@ public class FirstStage{
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
 				Rewards[current_day] -= (float) OtherData.get(taskid_move - 1).get(current_day);
-//				System.out.print(Arrays.toString(TotalT) + "\n");
+//				System.out.println(" --> {" + TravelingT[current_day] + ", " +  ProcessingT[current_day] + "}");
 			}
-//			System.out.print(Schedule.get(j) + "\n");	// check correctness of current result
 		}
 
 		// recover priority between weekdays

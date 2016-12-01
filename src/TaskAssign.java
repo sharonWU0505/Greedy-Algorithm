@@ -16,6 +16,7 @@ public class TaskAssign{
 	private List<TaskSplit> TaskPercentages;
 	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float [] Penalty = {0, 0, 0, 0, 0, 0, 0};
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
@@ -71,6 +72,7 @@ public class TaskAssign{
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+		System.out.println("        Penalty: " + Arrays.toString(Penalty));
 		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
@@ -90,13 +92,14 @@ public class TaskAssign{
 		TotalT = FirstStage.getFirstStageTotalT();
 		
 		//	Second Stage
-		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, ProcessingT, TravelingT, TotalT, Distance, ComDistance, TaskPercentages);
+		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, Penalty, ProcessingT, TravelingT, TotalT, Distance, ComDistance, TaskPercentages);
 		SecondStage.SecondStageAssignment();
 		Schedule = SecondStage.getSchedule();
 		UnassignedTasks = SecondStage.getUnassignedTasks();
 		UnfinishedTasks = SecondStage.getUnfinishedTasks();
 		TaskPercentages = SecondStage.getTaskPercentages();
 		Rewards = SecondStage.getRewards();
+		Penalty = SecondStage.getPenalty();
 		ProcessingT = SecondStage.getProcessingT();
 		TravelingT = SecondStage.getTravelingT();
 		TotalT = SecondStage.getTotalT();

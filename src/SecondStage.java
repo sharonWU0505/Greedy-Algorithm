@@ -15,6 +15,7 @@ public class SecondStage{
 	private List<Integer> UnassignedTasks = new ArrayList<>();
 	private List<Integer> UnfinishedTasks = new ArrayList<>();
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float [] Penalty = {0, 0, 0, 0, 0, 0, 0};
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
@@ -24,7 +25,7 @@ public class SecondStage{
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();
 	
 	// Constructor
-	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
+	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float[] Penalty, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -32,6 +33,7 @@ public class SecondStage{
 		this.Schedule = Schedule;
 		this.UnassignedTasks = UnassignedTasks;
 		this.Rewards = Rewards;
+		this.Penalty = Penalty;
 		this.ProcessingT = ProcessingT;
 		this.TravelingT = TravelingT;
 		this.TotalT = TotalT;
@@ -161,6 +163,7 @@ public class SecondStage{
 			}
 			else{
 				boolean re_calculate_rewards = false;
+				
 				// calculate new traveling time for checking
 				List<Integer> temp_tasklist = new ArrayList<>();
 				// add original tasks one by one
@@ -168,7 +171,6 @@ public class SecondStage{
 					temp_tasklist.add(Schedule.get(ideal_day).get(x));
 				}
 				temp_tasklist.add(taskid);
-				// calculate new traveling time for checking
 				Greedy Greedy = new Greedy(temp_tasklist, Distance, ComDistance, TaskNum);
 				float new_travelingt = Greedy.doGreedy();
 				float temp_leftT = LeftT[ideal_day] + TravelingT[ideal_day] - new_travelingt;
@@ -183,7 +185,7 @@ public class SecondStage{
 						ProcessingT[ideal_day] += processingT;
 						TravelingT[ideal_day] = new_travelingt;
 						LeftT[ideal_day] -= time_needed;
-						Rewards[ideal_day] += aTask.getMaxRewards();
+						Rewards[ideal_day] += task_details.get(ideal_day) * aTask.getUnfinishedPercentage();
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
@@ -199,7 +201,9 @@ public class SecondStage{
 					// update Schedule
 					aTask.splitInto(ideal_day, percentage);
 					Schedule.get(ideal_day).add(taskid);
+					Penalty[ideal_day] += task_details.get(8);
 					TaskPercentages.add(aTask);
+					
 					System.out.print("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage() + "\n");
 				}
 				// no time left
@@ -310,6 +314,10 @@ public class SecondStage{
 
 	public float[] getRewards(){
 		return Rewards;
+	}
+	
+	public float[] getPenalty(){
+		return Penalty;
 	}
 	
 	public float[] getProcessingT(){
