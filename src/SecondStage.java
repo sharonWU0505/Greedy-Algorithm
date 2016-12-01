@@ -15,6 +15,7 @@ public class SecondStage{
 	private List<Integer> UnassignedTasks = new ArrayList<>();
 	private List<Integer> UnfinishedTasks = new ArrayList<>();
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float [] Penalty = {0, 0, 0, 0, 0, 0, 0};
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
@@ -151,12 +152,17 @@ public class SecondStage{
 			// or doing a task makes will do harm to rewards
 			// never try to assign this task
 			if(aTask.getCounter() >= task_details.get(9) || ideal_day == -1){
-				final_unassignedTasks.add(taskid);
+				if(aTask.getCounter() >= task_details.get(9)){
+					UnfinishedTasks.add(taskid);
+				}else{
+					final_unassignedTasks.add(taskid);
+				}
 				new_unassignedTasks.remove(i);
 				i--;
 			}
 			else{
 				boolean re_calculate_rewards = false;
+				
 				// calculate new traveling time for checking
 				List<Integer> temp_tasklist = new ArrayList<>();
 				// add original tasks one by one
@@ -164,26 +170,26 @@ public class SecondStage{
 					temp_tasklist.add(Schedule.get(ideal_day).get(x));
 				}
 				temp_tasklist.add(taskid);
-				// calculate new traveling time for checking
 				Greedy Greedy = new Greedy(temp_tasklist, Distance, ComDistance, TaskNum);
 				float new_travelingt = Greedy.doGreedy();
 				float temp_leftT = LeftT[ideal_day] + TravelingT[ideal_day] - new_travelingt;
 				// if time left for at least adding traveling time
 				if(LeftT[ideal_day] > 0 && temp_leftT > 0){
-					// complete the task
 					float percentage = aTask.getPossiPercentage();
 					float processingT = task_details.get(7) * percentage;
 					float time_needed = new_travelingt - TravelingT[ideal_day] + processingT;
+					// complete the task
 					if(LeftT[ideal_day] > time_needed){
 						TotalT[ideal_day] += time_needed;
 						ProcessingT[ideal_day] += processingT;
 						TravelingT[ideal_day] = new_travelingt;
 						LeftT[ideal_day] -= time_needed;
-						Rewards[ideal_day] += aTask.getMaxRewards();
+						Rewards[ideal_day] += task_details.get(ideal_day) * aTask.getUnfinishedPercentage();
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
-						percentage = temp_leftT / task_details.get(7);
+//						percentage = temp_leftT / task_details.get(7);
+						percentage = temp_leftT / time_needed;
 						ProcessingT[ideal_day] += task_details.get(7) * percentage;
 						TravelingT[ideal_day] = new_travelingt;
 						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
@@ -195,7 +201,9 @@ public class SecondStage{
 					// update Schedule
 					aTask.splitInto(ideal_day, percentage);
 					Schedule.get(ideal_day).add(taskid);
+					Penalty[ideal_day] += task_details.get(8);
 					TaskPercentages.add(aTask);
+					
 					System.out.print("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage() + "\n");
 				}
 				// no time left
@@ -238,8 +246,6 @@ public class SecondStage{
 				}
 			}
 		}
-
-		// create UnfinishedTasks
 
 		// updates unassigned tasks
 		UnassignedTasks = final_unassignedTasks;
@@ -308,6 +314,10 @@ public class SecondStage{
 
 	public float[] getRewards(){
 		return Rewards;
+	}
+	
+	public float[] getPenalty(){
+		return Penalty;
 	}
 	
 	public float[] getProcessingT(){

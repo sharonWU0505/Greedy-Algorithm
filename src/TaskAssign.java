@@ -16,6 +16,7 @@ public class TaskAssign{
 	private List<TaskSplit> TaskPercentages;
 	private float[][] FinalTaskPercentages;	// for final output 
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
+	private float [] Penalty = {0, 0, 0, 0, 0, 0, 0};
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TravelingT = {0, 0, 0, 0, 0, 0, 0};
 	private float [] TotalT = {0, 0, 0, 0, 0, 0, 0};
@@ -71,8 +72,19 @@ public class TaskAssign{
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+		System.out.println("        Penalty: " + Arrays.toString(Penalty));
 		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
+		
+		
+		System.out.print("Net Rewards: ");
+		double net_rewards = 0;
+		for(int i = 0; i < Weekdays; i++){
+			net_rewards += Rewards[i];
+			net_rewards -= Penalty[i];
+		}
+		System.out.println(net_rewards);
+		
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End Print Results
@@ -97,6 +109,7 @@ public class TaskAssign{
 		UnfinishedTasks = SecondStage.getUnfinishedTasks();
 		TaskPercentages = SecondStage.getTaskPercentages();
 		Rewards = SecondStage.getRewards();
+		Penalty = SecondStage.getPenalty();
 		ProcessingT = SecondStage.getProcessingT();
 		TravelingT = SecondStage.getTravelingT();
 		TotalT = SecondStage.getTotalT();

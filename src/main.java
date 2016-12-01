@@ -28,8 +28,8 @@ public class main {
 			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
 		}
 		
-		System.out.println("---------------------------------------------------------------------------------");
-		TaskAssign.printTaskPercentages();
+//		System.out.println("---------------------------------------------------------------------------------");
+//		TaskAssign.printTaskPercentages();
 	}
 
 	public static void main(String[] args) {
