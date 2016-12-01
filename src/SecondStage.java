@@ -151,7 +151,11 @@ public class SecondStage{
 			// or doing a task makes will do harm to rewards
 			// never try to assign this task
 			if(aTask.getCounter() >= task_details.get(9) || ideal_day == -1){
-				final_unassignedTasks.add(taskid);
+				if(aTask.getCounter() >= task_details.get(9)){
+					UnfinishedTasks.add(taskid);
+				}else{
+					final_unassignedTasks.add(taskid);
+				}
 				new_unassignedTasks.remove(i);
 				i--;
 			}
@@ -238,8 +242,6 @@ public class SecondStage{
 				}
 			}
 		}
-
-		// create UnfinishedTasks
 
 		// updates unassigned tasks
 		UnassignedTasks = final_unassignedTasks;
