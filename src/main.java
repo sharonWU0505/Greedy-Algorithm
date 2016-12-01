@@ -23,11 +23,6 @@ public class main {
 		// Sequencing Tasks
 //		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size(); i++){
-//			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i), Distance, Distance.length);
-//			TaskSequence.Sequence();
-//			System.out.print("Day " + (i + 1) + ": ");
-//			float[] processingT = TaskAssign.getProcessingT();
-//			TaskSequence.printDaySchedule(processingT[i]);
 			Greedy Greedy = new Greedy(Schedule.get(i), Distance, ComDistance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
 			float totalT = Greedy.doGreedy() + processingT[i];
