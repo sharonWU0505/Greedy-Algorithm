@@ -53,7 +53,7 @@ public class SpecialInput {
 				}
 			}
 
-			// Workdays
+			// Weekdays
 			String[] workdaysData = {"7"};
 			Workdays.add(Integer.parseInt(workdaysData[0]));
 
