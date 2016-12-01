@@ -79,7 +79,7 @@ public class TaskAssign{
 //		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 //		System.out.println("Unassigned tasks: " + UnassignedTasks);
 //		System.out.println("     	 Rewards: " + Arrays.toString(Rewards));
-		System.out.println("   Total Rewards: " + total_rewards);		
+		System.out.println(total_rewards);		
 //		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End Print Results

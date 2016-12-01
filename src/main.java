@@ -66,7 +66,7 @@ public class main {
 			String line;
 			while((line = br.readLine()) != null) {
 				String testfile = line;
-				System.out.print("[" + testfile + "] ");
+//				System.out.print("[" + testfile + "] ");
 				String testpath = root + "/src/testdata_sample/" + testfile;
 				
 				GeneralInput GeneralInput = new GeneralInput();
