@@ -25,7 +25,7 @@ public class SecondStage{
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();
 	
 	// Constructor
-	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float[] Penalty, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
+	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -33,7 +33,6 @@ public class SecondStage{
 		this.Schedule = Schedule;
 		this.UnassignedTasks = UnassignedTasks;
 		this.Rewards = Rewards;
-		this.Penalty = Penalty;
 		this.ProcessingT = ProcessingT;
 		this.TravelingT = TravelingT;
 		this.TotalT = TotalT;
@@ -176,10 +175,10 @@ public class SecondStage{
 				float temp_leftT = LeftT[ideal_day] + TravelingT[ideal_day] - new_travelingt;
 				// if time left for at least adding traveling time
 				if(LeftT[ideal_day] > 0 && temp_leftT > 0){
-					// complete the task
 					float percentage = aTask.getPossiPercentage();
 					float processingT = task_details.get(7) * percentage;
 					float time_needed = new_travelingt - TravelingT[ideal_day] + processingT;
+					// complete the task
 					if(LeftT[ideal_day] > time_needed){
 						TotalT[ideal_day] += time_needed;
 						ProcessingT[ideal_day] += processingT;
@@ -189,7 +188,8 @@ public class SecondStage{
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
-						percentage = temp_leftT / task_details.get(7);
+//						percentage = temp_leftT / task_details.get(7);
+						percentage = temp_leftT / time_needed;
 						ProcessingT[ideal_day] += task_details.get(7) * percentage;
 						TravelingT[ideal_day] = new_travelingt;
 						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
