@@ -100,7 +100,7 @@ public class TaskSequence {
 	}
 
 	public void printDaySchedule(float tasktime) {
-		System.out.print((minTravelingT + tasktime) + " / " + finalDaySchedule + "\n");
+//		System.out.print((minTravelingT + tasktime) + " / " + finalDaySchedule + "\n");
 	}
 	
 	public float getMinTravelingT() {

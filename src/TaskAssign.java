@@ -65,17 +65,27 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
-		System.out.print("[Task Assignement Results]" + "\n");
-		System.out.println("Schedule: " + Schedule);
-		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
-		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
-		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
-		System.out.println("        Penalty: " + Arrays.toString(Penalty));
-		System.out.println("Unfinished tasks: " + UnfinishedTasks);
-		System.out.println("Unassigned tasks: " + UnassignedTasks);
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.print("[Task Assignement Results]" + "\n");
+//		System.out.println("Schedule: " + Schedule);
+//		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+//		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+//		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+//		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+//		System.out.println("        Penalty: " + Arrays.toString(Penalty));
+//		System.out.println("Unfinished tasks: " + UnfinishedTasks);
+//		System.out.println("Unassigned tasks: " + UnassignedTasks);
+		
+		
+		System.out.print("Net Rewards: ");
+		double net_rewards = 0;
+		for(int i = 0; i < Weekdays; i++){
+			net_rewards += Rewards[i];
+			net_rewards -= Penalty[i];
+		}
+		System.out.println(net_rewards);
+		
+//		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End Print Results
 
@@ -92,7 +102,7 @@ public class TaskAssign{
 		TotalT = FirstStage.getFirstStageTotalT();
 		
 		//	Second Stage
-		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, Penalty, ProcessingT, TravelingT, TotalT, Distance, ComDistance, TaskPercentages);
+		SecondStage SecondStage = new SecondStage(Workload, OtherData, Gamma, Weekdays, Schedule, UnassignedTasks, Rewards, ProcessingT, TravelingT, TotalT, Distance, ComDistance, TaskPercentages);
 		SecondStage.SecondStageAssignment();
 		Schedule = SecondStage.getSchedule();
 		UnassignedTasks = SecondStage.getUnassignedTasks();

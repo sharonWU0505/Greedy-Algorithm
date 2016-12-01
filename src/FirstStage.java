@@ -74,12 +74,12 @@ public class FirstStage{
 			TotalT[j] = ProcessingT[j] + TravelingT[j];
 		}
 
-		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
-		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
-		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
-		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
-		System.out.println("---------------------------------------------------------------------------------");
+//		System.out.println("FirstStageAssignment:\n" + "Schedule: " + Schedule);
+//		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+//		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+//		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+//		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+//		System.out.println("---------------------------------------------------------------------------------");
 	}
 
 	// FindMinCost: find out the minimum opportunity cost of a day
@@ -117,7 +117,7 @@ public class FirstStage{
 			newSchedule.add(daySchedule);
 		}
 
-		System.out.println("FirstStageDaySort:\n" + "minOPcost: " + minOPcost);
+//		System.out.println("FirstStageDaySort:\n" + "minOPcost: " + minOPcost);
 		Schedule = newSchedule;
 		return minOPcost;
 	}
@@ -151,8 +151,8 @@ public class FirstStage{
 			int dayIndex = (int) tempDayPriority.get(i).keySet().toArray()[0];
 			newSchedule.add(Schedule.get(dayIndex));
 		}
-		System.out.println("Sorted Schedule: " + newSchedule);
-		System.out.println("---------------------------------------------------------------------------------");
+//		System.out.println("Sorted Schedule: " + newSchedule);
+//		System.out.println("---------------------------------------------------------------------------------");
 		Schedule = newSchedule;
 	}
 
@@ -183,7 +183,7 @@ public class FirstStage{
 		List<Map<Integer, Float>> minOPcost = FindMinCost();
 		FirstStageDaySort(minOPcost);				// sort weekdays
 
-		System.out.println("FirstStageCheck-moving:");
+//		System.out.println("FirstStageCheck-moving:");
 		int [] newOrder = {0, 1, 2, 3, 4, 5, 6};	// ex, Tasks for day i have been moved to the "newOrder[i]th" element of the Schedule.
 		for(int j = 0; j < Weekdays; j++){
 			int day = (int) Schedule.get(j).get(0);
@@ -265,7 +265,7 @@ public class FirstStage{
 					taskid_move = current_tasks.get(remove_task);	// taskId
 					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move - 1).get(7);
-					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List, with time_change = " + time_change);
+//					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List, with time_change = " + time_change);
 				}
 				else{
 					// move the task to another day
@@ -281,7 +281,7 @@ public class FirstStage{
 					ProcessingT[move_to_day] += time_change;	// calculate new processing time
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
-					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + ", with time_change = " + time_change);
+//					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + ", with time_change = " + time_change);
 				}
 				
 				// remove task from current day
@@ -314,14 +314,14 @@ public class FirstStage{
 			}
 		}
 
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
-		System.out.println("UnassignedTasks: " + UnassignedTasks);
-		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
-		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
-		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.println("---------------------------------------------------------------------------------");
+//		System.out.println("FirstStageCheck-results:\n" + "Schedule: " + Schedule);
+//		System.out.println("UnassignedTasks: " + UnassignedTasks);
+//		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+//		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+//		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+//		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
+//		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 
 	public List<List<Integer>> getFirstStageSchedule(){

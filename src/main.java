@@ -17,8 +17,11 @@ public class main {
 		TaskAssign.ExecuteTaskAssign();
 		List<List<Integer>> Schedule = TaskAssign.getSchedule();
 
+//		System.out.println("---------------------------------------------------------------------------------");
+//		TaskAssign.printTaskPercentages();
+		
 		// Sequencing Tasks
-		System.out.print("[Task Sequence Results]" + "\n");
+//		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size(); i++){
 //			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i), Distance, Distance.length);
 //			TaskSequence.Sequence();
@@ -28,55 +31,62 @@ public class main {
 			Greedy Greedy = new Greedy(Schedule.get(i), Distance, ComDistance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
 			float totalT = Greedy.doGreedy() + processingT[i];
-			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+//			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+			
+			// output for shouko
+//			List<Integer> result = Greedy.getFinalDaySchedule();
+//			for(int x = 0; x < result.size(); x++){
+//				System.out.print(result.get(x) + " ");
+//			}
+//			System.out.println();
 		}
 		
-//		System.out.println("---------------------------------------------------------------------------------");
-//		TaskAssign.printTaskPercentages();
+
 	}
 
 	public static void main(String[] args) {
 		String root = System.getProperty("user.dir");
 
 		// GeneralInput
-		Scanner reader = new Scanner(System.in);
-		String testfile = reader.next();	// /src/general_input.txt
-		String testpath = root + testfile;
-		GeneralInput GeneralInput = new GeneralInput();
-		GeneralInput.ReadTestFile(testpath);
-		Detail = GeneralInput.GetDetail();
-		Distance = GeneralInput.GetDistance();
-		ComDistance = GeneralInput.GetComDistance();
-		System.out.print("Finish Input. \n");
-
-		// Execute and Output
-		Excecute();
+//		Scanner reader = new Scanner(System.in);
+//		String testfile = reader.next();	// /src/general_input.txt
+//		String testpath = root + testfile;
+//		GeneralInput GeneralInput = new GeneralInput();
+//		GeneralInput.ReadTestFile(testpath);
+//		Detail = GeneralInput.GetDetail();
+//		Distance = GeneralInput.GetDistance();
+//		ComDistance = GeneralInput.GetComDistance();
+////		System.out.print("Finish Input. \n");
+//
+//		// Execute and Output
+//		Excecute();
+		
 		
 		
 		// testdata
-//		String testdata = root + "/src/testdata.txt";
-//		try {
-//			FileReader fr = new FileReader(testdata);
-//			BufferedReader br = new BufferedReader(fr);
-//			String line;
-//			while((line = br.readLine()) != null) {
-//				String testfile = line;
-//				String testpath = root + "/src/" + testfile;
-////				System.out.println(testpath);
-//				
-//				GeneralInput GeneralInput = new GeneralInput();
-//				GeneralInput.ReadTestFile(testpath);
-//				Detail = GeneralInput.GetDetail();
-//				Distance = GeneralInput.GetDistance();
-//				ComDistance = GeneralInput.GetComDistance();
-//				System.out.print("Finish Input. \n");
-//
-//				// Execute and Output
-//				Excecute();
-//			}
-//		}
-//		catch(IOException e) {
-//			System.out.println(e);
-//		}
+		String testdata = root + "/src/testdata.txt";
+		try {
+			FileReader fr = new FileReader(testdata);
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			while((line = br.readLine()) != null) {
+				String testfile = line;
+				System.out.print("[" + testfile + "] ");
+				String testpath = root + "/src/testdata_sample/" + testfile;
+				
+				GeneralInput GeneralInput = new GeneralInput();
+				GeneralInput.ReadTestFile(testpath);
+				Detail = GeneralInput.GetDetail();
+				Distance = GeneralInput.GetDistance();
+				ComDistance = GeneralInput.GetComDistance();
+
+				// Execute and Output
+				Excecute();
+			}
+		}
+		catch(IOException e) {
+			System.out.println(e);
+		}
+		
 	}
 } 

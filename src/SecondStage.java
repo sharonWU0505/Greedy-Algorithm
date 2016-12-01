@@ -25,7 +25,7 @@ public class SecondStage{
 	private List<TaskSplit> TaskPercentages = new ArrayList<>();
 	
 	// Constructor
-	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float[] Penalty, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
+	public SecondStage(List<Float> Workload, List<List> OtherData, float Gamma, int Weekdays, List<List<Integer>> Schedule, List<Integer> UnassignedTasks, float [] Rewards, float [] ProcessingT, float [] TravelingT, float [] TotalT, float [][] distance, float [] comdistance, List<TaskSplit> TaskPercentages){
 		this.Workload = Workload;
 		this.OtherData = OtherData;
 		this.Gamma = Gamma;
@@ -33,7 +33,6 @@ public class SecondStage{
 		this.Schedule = Schedule;
 		this.UnassignedTasks = UnassignedTasks;
 		this.Rewards = Rewards;
-		this.Penalty = Penalty;
 		this.ProcessingT = ProcessingT;
 		this.TravelingT = TravelingT;
 		this.TotalT = TotalT;
@@ -56,7 +55,7 @@ public class SecondStage{
 	
 	// SecondStageSort: sort unassigned tasks by their maximum possible rewards
 	private List<TaskSplit> SecondStageTaskSort(){
-		System.out.println("SecondStageTaskSort:");
+//		System.out.println("SecondStageTaskSort:");
 //		System.out.println("Left Time: " + Arrays.toString(LeftT));
 
 		List<TaskSplit> new_unassignedTasks = new ArrayList<>();  // unassigned tasks with more details
@@ -128,7 +127,7 @@ public class SecondStage{
 		// check the correctness of sorting
 		for(int i = 0; i < new_unassignedTasks.size(); i++){
 			TaskSplit current_task = new_unassignedTasks.get(i);
-			System.out.println("Task " + current_task.getTaskId() + ": max_rewards " + current_task.getMaxRewards() + " on day " + (current_task.getIdealDay() + 1));
+//			System.out.println("Task " + current_task.getTaskId() + ": max_rewards " + current_task.getMaxRewards() + " on day " + (current_task.getIdealDay() + 1));
 //			System.out.println(current_task.getPossiPercentage() + " / " + current_task.getTravelingt() + " / " + current_task.getTotalt());
 		}
 		return new_unassignedTasks;
@@ -138,8 +137,8 @@ public class SecondStage{
 		List<TaskSplit> new_unassignedTasks = SecondStageTaskSort();
 		List<Integer> final_unassignedTasks = new ArrayList<>();	// the final unassigned tasks
 
-		System.out.println("---------------------------------------------------------------------------------");
-		System.out.println("SecondStageAssignment:");
+//		System.out.println("---------------------------------------------------------------------------------");
+//		System.out.println("SecondStageAssignment:");
 		// Try to split an unassigned task into the day where the max_rewards exists 
 		// if the ideal day is out of capacity or a task can't reach its maximum possible rewards
 		// re-calculate its max_rewards
@@ -176,10 +175,10 @@ public class SecondStage{
 				float temp_leftT = LeftT[ideal_day] + TravelingT[ideal_day] - new_travelingt;
 				// if time left for at least adding traveling time
 				if(LeftT[ideal_day] > 0 && temp_leftT > 0){
-					// complete the task
 					float percentage = aTask.getPossiPercentage();
 					float processingT = task_details.get(7) * percentage;
 					float time_needed = new_travelingt - TravelingT[ideal_day] + processingT;
+					// complete the task
 					if(LeftT[ideal_day] > time_needed){
 						TotalT[ideal_day] += time_needed;
 						ProcessingT[ideal_day] += processingT;
@@ -189,7 +188,8 @@ public class SecondStage{
 					}
 					// cannot complete, split the task and add a new task to the UassignedTasks
 					else{
-						percentage = temp_leftT / task_details.get(7);
+//						percentage = temp_leftT / task_details.get(7);
+						percentage = temp_leftT / time_needed;
 						ProcessingT[ideal_day] += task_details.get(7) * percentage;
 						TravelingT[ideal_day] = new_travelingt;
 						TotalT[ideal_day] = ProcessingT[ideal_day] + TravelingT[ideal_day];
@@ -204,7 +204,7 @@ public class SecondStage{
 					Penalty[ideal_day] += task_details.get(8);
 					TaskPercentages.add(aTask);
 					
-					System.out.print("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage() + "\n");
+//					System.out.print("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage() + "\n");
 				}
 				// no time left
 				else{

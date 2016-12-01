@@ -8,12 +8,11 @@ public class Greedy{
 	private float[][] Distance;
 	private float[] ComDistance;	// distance between each task and the company
 	private int tasknum;			// number of tasks in a day
-	private float minTravelingT;
+	private float minTravelingT = 0;
 	private List<Integer> finalDaySchedule = new ArrayList<>();  // for output
 	
 	// Constructor
 	public Greedy(List<Integer> TaskList, float[][] distance, float[] comdistance, int totalNum){
-		minTravelingT = 0;
 		this.TaskList = TaskList;
 		tasknum = TaskList.size();
 		Distance = new float[totalNum][totalNum];
