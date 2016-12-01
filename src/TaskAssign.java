@@ -65,26 +65,21 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
+		double total_rewards = 0;
+		for(int i = 0; i < Weekdays; i++){
+			Rewards[i] -= Penalty[i];
+			total_rewards += Rewards[i];
+		}
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 		System.out.print("[Task Assignement Results]" + "\n");
 		System.out.println("Schedule: " + Schedule);
 		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
 		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
-		System.out.println("        Penalty: " + Arrays.toString(Penalty));
+		System.out.println("     	  Rewards: " + Arrays.toString(Rewards));
 		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
-		
-		
-		System.out.print("Net Rewards: ");
-		double net_rewards = 0;
-		for(int i = 0; i < Weekdays; i++){
-			net_rewards += Rewards[i];
-			net_rewards -= Penalty[i];
-		}
-		System.out.println(net_rewards);
-		
+		System.out.println("   Total Rewards: " + total_rewards);		
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
 	}
 	// End Print Results
@@ -164,4 +159,3 @@ public class TaskAssign{
 		Collections.sort(UnassignedTasks);
 	}
 }
-		
