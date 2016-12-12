@@ -17,10 +17,16 @@ public class main {
 		// Sequencing Tasks
 		System.out.print("[Task Sequence Results]" + "\n");
 		for(int i = 0; i < Schedule.size(); i++){
-			Greedy Greedy = new Greedy(Schedule.get(i), Distance, ComDistance, Distance.length);
+//			Greedy Greedy = new Greedy(Schedule.get(i), Distance, ComDistance, Distance.length);
+//			float[] processingT = TaskAssign.getProcessingT();
+//			float totalT = Greedy.doGreedy() + processingT[i];
+//			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+			
+			TaskSequence TaskSequence = new TaskSequence(Schedule.get(i), Distance, ComDistance, Distance.length);
 			float[] processingT = TaskAssign.getProcessingT();
-			float totalT = Greedy.doGreedy() + processingT[i];
-			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + Greedy.getFinalDaySchedule() + "\n");
+			TaskSequence.doSequence();
+			float totalT = TaskSequence.getMinTravelingT() + processingT[i];
+			System.out.print("Day" + (i+1) + ": TotalT: " + totalT + "; Schedule: " + TaskSequence.getfinalDaySchedule() + "\n");
 		}
 		
 //		System.out.println("---------------------------------------------------------------------------------");
