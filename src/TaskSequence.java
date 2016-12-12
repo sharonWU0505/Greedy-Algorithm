@@ -7,10 +7,11 @@ public class TaskSequence {
 	// Attribute
 	private List<Integer> TaskList = new ArrayList<Integer>();  // task list for a day
 	private float[][] Distance;
+	private float[] ComDistance;	// distance between each task and the company
 	private int tasknum;			// number of tasks in a day
 	private int[] set;				// for permutation
-	private boolean[] used;			// for permutation
 	private int[] permutationSet;	// for permutation
+	private boolean[] used;			// for permutation
 	private boolean first = true;
 	private float minTravelingT = 5000;
 	private int[] idealTaskSequence;
@@ -18,7 +19,7 @@ public class TaskSequence {
 
 
 	// Constructor
-	public TaskSequence(List<Integer> TaskList, float[][] distance, int totalNum) {
+	public TaskSequence(List<Integer> TaskList, float[][] distance, float[] comdistance, int totalNum) {
 		this.TaskList = TaskList;
 		tasknum = TaskList.size();
 		Distance = new float[totalNum][totalNum];
@@ -26,6 +27,10 @@ public class TaskSequence {
 			for(int j = 0; j < totalNum; j++){
 				Distance[i][j] = distance[i][j];
 			}
+		}
+		ComDistance = new float[totalNum];
+		for(int i = 0; i < totalNum; i++){
+			ComDistance[i] = comdistance[i];
 		}
 		set = new int[tasknum];
 		used = new boolean[tasknum];
@@ -73,36 +78,41 @@ public class TaskSequence {
 			int index_j = permutationSet[i+1] - 1;
 			temp_travelingt += Distance[index_i][index_j];
 		}
-		temp_travelingt += Distance[permutationSet[tasknum - 1]-1][permutationSet[0]-1];
+		temp_travelingt += ComDistance[permutationSet[tasknum - 1]-1];
+		temp_travelingt += ComDistance[permutationSet[0]-1];
 
 		return temp_travelingt;
 	}
 
 	// Decide Task Sequence
-	public List<Integer> Sequence() {
+	public void doSequence() {
 		if(tasknum == 0){
-			idealTaskSequence = new int[0];
 			minTravelingT = 0;
 		}
 		else if(tasknum == 1){
-			idealTaskSequence = new int[1];
-			idealTaskSequence[0] = TaskList.get(0);
-			minTravelingT = 0;
+			finalDaySchedule.add(0);
+			finalDaySchedule.add(TaskList.get(0));
+			finalDaySchedule.add(0);
+			minTravelingT = 2 * ComDistance[TaskList.get(0) - 1];
 		}
 		else{
 			Permutation(0, tasknum);
 			for(int i = 0; i < tasknum; i++){
 				finalDaySchedule.add(idealTaskSequence[i]);
 			}
-			finalDaySchedule.add(idealTaskSequence[0]);
+			finalDaySchedule.add(0, 0);
+			finalDaySchedule.add(0);
 		}
+	}
+	
+	public List<Integer> getfinalDaySchedule() {
 		return finalDaySchedule;
 	}
 
 	public void printDaySchedule(float tasktime) {
 //		System.out.print((minTravelingT + tasktime) + " / " + finalDaySchedule + "\n");
 	}
-	
+
 	public float getMinTravelingT() {
 		return minTravelingT;
 	}

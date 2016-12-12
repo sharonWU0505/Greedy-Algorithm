@@ -35,8 +35,17 @@ public class Greedy{
 				leftTasks.add(TaskList.get(i));
 			}
 			int count = 1;
-			passedTasks.add(leftTasks.get(0));	// put the first task
-			leftTasks.remove(0);				// remove task
+			// start from the location which is closest to the company
+			int first_task_index = 0;
+			float min_comdistance = 5000;
+			for(int i = 0; i < tasknum; i++){
+				float comdistance = ComDistance[leftTasks.get(i) - 1];
+				if(comdistance < min_comdistance){
+					first_task_index = i;
+				}
+			}
+			passedTasks.add(leftTasks.get(first_task_index));	// put the first task
+			leftTasks.remove(first_task_index);					// remove task
 			while(count < tasknum){
 				float timeadded = 10000;
 				int nexttask = -1;
