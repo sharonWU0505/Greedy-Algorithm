@@ -78,8 +78,9 @@ public class TaskSequence {
 			int index_j = permutationSet[i+1] - 1;
 			temp_travelingt += Distance[index_i][index_j];
 		}
-		temp_travelingt += ComDistance[permutationSet[tasknum - 1]-1];
-		temp_travelingt += ComDistance[permutationSet[0]-1];
+		// add traveling time from and get back to the company
+		temp_travelingt += ComDistance[permutationSet[tasknum - 1] - 1];
+		temp_travelingt += ComDistance[permutationSet[0] - 1];
 
 		return temp_travelingt;
 	}
@@ -90,13 +91,14 @@ public class TaskSequence {
 			minTravelingT = 0;
 		}
 		else if(tasknum == 1){
-			finalDaySchedule.add(0);
-			finalDaySchedule.add(TaskList.get(0));
-			finalDaySchedule.add(0);
+			finalDaySchedule.add(0);				// company as the starting site
+			finalDaySchedule.add(TaskList.get(0));	// add the only task
+			finalDaySchedule.add(0);				// company as the ending site
 			minTravelingT = 2 * ComDistance[TaskList.get(0) - 1];
 		}
 		else{
 			Permutation(0, tasknum);
+			// turn array into list
 			for(int i = 0; i < tasknum; i++){
 				finalDaySchedule.add(idealTaskSequence[i]);
 			}

@@ -284,7 +284,6 @@ public class FirstStage{
 				ProcessingT[current_day] -= time_change;
 				TotalT[current_day] = TravelingT[current_day] + ProcessingT[current_day];
 				Rewards[current_day] -= (float) OtherData.get(taskid_move - 1).get(current_day);
-//				System.out.println(" --> {" + TravelingT[current_day] + ", " +  ProcessingT[current_day] + "}");
 			}
 		}
 
@@ -309,7 +308,7 @@ public class FirstStage{
 //		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
 //		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 //		System.out.println("     	Rewards: " + Arrays.toString(Rewards));
-//		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.println("---------------------------------------------------------------------------------");
 	}
 
 	public List<List<Integer>> getFirstStageSchedule(){
