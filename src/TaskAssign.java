@@ -70,18 +70,18 @@ public class TaskAssign{
 			Rewards[i] -= Penalty[i];
 			total_rewards += Rewards[i];
 		}
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
-		System.out.print("[Task Assignement Results]" + "\n");
-		System.out.println("Schedule: " + Schedule);
-		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
-		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
-		System.out.println("     Total Time: " + Arrays.toString(TotalT));
-		System.out.println("Unfinished tasks: " + UnfinishedTasks);
-		System.out.println("Unassigned tasks: " + UnassignedTasks);
-		System.out.println("     	 Penalty: " + Arrays.toString(Penalty));
-		System.out.println("     	 Rewards: " + Arrays.toString(Rewards));
+//		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.print("[Task Assignement Results]" + "\n");
+//		System.out.println("Schedule: " + Schedule);
+//		System.out.println("Processing Time: " + Arrays.toString(ProcessingT));
+//		System.out.println(" Traveling Time: " + Arrays.toString(TravelingT));
+//		System.out.println("     Total Time: " + Arrays.toString(TotalT));
+//		System.out.println("Unfinished tasks: " + UnfinishedTasks);
+//		System.out.println("Unassigned tasks: " + UnassignedTasks);
+//		System.out.println("     	 Penalty: " + Arrays.toString(Penalty));
+//		System.out.println("     	 Rewards: " + Arrays.toString(Rewards));
 		System.out.println("   Total Rewards: " + total_rewards);		
-		System.out.print("---------------------------------------------------------------------------------" + "\n");
+//		System.out.println("---------------------------------------------------------------------------------");
 	}
 	// End Print Results
 

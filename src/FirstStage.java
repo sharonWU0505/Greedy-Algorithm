@@ -272,7 +272,7 @@ public class FirstStage{
 					ProcessingT[move_to_day] += time_change;	// calculate new processing time
 					TotalT[move_to_day] = TravelingT[move_to_day] + ProcessingT[move_to_day];
 					Rewards[move_to_day] += (float) OtherData.get(taskid_move - 1).get(move_to_day);
-					System.out.println("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + ", with time_change = " + time_change);
+//					System.out.println("Task " + taskid_move + " from day " + (current_day + 1) + " to day " + (move_to_day + 1) + ", with time_change = " + time_change);
 				}
 				
 				// remove task from current day

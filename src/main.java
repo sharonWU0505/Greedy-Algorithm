@@ -16,7 +16,7 @@ public class main {
 		TaskAssign.ExecuteTaskAssign();
 		List<List<Integer>> Schedule = TaskAssign.getSchedule();
 
-		System.out.print("[Task Sequence Results]" + "\n");
+//		System.out.print("[Task Sequence Results]" + "\n");
 		float[] processingT = TaskAssign.getProcessingT();
 		for(int i = 0; i < Schedule.size(); i++){
 			// run TaskSequence to get the best traveling path
