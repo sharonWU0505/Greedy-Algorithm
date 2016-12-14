@@ -133,20 +133,6 @@ public class GeneralInput {
 		catch(IOException e) {
 			System.out.println(e);
 		}
-		
-//		System.out.println("Distance: ");
-//		for(int i = 0; i < taskNum; i++){
-//			for(int j = 0; j < taskNum; j++){
-//				System.out.print(Distance[i][j] + " ");
-//			}
-//			System.out.println();
-//		}
-		
-//		System.out.println("Company Distance: ");
-//		for(int i = 0; i < taskNum; i++){
-//			System.out.print(ComDistance[i] + " ");
-//		}
-//		System.out.println();
 	}
 
 	// Get Detail Data

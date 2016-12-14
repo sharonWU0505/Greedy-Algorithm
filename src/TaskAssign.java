@@ -78,6 +78,7 @@ public class TaskAssign{
 		System.out.println("     Total Time: " + Arrays.toString(TotalT));
 		System.out.println("Unfinished tasks: " + UnfinishedTasks);
 		System.out.println("Unassigned tasks: " + UnassignedTasks);
+		System.out.println("     	 Penalty: " + Arrays.toString(Penalty));
 		System.out.println("     	 Rewards: " + Arrays.toString(Rewards));
 		System.out.println("   Total Rewards: " + total_rewards);		
 		System.out.print("---------------------------------------------------------------------------------" + "\n");
