@@ -14,7 +14,8 @@ public class TaskAssign{
 	private List<Integer> UnassignedTasks;
 	private List<Integer> UnfinishedTasks;
 	private List<TaskSplit> TaskPercentages;
-	private float[][] FinalTaskPercentages;	// for final output 
+	private float[][] FinalTaskPercentages;
+	private float TotalRewards = 0;
 	private float [] Rewards = {0, 0, 0, 0, 0, 0, 0};
 	private float [] Penalty = {0, 0, 0, 0, 0, 0, 0};
 	private float [] ProcessingT = {0, 0, 0, 0, 0, 0, 0};
@@ -65,11 +66,11 @@ public class TaskAssign{
 
 	// Print Results
 	private void PrintResult(){
-		double total_rewards = 0;
 		for(int i = 0; i < Weekdays; i++){
 			Rewards[i] -= Penalty[i];
-			total_rewards += Rewards[i];
+			TotalRewards += Rewards[i];
 		}
+
 //		System.out.print("---------------------------------------------------------------------------------" + "\n");
 //		System.out.print("[Task Assignement Results]" + "\n");
 //		System.out.println("Schedule: " + Schedule);
@@ -80,7 +81,7 @@ public class TaskAssign{
 //		System.out.println("Unassigned tasks: " + UnassignedTasks);
 //		System.out.println("     	 Penalty: " + Arrays.toString(Penalty));
 //		System.out.println("     	 Rewards: " + Arrays.toString(Rewards));
-		System.out.println("   Total Rewards: " + total_rewards);		
+		System.out.println("   Total Rewards: " + TotalRewards);		
 //		System.out.println("---------------------------------------------------------------------------------");
 	}
 	// End Print Results
@@ -154,7 +155,11 @@ public class TaskAssign{
 			System.out.print("\n");
 		}
 	}
-	
+
+	public void printTotalRewards(){
+		System.out.println(TotalRewards);
+	}
+
 	private void sortLists(){
 		Collections.sort(UnfinishedTasks);
 		Collections.sort(UnassignedTasks);
