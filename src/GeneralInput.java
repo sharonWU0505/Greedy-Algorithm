@@ -44,14 +44,27 @@ public class GeneralInput {
 					String[] processTData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
 						List<Float> DetailData = new ArrayList<>();  // for saving rewards, processingT, penalty, splitN
-						DetailData.add(Float.parseFloat(processTData[i]));
+						
+						// decimal format test
+						float temp = Float.parseFloat(processTData[i]);
+						temp = (float) ((int) Math.floor(temp * 10000)) / 10000;
+						DetailData.add(temp);
+//						DetailData.add(Float.parseFloat(processTData[i]));
+						
 						OtherData.add(DetailData);
 					}
 				}
 				else if(lines == 3){
 					String[] workloadData = line.split(" ");
 					for(int i = 0; i < workdays; i++){
-						Workload.add(Float.parseFloat(workloadData[i]));
+						
+						// decimal format test
+						float temp = Float.parseFloat(workloadData[i]);
+						temp = (float) ((int) Math.floor(temp * 10000)) / 10000;
+						Workload.add(temp);
+						
+						
+//						Workload.add(Float.parseFloat(workloadData[i]));
 					}
 				}
 				else if(lines >= 4 && lines < (4 + taskNum)){
@@ -70,7 +83,13 @@ public class GeneralInput {
 				else if(lines == (5 + taskNum)){
 					String[] penaltyData = line.split(" ");
 					for(int i = 0; i < taskNum; i++){
-						OtherData.get(i).add((workdays + 1), Float.parseFloat(penaltyData[i]));
+						
+						// decimal format test
+						float temp = Float.parseFloat(penaltyData[i]);
+						temp = (float) ((int) Math.floor(temp * 10000)) / 10000;
+						OtherData.get(i).add(temp);
+//						OtherData.get(i).add((workdays + 1), Float.parseFloat(penaltyData[i]));
+						
 					}
 				}
 				else if(lines == (6 + taskNum)){
