@@ -97,16 +97,13 @@ public class GeneralInput {
 					Distance = new float[taskNum][taskNum];
 					int index = 0;
 					for(int i = 0; i < taskNum; i++){
-						for(int j = i + 1; j < taskNum; j++){
+						for(int j = i; j < taskNum; j++){
 							Distance[i][j] = Float.parseFloat(distanceData[index]);
 							index++;
 						}
 					}
-					for(int i = 0; i < taskNum; i++){
-						for(int j = 0; j < i + 1; j++){
-							if(j == i){
-								Distance[i][j] = (float) 0.0;
-							}
+					for(int i = 1; i < taskNum; i++){
+						for(int j = 0; j < i; j++){
 							Distance[i][j] = Distance[j][i];
 						}
 					}
