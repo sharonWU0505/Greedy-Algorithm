@@ -203,7 +203,9 @@ public class SecondStage{
 					// update Schedule
 					aTask.splitInto(ideal_day, percentage);
 					Schedule.get(ideal_day).add(taskid);
-					Penalty[ideal_day] += task_details.get(8);
+					if(percentage < 1){
+						Penalty[ideal_day] += task_details.get(8);
+					}
 					TaskPercentages.add(aTask);
 					
 					System.out.print("Split Task " + taskid + " into day " + (ideal_day + 1) + " with percentage = " + percentage + ", left " + aTask.getUnfinishedPercentage() + "\n");
