@@ -259,7 +259,7 @@ public class FirstStage{
 					taskid_move = current_tasks.get(remove_task);	// taskId
 					UnassignedTasks.add(taskid_move);
 					time_change = (float) OtherData.get(taskid_move - 1).get(7);
-					System.out.print("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List, with time_change = " + time_change);
+					System.out.println("Task " + taskid_move + " from day " + (current_day + 1) + " to the Unassigned List, with time_change = " + time_change);
 				}
 				else{
 					// move the task to another day
