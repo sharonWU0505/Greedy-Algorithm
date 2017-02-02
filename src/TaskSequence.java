@@ -50,12 +50,16 @@ public class TaskSequence {
 			float tempTravelingT = calTravelingT(permutationSet);
 			if(first == true){
 				minTravelingT = tempTravelingT;
-				idealTaskSequence = permutationSet;
+				for(int i = 0; i < end; i++) {
+					idealTaskSequence[i] = permutationSet[i];
+				}
 				first = false;
 			}
 			else if(tempTravelingT < minTravelingT){
 				minTravelingT = tempTravelingT;
-				idealTaskSequence = permutationSet;
+				for(int i = 0; i < end; i++) {
+					idealTaskSequence[i] = permutationSet[i];
+				}
 			}
 		}
 		else {
